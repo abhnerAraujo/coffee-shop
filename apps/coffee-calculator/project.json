@@ -23,7 +23,10 @@
           }
         ],
         "styles": ["apps/coffee-calculator/src/styles.scss"],
-        "scripts": []
+        "scripts": [],
+        "stylePreprocessorOptions": {
+          "includePaths": ["apps/coffee-calculator/src/styles"]
+        }
       },
       "configurations": {
         "production": {
