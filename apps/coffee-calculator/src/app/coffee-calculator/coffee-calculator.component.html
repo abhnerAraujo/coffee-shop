@@ -1,0 +1,19 @@
+<h1>Measures</h1>
+<h2>Water</h2>
+<div>
+  @for (item of waterMeasureOptions(); track item.measure) {
+  <label
+    ><input name="water-measure" type="radio" value="{{ item.measure }}" />
+    {{ item.name }}
+  </label>
+  }
+</div>
+<h2>Coffee</h2>
+<div>
+  @for (item of coffeeMeasureOptions(); track item.measure) {
+  <label
+    ><input name="coffee-measure" type="radio" value="{{ item.measure }}" />
+    {{ item.name }}
+  </label>
+  }
+</div>

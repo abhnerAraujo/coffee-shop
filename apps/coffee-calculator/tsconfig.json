@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "./",
     "target": "es2022",
     "useDefineForClassFields": false,
     "esModuleInterop": true,
@@ -8,7 +9,11 @@
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
     "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+    "paths": {
+      "@lib/*": ["src/lib/*"],
+      "@domain/*": ["src/app/domain/*"]
+    }
   },
   "files": [],
   "include": [],
