@@ -11,9 +11,13 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@lib/*": ["src/lib/*"],
       "@domain/*": ["src/app/domain/*"]
-    }
+    },
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/@angular",
+      "node_modules/@angular/material"
+    ]
   },
   "files": [],
   "include": [],

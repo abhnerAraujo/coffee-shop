@@ -1,0 +1,63 @@
+:host {
+  padding: 2rem;
+  display: block;
+}
+
+.calculator-step {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.calculator-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  > .method {
+    @extends .calculator-step;
+  }
+  > .row {
+    display: flex;
+    flex-direction: row;
+    gap: 2rem;
+  }
+
+  > .row.-justify-between {
+    justify-content: space-between;
+  }
+}
+
+.form-control {
+  height: 56px;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+
+  mat-form-field {
+    max-width: 150px;
+  }
+
+}
+
+.amount-ratio {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  align-items: center;
+}
+
+.calculator-result {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  > .portions, > .result {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 1rem;
+  }
+}

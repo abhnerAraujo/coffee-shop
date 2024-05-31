@@ -1,19 +1,153 @@
-<h1>Measures</h1>
-<h2>Water</h2>
-<div>
-  @for (item of waterMeasureOptions(); track item.measure) {
-  <label
-    ><input name="water-measure" type="radio" value="{{ item.measure }}" />
-    {{ item.name }}
-  </label>
-  }
-</div>
-<h2>Coffee</h2>
-<div>
-  @for (item of coffeeMeasureOptions(); track item.measure) {
-  <label
-    ><input name="coffee-measure" type="radio" value="{{ item.measure }}" />
-    {{ item.name }}
-  </label>
-  }
-</div>
+<form [formGroup]="form" class="calculator-form">
+  <div class="row -justify-between">
+    <div class="calculator-step">
+      <h1>Method</h1>
+      <mat-button-toggle-group formControlName="method">
+        @for (item of methodOptions(); track $index) {
+        <mat-button-toggle value="{{ item }}">{{ item }}</mat-button-toggle>
+        }
+      </mat-button-toggle-group>
+    </div>
+    <div class="calculator-result">
+      <div class="portions">
+        <div>
+          <span>Water</span>
+          <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
+        </div>
+        <h3>+</h3>
+        <div>
+          <span>Coffee</span>
+          <h3>{{ result().coffee }} {{ form.value.coffeeUnit }}</h3>
+        </div>
+      </div>
+      <div class="result">
+        <h2>=</h2>
+        <div>
+          <span>Result</span>
+          <h1>{{ result().cups }}</h1>
+        </div>
+      </div>
+    </div>
+    <div>
+      <app-method-image [method]="form.value.method ?? 'AeroPress'" />
+    </div>
+  </div>
+  <mat-divider></mat-divider>
+  <div class="row">
+    <div class="calculator-step">
+      <h1>Units</h1>
+      <div>
+        <h3>Water</h3>
+        <div class="form-control">
+          <mat-button-toggle-group formControlName="waterUnit">
+            @for (item of waterMeasureOptions(); track item.unit) {
+            <mat-button-toggle value="{{ item.unit }}">{{
+              item.name
+            }}</mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+        </div>
+      </div>
+      <div>
+        <h3>Coffee</h3>
+        <div class="form-control">
+          <mat-button-toggle-group formControlName="coffeeUnit">
+            @for (item of coffeeMeasureOptions(); track item.unit) {
+            <mat-button-toggle value="{{ item.unit }}">{{
+              item.name
+            }}</mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+        </div>
+      </div>
+    </div>
+    <mat-divider vertical></mat-divider>
+    <div class="calculator-step">
+      <h1>Amount</h1>
+      <div>
+        <h3>Cups</h3>
+        <div class="form-control">
+          <div>
+            <mat-button-toggle-group
+              value="1"
+              (change)="handleSelectedCoffeeCups($event.value)"
+            >
+              <mat-button-toggle value="1">1</mat-button-toggle>
+              <mat-button-toggle value="2">2</mat-button-toggle>
+              <mat-button-toggle value="5">5</mat-button-toggle>
+              <mat-button-toggle value="10">10</mat-button-toggle>
+              <mat-button-toggle value="">More</mat-button-toggle>
+            </mat-button-toggle-group>
+            <small style="display: block; margin-top: 4px"
+              >1 cup = 180ml | 6oz | 180g</small
+            >
+          </div>
+          @if (showCupsAmountInput()) {
+          <mat-form-field appearance="fill">
+            <mat-label>Amount</mat-label>
+            <button
+              (click)="handleAddCups(-0.5)"
+              type="button"
+              matPrefix
+              mat-icon-button
+              [disabled]="(form.get('coffeeCups')?.value ?? 0) <= 1"
+            >
+              <mat-icon>remove</mat-icon>
+            </button>
+            <input
+              matInput
+              formControlName="coffeeCups"
+              min="1"
+              type="number"
+            />
+            <button
+              (click)="handleAddCups(0.5)"
+              type="button"
+              matSuffix
+              mat-icon-button
+            >
+              <mat-icon>add</mat-icon>
+            </button>
+          </mat-form-field>
+          }
+        </div>
+      </div>
+      <div>
+        <h3>Ratio</h3>
+        <div class="form-control">
+          <mat-button-toggle-group
+            [value]="ratioIntensity()"
+            (change)="handleSelectedIntesity($event.value)"
+          >
+            @for (item of ratioOptions(); track $index) {
+            <mat-button-toggle value="{{ item }}">{{ item }}</mat-button-toggle>
+            }
+          </mat-button-toggle-group>
+          <div formGroupName="ratio" class="amount-ratio">
+            <mat-form-field appearance="fill">
+              <mat-label>Coffee</mat-label>
+              <input
+                matInput
+                formControlName="coffee"
+                min="1.0"
+                type="number"
+                (change)="ratioIntensity.set('custom')"
+              />
+            </mat-form-field>
+            <span>:</span>
+            <mat-form-field appearance="fill">
+              <mat-label>Water</mat-label>
+              <input
+                matInput
+                formControlName="water"
+                min="1.0"
+                type="number"
+                (change)="ratioIntensity.set('custom')"
+              />
+            </mat-form-field>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
