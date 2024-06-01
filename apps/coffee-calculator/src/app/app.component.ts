@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { CoffeeCalculatorComponent } from './coffee-calculator/coffee-calculator.component';
 
@@ -10,5 +11,9 @@ import { CoffeeCalculatorComponent } from './coffee-calculator/coffee-calculator
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
-  title = 'coffee-calculator';
+  title = 'Coffee Calculator';
+
+  constructor(title: Title) {
+    title.setTitle(this.title);
+  }
 }
