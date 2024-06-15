@@ -26,6 +26,11 @@
         "scripts": [],
         "stylePreprocessorOptions": {
           "includePaths": ["apps/coffee-calculator/src/styles"]
+        },
+        "server": "apps/coffee-calculator/src/main.server.ts",
+        "prerender": true,
+        "ssr": {
+          "entry": "apps/coffee-calculator/server.ts"
         }
       },
       "configurations": {
