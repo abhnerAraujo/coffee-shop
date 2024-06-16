@@ -10,11 +10,11 @@
 }
 
 .calculator-form {
-  display: flex;
-  flex-direction: column;
+  // display: flex;
+  // flex-direction: column;
   gap: 2rem;
   > .method {
-    @extends .calculator-step;
+    @extend .calculator-step;
   }
   > .row {
     display: flex;
@@ -28,16 +28,9 @@
 }
 
 .form-control {
-  height: 56px;
-  display: flex;
-  flex-direction: row;
-  gap: 1rem;
-  align-items: center;
-
   mat-form-field {
     max-width: 150px;
   }
-
 }
 
 .amount-ratio {
@@ -49,10 +42,6 @@
 
 .calculator-result {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
 
   > .portions, > .result {
     display: flex;

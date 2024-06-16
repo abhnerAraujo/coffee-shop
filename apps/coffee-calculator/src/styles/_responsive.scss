@@ -1,0 +1,254 @@
+
+@import "./mixins";
+
+@mixin hidden {
+  display: none;
+}
+.hidden {
+  @include hidden();
+}
+.xs\:hidden {
+  @include mq('xs') {
+    @include hidden();
+  }
+}
+.sm\:hidden {
+  @include mqGt('sm') {
+    @include hidden();
+  }
+}
+.md\:hidden {
+  @include mqGt('md') {
+    @include hidden();
+  }
+}
+.lg\:hidden {
+  @include mqGt('lg') {
+    @include hidden();
+  }
+}
+.xl\:hidden {
+  @include mqGt('xl') {
+    @include hidden();
+  }
+}
+
+@mixin flex {
+  &-col {
+    display: flex;
+    flex-direction: column;
+    &-reverse {
+      display: flex;
+      flex-direction: column-reverse;
+    }
+  }
+  &-row {
+    display: flex;
+    flex-direction: row;
+    &-reverse {
+      display: flex;
+      flex-direction: row-reverse;
+    }
+    &-wrap {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+}
+
+.flex {
+  @include flex();
+}
+
+.xs\:flex {
+  @include mqGt('xs') {
+    @include flex();
+  }
+}
+.sm\:flex {
+  @include mqGt('sm') {
+    @include flex();
+  }
+}
+.md\:flex {
+  @include mqGt('md') {
+    @include flex();
+  }
+}
+.lg\:flex {
+  @include mqGt('lg') {
+    @include flex();
+  }
+}
+.xl\:flex {
+  @include mqGt('xl') {
+    @include flex();
+  }
+}
+
+@mixin justifyContent($value: stretch) {
+  justify-content: $value;
+}
+
+@mixin alignItems($value: stretch) {
+  align-items: $value;
+}
+
+@mixin justify {
+  &-stretch {
+    @include justifyContent(stretch);
+  }
+  &-start {
+    @include justifyContent(flex-start);
+  }
+  &-end {
+    @include justifyContent(flex-end);
+  }
+  &-center {
+    @include justifyContent(center);
+  }
+  &-between {
+    @include justifyContent(space-between);
+  }
+  &-around {
+    @include justifyContent(space-around);
+  }
+  &-baseline {
+    @include justifyContent(baseline);
+  }
+}
+
+.justify {
+  @include justify();
+}
+
+.xs\:justify {
+  @include mq('xs') {
+    @include justify();
+  }
+}
+.sm\:justify {
+  @include mqGt('sm') {
+    @include justify();
+  }
+}
+.md\:justify {
+  @include mqGt('md') {
+    @include justify();
+  }
+}
+.lg\:justify {
+  @include mqGt('lg') {
+    @include justify();
+  }
+}
+.xl\:justify {
+  @include mqGt('xl') {
+    @include justify();
+  }
+}
+
+@mixin align {
+  &-stretch {
+    @include alignItems(stretch);
+  }
+  &-start {
+    @include alignItems(flex-start);
+  }
+  &-end {
+    @include alignItems(flex-end);
+  }
+  &-center {
+    @include alignItems(center);
+  }
+  &-between {
+    @include alignItems(space-between);
+  }
+  &-around {
+    @include alignItems(space-around);
+  }
+  &-baseline {
+    @include alignItems(baseline);
+  }
+}
+
+.align {
+  @include align();
+}
+.xs\:align {
+  @include mq('xs') {
+    @include align();
+  }
+}
+.sm\:align {
+  @include mqGt('sm') {
+    @include align();
+  }
+}
+.md\:align {
+  @include mqGt('md') {
+    @include align();
+  }
+}
+.lg\:align {
+  @include mqGt('lg') {
+    @include align();
+  }
+}
+.xl\:align {
+  @include mqGt('xl') {
+    @include align();
+  }
+}
+
+@mixin decimalGap($value: 0rem) {
+  &-1\/4 {
+    gap: calc($value + 0.25rem);
+  }
+  &-1\/2 {
+    gap: calc($value + 0.5rem);
+  }
+  &-3\/4 {
+    gap: calc($value + 0.75rem);
+  }
+}
+
+@mixin gap {
+  @include decimalGap();
+  @for $i from 1 through 10 {
+    &-#{$i} {
+      gap: #{$i}rem;
+      @include decimalGap(#{$i}rem);
+    }
+  }
+}
+
+.gap {
+  @include gap();
+}
+.xs\:gap {
+  @include mqGt('xs') {
+    @include gap();
+  }
+}
+.sm\:gap {
+  @include mqGt('sm') {
+    @include gap();
+  }
+}
+.md\:gap {
+  @include mqGt('md') {
+    @include gap();
+  }
+}
+.lg\:gap {
+  @include mqGt('lg') {
+    @include gap();
+  }
+}
+.xl\:gap {
+  @include mqGt('xl') {
+    @include gap();
+  }
+}

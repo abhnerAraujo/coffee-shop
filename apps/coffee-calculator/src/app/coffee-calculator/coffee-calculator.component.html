@@ -1,5 +1,7 @@
-<form [formGroup]="form" class="calculator-form">
-  <div class="row -justify-between">
+<form [formGroup]="form" class="flex-col calculator-form">
+  <div
+    class="flex-col lg:flex-row md:justify-start justify-center align-center"
+  >
     <div class="calculator-step">
       <h1>Method</h1>
       <mat-button-toggle-group formControlName="method">
@@ -8,37 +10,20 @@
         }
       </mat-button-toggle-group>
     </div>
-    <div class="calculator-result">
-      <div class="portions">
-        <div>
-          <span>Water</span>
-          <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
-        </div>
-        <h3>+</h3>
-        <div>
-          <span>Coffee</span>
-          <h3>{{ result().coffee }} {{ form.value.coffeeUnit }}</h3>
-        </div>
-      </div>
-      <div class="result">
-        <h2>=</h2>
-        <div>
-          <span>Result</span>
-          <h1>{{ result().cups }}</h1>
-        </div>
-      </div>
+    <div
+      class="hidden calculator-result md:flex-col align-center justify-center"
+    >
+      <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
     </div>
-    <div>
-      <app-method-image [method]="form.value.method ?? 'AeroPress'" />
-    </div>
+    <app-method-image [method]="form.value.method ?? 'AeroPress'" />
   </div>
   <mat-divider></mat-divider>
-  <div class="row">
+  <div class="flex-col md:flex-row gap-1-1/2">
     <div class="calculator-step">
       <h1>Units</h1>
       <div>
         <h3>Water</h3>
-        <div class="form-control">
+        <div class="form-control flex-col align-center">
           <mat-button-toggle-group formControlName="waterUnit">
             @for (item of waterMeasureOptions(); track item.unit) {
             <mat-button-toggle value="{{ item.unit }}">{{
@@ -50,7 +35,7 @@
       </div>
       <div>
         <h3>Coffee</h3>
-        <div class="form-control">
+        <div class="form-control flex-col align-center">
           <mat-button-toggle-group formControlName="coffeeUnit">
             @for (item of coffeeMeasureOptions(); track item.unit) {
             <mat-button-toggle value="{{ item.unit }}">{{
@@ -66,7 +51,7 @@
       <h1>Amount</h1>
       <div>
         <h3>Cups</h3>
-        <div class="form-control">
+        <div class="form-control flex-col md:flex-row gap-1 align-center">
           <div>
             <mat-button-toggle-group
               value="1"
@@ -114,7 +99,7 @@
       </div>
       <div>
         <h3>Ratio</h3>
-        <div class="form-control">
+        <div class="form-control flex-col md:flex-row gap-1 align-center">
           <mat-button-toggle-group
             [value]="ratioIntensity()"
             (change)="handleSelectedIntesity($event.value)"
@@ -150,4 +135,29 @@
       </div>
     </div>
   </div>
+  <mat-divider></mat-divider>
+  <div class="show md:hidden">
+    <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
+  </div>
 </form>
+
+<ng-template #calculatorResult>
+  <div class="portions flex-row gap-2">
+    <div>
+      <span>Water</span>
+      <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
+    </div>
+    <h3>+</h3>
+    <div>
+      <span>Coffee</span>
+      <h3>{{ result().coffee }} {{ form.value.coffeeUnit }}</h3>
+    </div>
+  </div>
+  <div class="result">
+    <h2>=</h2>
+    <div>
+      <span>Result</span>
+      <h1>{{ result().cups }}</h1>
+    </div>
+  </div>
+</ng-template>
