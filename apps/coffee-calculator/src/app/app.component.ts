@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, inject } from '@angular/core';
+import { Analytics, logEvent } from '@angular/fire/analytics';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { CoffeeCalculatorComponent } from './coffee-calculator/coffee-calculator.component';
@@ -11,9 +13,13 @@ import { CoffeeCalculatorComponent } from './coffee-calculator/coffee-calculator
   styleUrl: './app.component.scss',
 })
 export class AppComponent {
+  private analytics = inject(Analytics);
   title = 'Coffee Calculator';
 
-  constructor(title: Title) {
+  constructor(title: Title, @Inject(PLATFORM_ID) platformId: object) {
+    if (isPlatformBrowser(platformId)) {
+      logEvent(this.analytics, 'app loaded');
+    }
     title.setTitle(this.title);
   }
 }

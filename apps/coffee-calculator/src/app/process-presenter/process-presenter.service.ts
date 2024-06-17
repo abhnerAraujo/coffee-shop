@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { Analytics, logEvent } from '@angular/fire/analytics';
 import { CoffeeCalculator } from '@domain/coffee-calculator';
 import CoffeeCalculatorView, {
   CoffeCalculatorValue,
@@ -12,8 +13,11 @@ import { Observable } from 'rxjs';
 @Injectable()
 export class ProcessPresenterService {
   private _component?: CoffeeCalculatorView;
+  private analytics = inject(Analytics);
+  private isBrowser = false;
 
-  init(component: CoffeeCalculatorView) {
+  init(component: CoffeeCalculatorView, isBrowser: boolean) {
+    this.isBrowser = isBrowser;
     this._component = component;
     this._component.setUnitOptions(unitOptions);
     this._component.setRatioOptions([...RatioIntensities]);
@@ -42,6 +46,8 @@ export class ProcessPresenterService {
         coffeeCups > 1 ? 'cups' : 'cup'
       } of ${ratioIntensityByMethod(ratio, method)} coffee`;
 
+      if (this.isBrowser)
+        this.logCalculation({ method, water, coffee, coffeeCups });
       this._component?.setResult({
         water: water.toFixed(2),
         coffee: coffee.toFixed(2),
@@ -54,5 +60,20 @@ export class ProcessPresenterService {
     this._component?.setFormValue({
       ratio: ratioOptions[method][intensity],
     });
+  }
+
+  private logCalculation({
+    method,
+    water,
+    coffee,
+    coffeeCups,
+  }: {
+    method: MethodType;
+    water: number;
+    coffee: number;
+    coffeeCups: number;
+  }) {
+    const event = `${method} - ${coffeeCups} cups`;
+    logEvent(this.analytics, event, { water, coffee, method, coffeeCups });
   }
 }

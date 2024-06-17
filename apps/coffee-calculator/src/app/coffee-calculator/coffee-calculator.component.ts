@@ -1,5 +1,5 @@
-import { CommonModule } from '@angular/common';
-import { Component, signal } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -59,7 +59,8 @@ export class CoffeeCalculatorComponent implements CoffeeCalculatorView {
   protected readonly form: FormGroup<CoffeCalculatorForm>;
   constructor(
     protected presenter: ProcessPresenterService,
-    private readonly formBuilder: FormBuilder
+    private readonly formBuilder: FormBuilder,
+    @Inject(PLATFORM_ID) platformId: object
   ) {
     this.form = this.formBuilder.group({
       coffeeAmount: 0,
@@ -73,7 +74,7 @@ export class CoffeeCalculatorComponent implements CoffeeCalculatorView {
         water: 0,
       }),
     });
-    this.presenter.init(this);
+    this.presenter.init(this, isPlatformBrowser(platformId));
   }
   setUnitOptions(mesureOptions: UnitOptions): void {
     this.waterMeasureOptions.set([...mesureOptions.water]);
