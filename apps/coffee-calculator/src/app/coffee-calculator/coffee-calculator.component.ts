@@ -1,5 +1,11 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
-import { Component, Inject, PLATFORM_ID, signal } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  Inject,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -44,7 +50,9 @@ const MAT_MODULES = [
   templateUrl: './coffee-calculator.component.html',
   styleUrl: './coffee-calculator.component.scss',
 })
-export class CoffeeCalculatorComponent implements CoffeeCalculatorView {
+export class CoffeeCalculatorComponent
+  implements CoffeeCalculatorView, AfterViewInit
+{
   protected waterMeasureOptions = signal<UnitOptions['water']>([]);
   protected coffeeMeasureOptions = signal<UnitOptions['coffee']>([]);
   protected ratioOptions = signal<RatioIntensity[]>([]);
@@ -75,6 +83,12 @@ export class CoffeeCalculatorComponent implements CoffeeCalculatorView {
       }),
     });
     this.presenter.init(this, isPlatformBrowser(platformId));
+  }
+
+  ngAfterViewInit(): void {
+    this.form.controls['method'].valueChanges.subscribe((value) => {
+      if (value) this.presenter.setIntensityRatio(value, 'medium');
+    });
   }
   setUnitOptions(mesureOptions: UnitOptions): void {
     this.waterMeasureOptions.set([...mesureOptions.water]);

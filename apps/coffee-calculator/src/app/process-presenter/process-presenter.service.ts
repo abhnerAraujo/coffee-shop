@@ -32,6 +32,7 @@ export class ProcessPresenterService {
 
   private handleFormChanges(observable: Observable<CoffeCalculatorValue>) {
     const calculator = new CoffeeCalculator();
+
     observable.subscribe((value) => {
       const { ratio, method, coffeeCups } = value;
 
