@@ -1,0 +1,16 @@
+{
+  "projects": {
+    "stage": "coffee-calculator-245be"
+  },
+  "targets": {
+    "coffee-calculator-245be": {
+      "hosting": {
+        "coffee-calculator": [
+          "coffee-calculator-245be"
+        ]
+      }
+    }
+  },
+  "etags": {},
+  "dataconnectEmulatorConfig": {}
+}

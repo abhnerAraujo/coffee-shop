@@ -4,7 +4,7 @@
   "license": "MIT",
   "scripts": {
     "start:coffee:dev": "nx serve coffee-calculator",
-    "build:coffee:prod": "nx build coffee-calculator --prod"
+    "deploy:calculator:prod": "nx build coffee-calculator --prod && cd ./apps/coffee-calculator && firebase use stage && firebase deploy --only hosting:coffee-calculator"
   },
   "private": true,
   "dependencies": {
@@ -13,6 +13,7 @@
     "@angular/common": "~18.0.0",
     "@angular/compiler": "~18.0.0",
     "@angular/core": "~18.0.0",
+    "@angular/fire": "^18.0.1",
     "@angular/forms": "~18.0.0",
     "@angular/material": "^18.0.1",
     "@angular/platform-browser": "~18.0.0",

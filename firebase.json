@@ -1,0 +1,18 @@
+{
+  "emulators": {
+    "singleProjectMode": true,
+    "hosting": {
+      "port": 5000
+    },
+    "ui": {
+      "enabled": true
+    }
+  },
+  "hosting": [
+    {
+      "target": "coffee-calculator",
+      "public": "dist/apps/coffee-calculator/browser",
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+    }
+  ]
+}
