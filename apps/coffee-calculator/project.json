@@ -7,7 +7,7 @@
   "tags": [],
   "targets": {
     "build": {
-      "executor": "@angular-devkit/build-angular:application",
+      "executor": "@angular-builders/custom-esbuild:application",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/apps/coffee-calculator",
@@ -31,7 +31,8 @@
         "prerender": true,
         "ssr": {
           "entry": "apps/coffee-calculator/server.ts"
-        }
+        },
+        "plugins": ["./apps/coffee-calculator/esbuild/firebase-env.ts"]
       },
       "configurations": {
         "production": {
@@ -58,7 +59,7 @@
       "defaultConfiguration": "production"
     },
     "serve": {
-      "executor": "@angular-devkit/build-angular:dev-server",
+      "executor": "@angular-builders/custom-esbuild:dev-server",
       "configurations": {
         "production": {
           "buildTarget": "coffee-calculator:build:production"
