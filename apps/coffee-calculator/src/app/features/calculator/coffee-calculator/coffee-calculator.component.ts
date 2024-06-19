@@ -1,3 +1,4 @@
+import { BreakpointObserver, LayoutModule } from '@angular/cdk/layout';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
@@ -18,6 +19,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatRadioModule } from '@angular/material/radio';
 import { MethodType } from '@domain/method';
 import { RatioIntensity } from '@domain/ratio';
 import { Unit, UnitOptions } from '@domain/unit';
@@ -35,6 +37,7 @@ const MAT_MODULES = [
   MatFormFieldModule,
   MatIconModule,
   MatButtonModule,
+  MatRadioModule,
 ];
 
 @Component({
@@ -44,6 +47,7 @@ const MAT_MODULES = [
     ReactiveFormsModule,
     CommonModule,
     MethodImageComponent,
+    LayoutModule,
     ...MAT_MODULES,
   ],
   providers: [ProcessPresenterService],
@@ -64,10 +68,12 @@ export class CoffeeCalculatorComponent
     coffee: '',
     cups: '',
   });
+  protected isMediumLayout = signal<boolean>(false);
   protected readonly form: FormGroup<CoffeCalculatorForm>;
   constructor(
     protected presenter: ProcessPresenterService,
     private readonly formBuilder: FormBuilder,
+    private layoutChanges: BreakpointObserver,
     @Inject(PLATFORM_ID) platformId: object
   ) {
     this.form = this.formBuilder.group({
@@ -83,6 +89,13 @@ export class CoffeeCalculatorComponent
       }),
     });
     this.presenter.init(this, isPlatformBrowser(platformId));
+    if (isPlatformBrowser(platformId)) {
+      const mediumBreakpoint = '(min-width: 768px)';
+
+      this.layoutChanges.observe([mediumBreakpoint]).subscribe(result => {
+        this.isMediumLayout.set(result.matches);
+      });
+    }
   }
 
   ngAfterViewInit(): void {

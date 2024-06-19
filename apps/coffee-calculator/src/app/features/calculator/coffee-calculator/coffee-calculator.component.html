@@ -1,27 +1,46 @@
-<form [formGroup]="form" class="flex flex-col calculator-form">
+<form [formGroup]="form" class="flex flex-col calculator-form mx-4 my-5">
   <div class="flex flex-col lg:flex-row justify-center items-center">
     <div class="calculator-step">
       <h1>Method</h1>
+      @if (isMediumLayout()) {
       <mat-button-toggle-group formControlName="method">
         @for (item of methodOptions(); track $index) {
         <mat-button-toggle value="{{ item }}">{{ item }}</mat-button-toggle>
         }
       </mat-button-toggle-group>
+      } @else {
+      <mat-radio-group
+        class="flex flex-row flex-wrap gap-4 items-center justify-center"
+        formControlName="method"
+      >
+        @for (item of methodOptions(); track $index) {
+        <label class="flex flex-col gap-1 items-center justify-center">
+          <app-method-image [method]="methodOptions()[$index]" />
+          <mat-radio-button value="{{ item }}">{{ item }}</mat-radio-button>
+        </label>
+        }
+      </mat-radio-group>
+      }
     </div>
     <div
       class="calculator-result hidden md:flex md:flex-col items-center justify-center"
     >
       <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
     </div>
+    @if(isMediumLayout()) {
     <app-method-image [method]="form.value.method ?? 'AeroPress'" />
+    }
   </div>
+  @if (isMediumLayout()) {
   <mat-divider></mat-divider>
+  }
   <div class="flex flex-col md:flex-row gap-5">
     <div class="flex-auto calculator-step">
       <h1>Units</h1>
       <div>
         <h3>Water</h3>
-        <div class="flex flex-col items-center md:items-start">
+        <div class="flex flex-col items-start">
+          @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="waterUnit">
             @for (item of waterMeasureOptions(); track item.unit) {
             <mat-button-toggle value="{{ item.unit }}">{{
@@ -29,11 +48,21 @@
             }}</mat-button-toggle>
             }
           </mat-button-toggle-group>
+          } @else {
+          <mat-radio-group class="flex flex-col" formControlName="waterUnit">
+            @for (item of waterMeasureOptions(); track item.unit) {
+            <mat-radio-button value="{{ item.unit }}">{{
+              item.name
+            }}</mat-radio-button>
+            }
+          </mat-radio-group>
+          }
         </div>
       </div>
       <div>
         <h3>Coffee</h3>
-        <div class="flex flex-col items-center md:items-start">
+        <div class="flex flex-col items-start">
+          @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="coffeeUnit">
             @for (item of coffeeMeasureOptions(); track item.unit) {
             <mat-button-toggle value="{{ item.unit }}">{{
@@ -41,16 +70,28 @@
             }}</mat-button-toggle>
             }
           </mat-button-toggle-group>
+          } @else {
+          <mat-radio-group class="flex flex-col" formControlName="coffeeUnit">
+            @for (item of coffeeMeasureOptions(); track item.unit) {
+            <mat-radio-button value="{{ item.unit }}">{{
+              item.name
+            }}</mat-radio-button>
+            }
+          </mat-radio-group>
+          }
         </div>
       </div>
     </div>
+    @if (isMediumLayout()) {
     <mat-divider vertical></mat-divider>
+    }
     <div class="flex-auto calculator-step">
       <h1>Amount</h1>
       <div>
         <h3>Cups</h3>
-        <div class="form-control flex flex-col md:flex-row gap-1 align-center">
+        <div class="form-control flex flex-col md:flex-row gap-1 items-center">
           <div class="flex flex-col md:flex-row gap-4 items-center">
+            @if (isMediumLayout()) {
             <mat-button-toggle-group
               value="1"
               (change)="handleSelectedCoffeeCups($event.value)"
@@ -61,9 +102,10 @@
               <mat-button-toggle value="10">10</mat-button-toggle>
               <mat-button-toggle value="">More</mat-button-toggle>
             </mat-button-toggle-group>
+            }
             <small>1 cup = 180ml | 6oz | 180g</small>
           </div>
-          @if (showCupsAmountInput()) {
+          @if (showCupsAmountInput() || !isMediumLayout()) {
           <mat-form-field appearance="fill">
             <mat-label>Amount</mat-label>
             <button
@@ -76,6 +118,7 @@
               <mat-icon>remove</mat-icon>
             </button>
             <input
+              class="w-fill md:w-auto"
               matInput
               formControlName="coffeeCups"
               min="1"
@@ -96,8 +139,9 @@
       <div>
         <h3>Ratio</h3>
         <div
-          class="form-control flex flex-col md:flex-row gap-4 justify-start items-center md:items-start"
+          class="form-control flex flex-col md:flex-row gap-4 justify-start items-start"
         >
+          @if (isMediumLayout()) {
           <mat-button-toggle-group
             [value]="ratioIntensity()"
             (change)="handleSelectedIntesity($event.value)"
@@ -106,6 +150,17 @@
             <mat-button-toggle value="{{ item }}">{{ item }}</mat-button-toggle>
             }
           </mat-button-toggle-group>
+          } @else {
+          <mat-radio-group
+            class="flex flex-col"
+            (change)="handleSelectedIntesity($event.value)"
+          >
+            @for (item of ratioOptions(); track $index) {
+            <mat-radio-button value="{{ item }}">{{ item }}</mat-radio-button>
+            }
+          </mat-radio-group>
+          }
+
           <div formGroupName="ratio" class="amount-ratio">
             <mat-form-field appearance="fill">
               <mat-label>Coffee</mat-label>
@@ -133,7 +188,9 @@
       </div>
     </div>
   </div>
+  @if (isMediumLayout()) {
   <mat-divider></mat-divider>
+  }
   <div class="block md:hidden">
     <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
   </div>

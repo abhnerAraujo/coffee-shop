@@ -12,7 +12,13 @@
     {
       "target": "coffee-calculator",
       "public": "dist/apps/coffee-calculator/browser",
-      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"]
+      "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
+      "rewrites": [
+        {
+          "source": "**",
+          "destination": "/index.csr.html"
+        }
+      ]
     }
   ]
 }

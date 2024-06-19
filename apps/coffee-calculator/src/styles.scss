@@ -37,10 +37,33 @@ $coffee-calculator-theme: mat.define-theme(
   @include mat.typography-hierarchy($coffee-calculator-theme);
 }
 
-html,
-body {
-  height: 100%;
+html {
+  overflow-y: scroll;
+  width: 100%;
 }
+
 body {
+  width: 100%;
   margin: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px !important;
+  height: 6px !important;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: rgba(255,255,255,.08);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #0003;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
