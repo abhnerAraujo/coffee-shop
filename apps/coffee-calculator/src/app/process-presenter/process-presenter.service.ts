@@ -1,20 +1,27 @@
-import { Injectable, inject } from '@angular/core';
+import { Inject, Injectable, inject } from '@angular/core';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 import { CoffeeCalculator } from '@domain/coffee-calculator';
 import CoffeeCalculatorView, {
   CoffeCalculatorValue,
 } from '@domain/coffee-calculator-view';
 import { MethodType, MethodTypes } from '@domain/method';
+import { MethodProcess } from '@domain/method-process';
 import { RatioIntensities, RatioIntensity, ratioOptions } from '@domain/ratio';
 import { ratioIntensityByMethod } from '@domain/ratio-intensity';
-import { unitOptions } from '@domain/unit';
+import { CUP_SIZE, unitOptions } from '@domain/unit';
 import { Observable } from 'rxjs';
+import { HistoryRepository } from '../features/history/domain';
+import { HISTORY_REPOSITORY } from '../features/history/infra';
 
 @Injectable()
 export class ProcessPresenterService {
   private _component?: CoffeeCalculatorView;
   private analytics = inject(Analytics);
   private isBrowser = false;
+
+  constructor(
+    @Inject(HISTORY_REPOSITORY) private historyRepo: HistoryRepository
+  ) {}
 
   init(component: CoffeeCalculatorView, isBrowser: boolean) {
     this.isBrowser = isBrowser;
@@ -33,7 +40,7 @@ export class ProcessPresenterService {
   private handleFormChanges(observable: Observable<CoffeCalculatorValue>) {
     const calculator = new CoffeeCalculator();
 
-    observable.subscribe((value) => {
+    observable.subscribe(value => {
       const { ratio, method, coffeeCups } = value;
 
       calculator.setRatio(ratio);
@@ -57,6 +64,31 @@ export class ProcessPresenterService {
     });
   }
 
+  saveInHistory(
+    process: CoffeCalculatorValue,
+    result: { water: string; coffee: string }
+  ) {
+    this.historyRepo.saveProcess(
+      MethodProcess.builder()
+        .setCups({
+          amount: process.coffeeCups,
+          volume: CUP_SIZE,
+          unit: process.waterUnit,
+        })
+        .setMethod(process.method)
+        .setRatio(process.ratio)
+        .setUnits({
+          coffee: process.coffeeUnit,
+          water: process.waterUnit,
+        })
+        .setQuantities({
+          water: Number(result.water),
+          coffee: Number(result.coffee),
+        })
+        .build()
+    );
+  }
+
   setIntensityRatio(method: MethodType, intensity: RatioIntensity) {
     this._component?.setFormValue({
       ratio: ratioOptions[method][intensity],
@@ -74,7 +106,8 @@ export class ProcessPresenterService {
     coffee: number;
     coffeeCups: number;
   }) {
-    const event = `${method} - ${coffeeCups} cups`;
+    const event = `new_calculation_${method}`;
+    console.log(event);
     logEvent(this.analytics, event, { water, coffee, method, coffeeCups });
   }
 }

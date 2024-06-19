@@ -4,10 +4,11 @@ import { Analytics, logEvent } from '@angular/fire/analytics';
 import { Title } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { CoffeeCalculatorComponent } from './coffee-calculator/coffee-calculator.component';
+import { HistoryModule } from './features/history';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, CoffeeCalculatorComponent],
+  imports: [RouterModule, CoffeeCalculatorComponent, HistoryModule],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',

@@ -1,7 +1,5 @@
-<form [formGroup]="form" class="flex-col calculator-form">
-  <div
-    class="flex-col lg:flex-row md:justify-start justify-center align-center"
-  >
+<form [formGroup]="form" class="flex flex-col calculator-form">
+  <div class="flex flex-col lg:flex-row justify-center items-center">
     <div class="calculator-step">
       <h1>Method</h1>
       <mat-button-toggle-group formControlName="method">
@@ -11,19 +9,19 @@
       </mat-button-toggle-group>
     </div>
     <div
-      class="hidden calculator-result md:flex-col align-center justify-center"
+      class="calculator-result hidden md:flex md:flex-col items-center justify-center"
     >
       <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
     </div>
     <app-method-image [method]="form.value.method ?? 'AeroPress'" />
   </div>
   <mat-divider></mat-divider>
-  <div class="flex-col md:flex-row gap-1-1/2">
-    <div class="calculator-step">
+  <div class="flex flex-col md:flex-row gap-5">
+    <div class="flex-auto calculator-step">
       <h1>Units</h1>
       <div>
         <h3>Water</h3>
-        <div class="form-control flex-col align-center">
+        <div class="flex flex-col items-center md:items-start">
           <mat-button-toggle-group formControlName="waterUnit">
             @for (item of waterMeasureOptions(); track item.unit) {
             <mat-button-toggle value="{{ item.unit }}">{{
@@ -35,7 +33,7 @@
       </div>
       <div>
         <h3>Coffee</h3>
-        <div class="form-control flex-col align-center">
+        <div class="flex flex-col items-center md:items-start">
           <mat-button-toggle-group formControlName="coffeeUnit">
             @for (item of coffeeMeasureOptions(); track item.unit) {
             <mat-button-toggle value="{{ item.unit }}">{{
@@ -47,12 +45,12 @@
       </div>
     </div>
     <mat-divider vertical></mat-divider>
-    <div class="calculator-step">
+    <div class="flex-auto calculator-step">
       <h1>Amount</h1>
       <div>
         <h3>Cups</h3>
-        <div class="form-control flex-col md:flex-row gap-1 align-center">
-          <div>
+        <div class="form-control flex flex-col md:flex-row gap-1 align-center">
+          <div class="flex flex-col md:flex-row gap-4 items-center">
             <mat-button-toggle-group
               value="1"
               (change)="handleSelectedCoffeeCups($event.value)"
@@ -63,9 +61,7 @@
               <mat-button-toggle value="10">10</mat-button-toggle>
               <mat-button-toggle value="">More</mat-button-toggle>
             </mat-button-toggle-group>
-            <small style="display: block; margin-top: 4px"
-              >1 cup = 180ml | 6oz | 180g</small
-            >
+            <small>1 cup = 180ml | 6oz | 180g</small>
           </div>
           @if (showCupsAmountInput()) {
           <mat-form-field appearance="fill">
@@ -99,7 +95,9 @@
       </div>
       <div>
         <h3>Ratio</h3>
-        <div class="form-control flex-col md:flex-row gap-1 align-center">
+        <div
+          class="form-control flex flex-col md:flex-row gap-4 justify-start items-center md:items-start"
+        >
           <mat-button-toggle-group
             [value]="ratioIntensity()"
             (change)="handleSelectedIntesity($event.value)"
@@ -136,13 +134,22 @@
     </div>
   </div>
   <mat-divider></mat-divider>
-  <div class="show md:hidden">
+  <div class="block md:hidden">
     <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
   </div>
 </form>
+<div class="flex flex-col md:flex-row md:justify-end mt-6">
+  <button
+    class="w-fill md:w-auto"
+    (click)="handleSaveInHistory()"
+    mat-stroked-button
+  >
+    Save in history
+  </button>
+</div>
 
 <ng-template #calculatorResult>
-  <div class="portions flex-row gap-2">
+  <div class="portions flex flex-row gap-2">
     <div>
       <span>Water</span>
       <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>

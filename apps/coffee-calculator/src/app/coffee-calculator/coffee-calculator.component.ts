@@ -86,7 +86,7 @@ export class CoffeeCalculatorComponent
   }
 
   ngAfterViewInit(): void {
-    this.form.controls['method'].valueChanges.subscribe((value) => {
+    this.form.controls['method'].valueChanges.subscribe(value => {
       if (value) this.presenter.setIntensityRatio(value, 'medium');
     });
   }
@@ -105,6 +105,13 @@ export class CoffeeCalculatorComponent
   }
   setResult(value: { water: string; coffee: string; cups: string }): void {
     this.result.set(value);
+  }
+
+  protected handleSaveInHistory() {
+    this.presenter.saveInHistory(
+      this.createValue(this.form.value),
+      this.result()
+    );
   }
 
   protected handleSelectedCoffeeCups(value: string) {
@@ -132,20 +139,22 @@ export class CoffeeCalculatorComponent
   }
 
   get formChanges() {
-    return this.form.valueChanges.pipe(
-      map((values) => ({
-        coffeeAmount: values.coffeeAmount ?? 0,
-        coffeeUnit: values.coffeeUnit ?? 'g',
-        waterAmount: values.waterAmount ?? 0,
-        waterUnit: values.waterUnit ?? 'g',
-        method: values.method ?? 'French Press',
-        coffeeCups: values.coffeeCups ?? 0,
-        ratio: {
-          coffee: values.ratio?.coffee ?? 0,
-          water: values.ratio?.water ?? 0,
-        },
-      }))
-    );
+    return this.form.valueChanges.pipe(map(this.createValue));
+  }
+
+  private createValue(values: typeof this.form.value): CoffeCalculatorValue {
+    return {
+      coffeeAmount: values.coffeeAmount ?? 0,
+      coffeeUnit: values.coffeeUnit ?? 'g',
+      waterAmount: values.waterAmount ?? 0,
+      waterUnit: values.waterUnit ?? 'ml',
+      method: values.method ?? 'French Press',
+      coffeeCups: values.coffeeCups ?? 1,
+      ratio: {
+        coffee: values.ratio?.coffee ?? 0,
+        water: values.ratio?.water ?? 0,
+      },
+    };
   }
 }
 
