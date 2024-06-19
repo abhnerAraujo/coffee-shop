@@ -1,6 +1,6 @@
-import { RatioOption } from './ratio';
-import { BASE_UNIT, CUP_SIZE, Unit } from './unit';
-import { convertUnit } from './unit-converter';
+import { RatioOption } from '../../../domain/ratio';
+import { BASE_UNIT, CUP_SIZE, Unit } from '../../../domain/unit';
+import { convertUnit } from '../../../domain/unit-converter';
 
 export class CoffeeCalculator {
   private ratio: RatioOption = { coffee: 0, water: 0 };

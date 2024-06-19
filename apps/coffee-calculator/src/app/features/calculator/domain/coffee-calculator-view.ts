@@ -1,7 +1,7 @@
 import { Observable } from 'rxjs';
-import { MethodType } from './method';
-import { RatioIntensity } from './ratio';
-import { Unit, UnitOptions } from './unit';
+import { MethodType } from '../../../domain/method';
+import { RatioIntensity } from '../../../domain/ratio';
+import { Unit, UnitOptions } from '../../../domain/unit';
 
 export default interface CoffeeCalculatorView {
   setUnitOptions(options: UnitOptions): void;

@@ -1,17 +1,16 @@
 import { Inject, Injectable, inject } from '@angular/core';
 import { Analytics, logEvent } from '@angular/fire/analytics';
-import { CoffeeCalculator } from '@domain/coffee-calculator';
-import CoffeeCalculatorView, {
-  CoffeCalculatorValue,
-} from '@domain/coffee-calculator-view';
 import { MethodType, MethodTypes } from '@domain/method';
 import { MethodProcess } from '@domain/method-process';
 import { RatioIntensities, RatioIntensity, ratioOptions } from '@domain/ratio';
 import { ratioIntensityByMethod } from '@domain/ratio-intensity';
 import { CUP_SIZE, unitOptions } from '@domain/unit';
 import { Observable } from 'rxjs';
-import { HistoryRepository } from '../features/history/domain';
-import { HISTORY_REPOSITORY } from '../features/history/infra';
+import { HistoryRepository } from '../../history/domain';
+import { HISTORY_REPOSITORY } from '../../history/infra';
+import { CoffeCalculatorValue } from '../domain';
+import { CoffeeCalculator } from '../domain/coffee-calculator';
+import CoffeeCalculatorView from '../domain/coffee-calculator-view';
 
 @Injectable()
 export class ProcessPresenterService {
@@ -54,6 +53,10 @@ export class ProcessPresenterService {
         coffeeCups > 1 ? 'cups' : 'cup'
       } of ${ratioIntensityByMethod(ratio, method)} coffee`;
 
+      this.saveProcessDraft(value, {
+        water,
+        coffee,
+      });
       if (this.isBrowser)
         this.logCalculation({ method, water, coffee, coffeeCups });
       this._component?.setResult({
@@ -64,26 +67,26 @@ export class ProcessPresenterService {
     });
   }
 
-  saveInHistory(
+  private saveProcessDraft(
     process: CoffeCalculatorValue,
-    result: { water: string; coffee: string }
+    result: { water: number; coffee: number }
   ) {
-    this.historyRepo.saveProcess(
+    this.historyRepo.saveDraft(
       MethodProcess.builder()
+        .setMethod(process.method)
         .setCups({
           amount: process.coffeeCups,
           volume: CUP_SIZE,
           unit: process.waterUnit,
         })
-        .setMethod(process.method)
         .setRatio(process.ratio)
         .setUnits({
           coffee: process.coffeeUnit,
           water: process.waterUnit,
         })
         .setQuantities({
-          water: Number(result.water),
-          coffee: Number(result.coffee),
+          water: result.water,
+          coffee: result.coffee,
         })
         .build()
     );

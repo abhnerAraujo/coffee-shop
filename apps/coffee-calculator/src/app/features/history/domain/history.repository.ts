@@ -5,4 +5,6 @@ export interface HistoryRepository {
   getHistory(): Promise<MethodProcess[]>;
   deleteProcess(process: MethodProcess): Promise<void>;
   clearHistory(): Promise<void>;
+  saveDraft(draft: MethodProcess): Promise<void>;
+  addLastDraftIntoHistory(): Promise<void>;
 }

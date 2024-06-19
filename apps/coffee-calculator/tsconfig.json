@@ -11,7 +11,8 @@
     "noImplicitReturns": true,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@domain/*": ["src/app/domain/*"]
+      "@domain/*": ["src/app/domain/*"],
+      "@shared/*": ["src/app/shared/*"]
     },
     "types": ["node", "jest"]
   },

@@ -18,15 +18,15 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import CoffeeCalculatorView, {
-  CoffeCalculatorValue,
-} from '@domain/coffee-calculator-view';
 import { MethodType } from '@domain/method';
 import { RatioIntensity } from '@domain/ratio';
 import { Unit, UnitOptions } from '@domain/unit';
+import { MethodImageComponent } from '@shared/components';
 import { map } from 'rxjs';
-import { MethodImageComponent } from '../method-image/method-image.component';
-import { ProcessPresenterService } from '../process-presenter/process-presenter.service';
+import CoffeeCalculatorView, {
+  CoffeCalculatorValue,
+} from '../domain/coffee-calculator-view';
+import { ProcessPresenterService } from '../process-presenter';
 
 const MAT_MODULES = [
   MatButtonToggleModule,
@@ -105,13 +105,6 @@ export class CoffeeCalculatorComponent
   }
   setResult(value: { water: string; coffee: string; cups: string }): void {
     this.result.set(value);
-  }
-
-  protected handleSaveInHistory() {
-    this.presenter.saveInHistory(
-      this.createValue(this.form.value),
-      this.result()
-    );
   }
 
   protected handleSelectedCoffeeCups(value: string) {
