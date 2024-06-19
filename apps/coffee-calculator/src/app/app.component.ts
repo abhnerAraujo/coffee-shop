@@ -2,13 +2,11 @@ import { isPlatformBrowser } from '@angular/common';
 import { Component, Inject, PLATFORM_ID, inject } from '@angular/core';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 import { Title } from '@angular/platform-browser';
-import { RouterModule } from '@angular/router';
-import { CoffeeCalculatorComponent } from './coffee-calculator/coffee-calculator.component';
-import { HistoryModule } from './features/history';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   standalone: true,
-  imports: [RouterModule, CoffeeCalculatorComponent, HistoryModule],
+  imports: [RouterOutlet],
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
