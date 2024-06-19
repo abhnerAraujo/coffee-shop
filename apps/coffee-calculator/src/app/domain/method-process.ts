@@ -1,18 +1,19 @@
 import { Dispatchable } from './general/dispatchable';
+import { MethodType } from './method';
 import { RatioOption } from './ratio';
 import { Unit } from './unit';
 
 export abstract class MethodProcess extends Dispatchable {
   constructor(
     readonly id: string,
-    readonly method: string,
+    readonly method: MethodType,
     readonly createdAt: Date,
     readonly ratio: RatioOption,
     readonly units: { water: Unit; coffee: Unit },
     readonly cups: Cups,
     readonly quantities: Quantities
   ) {
-    super();
+    super('MethodProcess');
   }
 
   static builder() {
@@ -40,8 +41,7 @@ class FrenchPressProcess extends MethodProcess {
   ) {
     const createdAt = new Date();
     const id = 'french-press-' + createdAt.getTime();
-
-    return new FrenchPressProcess(
+    const instance = new FrenchPressProcess(
       id,
       createdAt,
       ratio,
@@ -49,6 +49,9 @@ class FrenchPressProcess extends MethodProcess {
       cups,
       quantities
     );
+
+    instance.markForDispatch();
+    return instance;
   }
   static restore(
     id: string,
@@ -89,8 +92,17 @@ class V60Process extends MethodProcess {
   ) {
     const createdAt = new Date();
     const id = 'v60-' + createdAt.getTime();
+    const instance = new V60Process(
+      id,
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities
+    );
 
-    return new V60Process(id, createdAt, ratio, units, cups, quantities);
+    instance.markForDispatch();
+    return instance;
   }
   static restore(
     id: string,
@@ -124,8 +136,17 @@ class AeroPressProcess extends MethodProcess {
   ) {
     const createdAt = new Date();
     const id = 'aero-press-' + createdAt.getTime();
+    const instance = new AeroPressProcess(
+      id,
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities
+    );
 
-    return new AeroPressProcess(id, createdAt, ratio, units, cups, quantities);
+    instance.markForDispatch();
+    return instance;
   }
   static restore(
     id: string,
@@ -159,8 +180,17 @@ class ChemexProcess extends MethodProcess {
   ) {
     const createdAt = new Date();
     const id = 'chemex-' + createdAt.getTime();
+    const instance = new ChemexProcess(
+      id,
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities
+    );
 
-    return new ChemexProcess(id, createdAt, ratio, units, cups, quantities);
+    instance.markForDispatch();
+    return instance;
   }
   static restore(
     id: string,
@@ -194,8 +224,17 @@ class MokaPotProcess extends MethodProcess {
   ) {
     const createdAt = new Date();
     const id = 'moka-pot-' + createdAt.getTime();
+    const instance = new MokaPotProcess(
+      id,
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities
+    );
 
-    return new MokaPotProcess(id, createdAt, ratio, units, cups, quantities);
+    instance.markForDispatch();
+    return instance;
   }
   static restore(
     id: string,
@@ -212,7 +251,7 @@ class MokaPotProcess extends MethodProcess {
 class MethodProcessFactory {
   static create(
     id: string,
-    method: string,
+    method: MethodType,
     createdAt: Date,
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
@@ -269,14 +308,26 @@ class MethodProcessFactory {
 
 class MethodProcessBuilder {
   private id = '';
-  private method = '';
+  private method = '' as MethodType;
   private createdAt = new Date();
   private ratio = { coffee: 0, water: 0 } as RatioOption;
   private units = { water: 'ml' as Unit, coffee: 'g' as Unit };
   private cups = { amount: 0, volume: 0, unit: 'ml' as Unit } as Cups;
   private quantities = { water: 0, coffee: 0 } as Quantities;
 
-  setMethod(method: string) {
+  draft() {
+    console.log('[MethodProcessBuilder]', 'draft created');
+    return new DraftMethodProcess(
+      this.method,
+      this.createdAt,
+      this.ratio,
+      this.units,
+      this.cups,
+      this.quantities
+    );
+  }
+
+  setMethod(method: MethodType) {
     this.method = method;
     return this;
   }
@@ -312,8 +363,35 @@ class MethodProcessBuilder {
   }
 
   build() {
+    console.log('[MethodProcessBuilder]', this.method + ' created');
     return MethodProcessFactory.create(
       this.id,
+      this.method,
+      this.createdAt,
+      this.ratio,
+      this.units,
+      this.cups,
+      this.quantities
+    );
+  }
+}
+
+export class DraftMethodProcess extends MethodProcess {
+  constructor(
+    method: MethodType,
+    createdAt: Date,
+    ratio: RatioOption,
+    units: { water: Unit; coffee: Unit },
+    cups: Cups,
+    quantities: Quantities
+  ) {
+    super('', method, createdAt, ratio, units, cups, quantities);
+  }
+
+  convert() {
+    console.log('[DraftMethodProcess]', 'draft converted');
+    return MethodProcessFactory.create(
+      String(),
       this.method,
       this.createdAt,
       this.ratio,

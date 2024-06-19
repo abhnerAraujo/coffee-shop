@@ -1,6 +1,7 @@
-import { Component, Inject, OnInit, signal } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { MethodProcess } from '@domain/method-process';
-import { mergeMap } from 'rxjs';
+import { delay, from, mergeMap } from 'rxjs';
 import { HistoryRepository } from '../domain';
 import { HISTORY_REPOSITORY } from '../infra';
 import { AfterHistoryChangedService } from '../services';
@@ -14,17 +15,25 @@ export class CalculatorHistoryComponent implements OnInit {
   history = signal<Array<MethodProcess>>([]);
   constructor(
     @Inject(HISTORY_REPOSITORY) private historyRepository: HistoryRepository,
+    @Inject(PLATFORM_ID) private platformId: object,
     private afterHistoryChangedService: AfterHistoryChangedService
   ) {}
 
   ngOnInit() {
-    this.afterHistoryChangedService.historyUpdated$
+    if (isPlatformBrowser(this.platformId)) {
+      this.afterHistoryChangedService.historyUpdated$
+        .pipe(
+          delay(1000),
+          mergeMap(() => this.historyRepository.getHistory())
+        )
+        .subscribe(this.history.set);
+      from(this.historyRepository.getHistory()).subscribe(this.history.set);
+    }
+  }
+
+  clearHistory() {
+    from(this.historyRepository.clearHistory())
       .pipe(mergeMap(() => this.historyRepository.getHistory()))
-      .subscribe(history => {
-        this.history.set(history);
-      });
-    this.historyRepository.getHistory().then(history => {
-      this.history.set(history);
-    });
+      .subscribe(this.history.set);
   }
 }

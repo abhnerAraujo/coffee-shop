@@ -1,9 +1,9 @@
-import { MethodProcess } from '@domain/method-process';
+import { DraftMethodProcess, MethodProcess } from '@domain/method-process';
 import { HistoryRepository } from '../domain';
 
 export class MemoryHistoryRepository implements HistoryRepository {
   private history: MethodProcess[] = [];
-  private drafts: MethodProcess[] = [];
+  private drafts: DraftMethodProcess[] = [];
 
   async saveProcess(process: MethodProcess) {
     this.history.push(process);
@@ -19,13 +19,16 @@ export class MemoryHistoryRepository implements HistoryRepository {
   async clearHistory() {
     this.history = [];
   }
-  async saveDraft(draft: MethodProcess) {
+  async saveDraft(draft: DraftMethodProcess) {
     this.drafts.push(draft);
   }
-  async addLastDraftIntoHistory() {
-    const draft = this.drafts.pop();
-    if (draft) {
-      this.history.push(draft);
-    }
+
+  async getLastDraft() {
+    return this.drafts.pop();
+  }
+
+  clearDrafts() {
+    this.drafts = [];
+    return Promise.resolve();
   }
 }

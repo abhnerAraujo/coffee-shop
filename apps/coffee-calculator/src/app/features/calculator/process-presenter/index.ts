@@ -88,7 +88,7 @@ export class ProcessPresenterService {
           water: result.water,
           coffee: result.coffee,
         })
-        .build()
+        .draft()
     );
   }
 

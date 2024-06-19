@@ -23,3 +23,8 @@
   </mat-list-item>
   }
 </mat-list>
+@if (history().length > 0) {
+<button mat-button (click)="clearHistory()">
+  <mat-icon>clear</mat-icon>Clear
+</button>
+}
