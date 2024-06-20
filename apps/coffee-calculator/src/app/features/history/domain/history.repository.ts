@@ -1,7 +1,7 @@
 import { DraftMethodProcess, MethodProcess } from '@domain/method-process';
 
 export interface HistoryRepository {
-  saveProcess(process: MethodProcess): Promise<void>;
+  saveProcess(process: MethodProcess): Promise<MethodProcess>;
   getHistory(): Promise<MethodProcess[]>;
   deleteProcess(process: MethodProcess): Promise<void>;
   clearHistory(): Promise<void>;

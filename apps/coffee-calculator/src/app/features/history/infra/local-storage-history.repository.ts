@@ -8,11 +8,12 @@ export class LocalStorageHistoryRepository implements HistoryRepository {
     this.historyKey = 'history';
     this.draftKey = 'draft';
   }
-  async saveProcess(process: MethodProcess): Promise<void> {
+  async saveProcess(process: MethodProcess): Promise<MethodProcess> {
     const history = await this.getHistory();
-    history.unshift(process);
 
+    history.unshift(process);
     localStorage.setItem(this.historyKey, JSON.stringify(history));
+    return process;
   }
   getHistory(): Promise<MethodProcess[]> {
     const history = localStorage.getItem(this.historyKey);

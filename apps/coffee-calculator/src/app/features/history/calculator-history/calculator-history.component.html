@@ -3,11 +3,15 @@
   @for (item of history(); track $index) {
   <mat-list-item>
     <mat-icon matListItemIcon>coffee</mat-icon>
-    <div matListItemTitle>
-      Water: {{ item.quantities.water }}{{ item.units.water }} + Coffee:
-      {{ item.quantities.coffee }}{{ item.units.coffee }} =
-      {{ item.cups.amount }} cup{{ item.cups.amount > 1 ? 's' : '' }} of
-      {{ item.method }}
+    <div matListItemTitle (click)="processSelected.emit(item)">
+      <a>
+        <b>
+          Water: {{ item.quantities.water }}{{ item.units.water }} + Coffee:
+          {{ item.quantities.coffee }}{{ item.units.coffee }} =
+          {{ item.cups.amount }} cup{{ item.cups.amount > 1 ? 's' : '' }} of
+          {{ item.method }}
+        </b>
+      </a>
     </div>
     <div matListItemLine>
       <span

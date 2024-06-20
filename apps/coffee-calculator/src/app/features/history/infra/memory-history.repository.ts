@@ -7,6 +7,8 @@ export class MemoryHistoryRepository implements HistoryRepository {
 
   async saveProcess(process: MethodProcess) {
     this.history.push(process);
+
+    return process;
   }
   async getHistory() {
     return this.history;

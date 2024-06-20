@@ -1,5 +1,13 @@
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Inject,
+  OnInit,
+  Output,
+  PLATFORM_ID,
+  signal,
+} from '@angular/core';
 import { MethodProcess } from '@domain/method-process';
 import { delay, from, mergeMap } from 'rxjs';
 import { HistoryRepository } from '../domain';
@@ -13,6 +21,7 @@ import { AfterHistoryChangedService } from '../services';
 })
 export class CalculatorHistoryComponent implements OnInit {
   history = signal<Array<MethodProcess>>([]);
+  @Output() protected processSelected = new EventEmitter<MethodProcess>();
   constructor(
     @Inject(HISTORY_REPOSITORY) private historyRepository: HistoryRepository,
     @Inject(PLATFORM_ID) private platformId: object,

@@ -1,10 +1,6 @@
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @import 'typography';
 // Plus imports for other components in your app.
 
@@ -36,6 +32,10 @@ $coffee-calculator-theme: mat.define-theme(
   @include mat.all-component-themes($coffee-calculator-theme);
   @include mat.typography-hierarchy($coffee-calculator-theme);
 }
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 html {
   overflow-y: scroll;
