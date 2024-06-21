@@ -1,0 +1,15 @@
+ol {
+  list-style-type: decimal;
+}
+
+ul {
+  list-style-type: bullet;
+}
+
+ol, ul {
+  padding: 1.75rem;
+  max-height: 240px;
+  li {
+    margin-bottom: .5rem;
+  }
+}

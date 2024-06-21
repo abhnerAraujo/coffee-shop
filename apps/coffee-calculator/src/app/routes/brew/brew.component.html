@@ -4,42 +4,9 @@
   </button>
 </div>
 <h1>It's brewing time!</h1>
-<div class="flex flex-row justify-between items-start gap-4">
-  <div class="quantities flex flex-col gap-4">
-    <div class="flex flex-col">
-      <p class="text-sm">Method</p>
-      <h4>{{ method() }}</h4>
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm">Water ({{ units().water }})</p>
-      <h4>{{ quantities().water }}</h4>
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm">Coffee ({{ units().coffee }})</p>
-      <h4>{{ quantities().coffee }}</h4>
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm">Time (min)</p>
-      <h4>2:00</h4>
-    </div>
-  </div>
-  <div class="timer flex-1 flex flex-row justify-center items-center gap-2">
-    @if (timerStatus() === 'stopped' || timerStatus() === 'paused') {
-    <button mat-icon-button (click)="brewService.startTimer()">
-      <mat-icon>play_arrow</mat-icon>
-    </button>
-    } @else {
-    <button mat-icon-button (click)="brewService.pauseTimer()">
-      <mat-icon>pause</mat-icon>
-    </button>
-    }
-    <h1 class="text-6xl">{{ timer() }}</h1>
-    <button
-      (click)="brewService.stopTimer()"
-      [disabled]="timerStatus() === 'stopped'"
-      mat-icon-button
-    >
-      <mat-icon>stop</mat-icon>
-    </button>
-  </div>
+<div>
+  <app-brew-configuration />
+</div>
+<div>
+  <app-brew-steps />
 </div>

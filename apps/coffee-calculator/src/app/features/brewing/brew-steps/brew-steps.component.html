@@ -1,0 +1,22 @@
+<mat-tab-group>
+  @if (pre().length) {
+  <mat-tab label="Preparation">
+    <ul>
+      @for (step of pre(); track $index) {
+      <li>
+        {{ step }}
+      </li>
+      }
+    </ul>
+  </mat-tab>
+  }
+  <mat-tab label="Steps">
+    <ol>
+      @for (step of steps(); track $index) {
+      <li>
+        {{ step }}
+      </li>
+      }
+    </ol>
+  </mat-tab>
+</mat-tab-group>
