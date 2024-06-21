@@ -22,6 +22,7 @@ export class BrewConfigurationComponent {
   protected time = signal<string>(this.displayTime(4 * 60));
   protected timerStatus = signal<'paused' | 'counting' | 'stopped'>('stopped');
   protected timer = signal<string>('0:00');
+
   constructor(protected brewService: BrewStateService, destroyRef: DestroyRef) {
     brewService.process$
       .pipe(

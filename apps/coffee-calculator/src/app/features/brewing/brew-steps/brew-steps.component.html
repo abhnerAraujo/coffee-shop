@@ -1,34 +1,53 @@
-<mat-tab-group>
-  @if (pre().length) {
-  <mat-tab label="Preparation">
-    <ul>
-      @for (step of pre(); track $index) {
-      <li>
-        {{ step }}
-      </li>
-      }
-    </ul>
-  </mat-tab>
-  }
-  <mat-tab label="Steps">
-    <ol>
-      @for (step of steps(); track $index) {
-      <li>
-        {{ step }}
-      </li>
-      }
-    </ol>
-  </mat-tab>
-  <mat-tab label="Tutorial">
-    <iframe
-      width="100%"
-      height="250"
-      src="https://www.youtube.com/embed/w3A_Z1J78HY?si=rpAMPe7OyTTxV3Yt"
-      title="YouTube video player"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-      referrerpolicy="strict-origin-when-cross-origin"
-      allowfullscreen
-    ></iframe>
-  </mat-tab>
-</mat-tab-group>
+<div class="min-h-80">
+  <mat-tab-group>
+    @if (pre().length) {
+    <mat-tab label="Get Ready">
+      <ul>
+        @for (step of pre(); track $index) {
+        <li>
+          {{ step }}
+        </li>
+        }
+      </ul>
+    </mat-tab>
+    }
+    <mat-tab label="Steps">
+      <p>
+        <small><i>The instructions are for 1 cup</i></small>
+      </p>
+      <ol>
+        @for (step of steps(); track $index) {
+        <li>
+          {{ step }}
+        </li>
+        }
+      </ol>
+    </mat-tab>
+    @if (tips()) {
+    <mat-tab label="Pro Tips">
+      <ul>
+        @for (tip of tips(); track $index) {
+        <li>
+          {{ tip }}
+        </li>
+        }
+      </ul>
+    </mat-tab>
+    } @if (tutorialUrl()) {
+    <mat-tab label="Tutorial">
+      <div class="flex flex-row justify-center w-full">
+        <iframe
+          [width]="isMediumLayout() ? 900 : '100%'"
+          [height]="isMediumLayout() ? 506 : 315"
+          [src]="tutorialUrl()"
+          title="YouTube video player"
+          frameborder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+          referrerpolicy="strict-origin-when-cross-origin"
+          allowfullscreen
+        ></iframe>
+      </div>
+    </mat-tab>
+    }
+  </mat-tab-group>
+</div>

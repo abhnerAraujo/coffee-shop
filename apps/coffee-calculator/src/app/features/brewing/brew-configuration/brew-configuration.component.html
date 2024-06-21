@@ -1,5 +1,5 @@
-<div class="flex flex-row justify-between items-start gap-4">
-  <div class="quantities flex flex-col gap-4">
+<div class="flex flex-col gap-8">
+  <div class="quantities flex flex-row gap-8 justify-between">
     <div class="flex flex-col">
       <p class="text-sm">Method</p>
       <h4>{{ method() }}</h4>
@@ -12,12 +12,11 @@
       <p class="text-sm">Coffee ({{ units().coffee }})</p>
       <h4>{{ quantities().coffee }}</h4>
     </div>
-    <div class="flex flex-col">
+    <!-- <div class="flex flex-col">
       <p class="text-sm">Time (min)</p>
-      <h4>{{ time() }}</h4>
-    </div>
+    </div> -->
   </div>
-  <div class="timer flex-1 flex flex-row justify-center items-center gap-2">
+  <div class="timer flex flex-row justify-center items-center gap-2">
     @if (timerStatus() === 'stopped' || timerStatus() === 'paused') {
     <button mat-icon-button (click)="brewService.startTimer()">
       <mat-icon>play_arrow</mat-icon>
@@ -27,7 +26,10 @@
       <mat-icon>pause</mat-icon>
     </button>
     }
-    <h1 class="text-6xl">{{ timer() }}</h1>
+    <div class="flex flex-col items-center justify-center">
+      <p class="method-time">{{ time() }}</p>
+      <h1 class="timer-count">{{ timer() }}</h1>
+    </div>
     <button
       (click)="brewService.stopTimer()"
       [disabled]="timerStatus() === 'stopped'"

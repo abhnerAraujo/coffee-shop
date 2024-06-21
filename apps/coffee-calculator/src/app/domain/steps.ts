@@ -34,6 +34,13 @@ function frenchPressSteps() {
       'Pour the freshly brewed coffee into your mug immediately to prevent over-extraction.',
       'Try it black first to taste the full flavor profile. If you prefer, add cream or sugar to taste.',
     ],
+    [
+      `Coffee that is too weak: the grind may be too coarse, so try grinding a little more next time or letting the powder steep for longer.`,
+      'Coffee that is too strong: instead of waiting four minutes for it to steep, try pouring the drink in just three.',
+      'Bitter coffee: your beans may be too coarse, so try using a slightly coarser powder next time.',
+      'Press the plunger gently',
+      `Don't leave the coffee in the press for too long`,
+    ],
   ];
 }
 
@@ -54,6 +61,7 @@ function aeropressSteps() {
       'Pour the freshly brewed coffee into your mug immediately to prevent over-extraction.',
       'Try it black first to taste the full flavor profile. If you prefer, add cream or sugar to taste.',
     ],
+    [],
   ];
 }
 
@@ -74,6 +82,7 @@ function chemexSteps() {
       'Pour the freshly brewed coffee into your mug immediately to prevent over-extraction.',
       'Try it black first to taste the full flavor profile. If you prefer, add cream or sugar to taste.',
     ],
+    [],
   ];
 }
 
@@ -94,6 +103,7 @@ function v60Steps() {
       'Pour the freshly brewed coffee into your mug immediately to prevent over-extraction.',
       'Try it black first to taste the full flavor profile. If you prefer, add cream or sugar to taste.',
     ],
+    [],
   ];
 }
 
@@ -113,6 +123,12 @@ function mokaPotSteps() {
       'After the brewing time is complete, slowly press the plunger down. Apply steady pressure to ensure the grounds are pushed to the bottom without too much force.',
       'Pour the freshly brewed coffee into your mug immediately to prevent over-extraction.',
       'Try it black first to taste the full flavor profile. If you prefer, add cream or sugar to taste.',
+    ],
+    [
+      'Completely fill the filter with ground coffee, but don’t pack it down',
+      'Keep the heat low with a low flame.',
+      'Remove the moka pot from heat just as the coffee starts to rise and bubble',
+      'You can also put some water in the top chamber to avoid overheating the coffee which can cause a burnt taste',
     ],
   ];
 }
