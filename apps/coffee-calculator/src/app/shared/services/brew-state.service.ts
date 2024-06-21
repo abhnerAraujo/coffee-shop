@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MethodProcess } from '@domain/method-process';
+import { DraftMethodProcess, MethodProcess } from '@domain/method-process';
 import { BehaviorSubject, Subject, interval, takeUntil } from 'rxjs';
 
 @Injectable({
@@ -10,12 +10,19 @@ export class BrewStateService {
     undefined
   );
   readonly process$ = this.process.asObservable();
+  private readonly draft = new BehaviorSubject<DraftMethodProcess | undefined>(
+    undefined
+  );
+  readonly draft$ = this.draft.asObservable();
   readonly timer = new BehaviorSubject<{
     time: number;
     status: 'paused' | 'counting' | 'stopped';
   }>({ time: 0, status: 'stopped' });
   readonly timer$ = this.timer.asObservable();
   private readonly stopTimer$ = new Subject<void>();
+  constructor() {
+    console.log('BrewStateService created');
+  }
 
   startTimer() {
     if (this.timer.value.status === 'stopped') {
@@ -49,5 +56,13 @@ export class BrewStateService {
 
   getProcess() {
     return this.process.value;
+  }
+
+  getDraft() {
+    return this.draft.value;
+  }
+
+  setDraft(draft: DraftMethodProcess | undefined) {
+    this.draft.next(draft);
   }
 }

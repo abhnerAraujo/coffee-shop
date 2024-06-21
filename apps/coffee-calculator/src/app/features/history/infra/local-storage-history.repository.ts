@@ -52,7 +52,7 @@ export class LocalStorageHistoryRepository implements HistoryRepository {
     const drafts = localStorage.getItem(this.draftKey);
 
     if (!drafts) return Promise.resolve(undefined);
-    const draft = JSON.parse(drafts)[0];
+    const draft = JSON.parse(drafts).pop();
 
     return Promise.resolve(
       MethodProcess.builder()

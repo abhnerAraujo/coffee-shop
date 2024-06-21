@@ -3,8 +3,10 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  DestroyRef,
   Inject,
   PLATFORM_ID,
+  inject,
   signal,
 } from '@angular/core';
 import {
@@ -70,6 +72,7 @@ export class CoffeeCalculatorComponent
   });
   protected isMediumLayout = signal<boolean>(false);
   protected readonly form: FormGroup<CoffeCalculatorForm>;
+  public destroyRef = inject(DestroyRef);
   constructor(
     protected presenter: ProcessPresenterService,
     private readonly formBuilder: FormBuilder,

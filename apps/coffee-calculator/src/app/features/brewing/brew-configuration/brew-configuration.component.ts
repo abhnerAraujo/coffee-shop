@@ -1,4 +1,5 @@
-import { Component, signal } from '@angular/core';
+import { Component, DestroyRef, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { MethodType } from '@domain/method';
 import { BrewStateService } from '@shared/services/brew-state.service';
 import { distinctUntilChanged } from 'rxjs';
@@ -10,32 +11,41 @@ import { distinctUntilChanged } from 'rxjs';
 })
 export class BrewConfigurationComponent {
   protected method = signal<MethodType>('French Press');
-  protected quantities = signal<{ water: number; coffee: number }>({
-    water: 180,
-    coffee: 11.25,
+  protected quantities = signal<{ water: string; coffee: string }>({
+    water: '180',
+    coffee: '11.25',
   });
   protected units = signal<{ water: string; coffee: string }>({
     water: 'ml',
     coffee: 'g',
   });
+  protected time = signal<string>(this.displayTime(4 * 60));
   protected timerStatus = signal<'paused' | 'counting' | 'stopped'>('stopped');
   protected timer = signal<string>('0:00');
-  constructor(protected brewService: BrewStateService) {
+  constructor(protected brewService: BrewStateService, destroyRef: DestroyRef) {
     brewService.process$
-      .pipe(distinctUntilChanged((prev, next) => prev?.id === next?.id))
+      .pipe(
+        takeUntilDestroyed(destroyRef),
+        distinctUntilChanged((prev, next) => prev?.id === next?.id)
+      )
       .subscribe(currentProcess => {
+        console.log(currentProcess);
         if (currentProcess) {
           this.quantities.set({
-            water: currentProcess.quantities.water,
-            coffee: currentProcess.quantities.coffee,
+            water: currentProcess.quantities.water.toFixed(2),
+            coffee: currentProcess.quantities.coffee.toFixed(2),
           });
           this.units.set({
             water: currentProcess.units.water,
             coffee: currentProcess.units.coffee,
           });
+          this.method.set(currentProcess.method);
+          this.time.set(this.displayTime(currentProcess.time));
         } else {
-          this.quantities.set({ water: 180, coffee: 11.25 });
+          this.quantities.set({ water: '180', coffee: '11.25' });
           this.units.set({ water: 'ml', coffee: 'g' });
+          this.method.set('French Press');
+          this.time.set(this.displayTime(4 * 60));
         }
       });
     brewService.timer$.subscribe(({ time, status }) => {

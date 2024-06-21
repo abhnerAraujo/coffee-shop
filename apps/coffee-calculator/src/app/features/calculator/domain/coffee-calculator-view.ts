@@ -1,3 +1,4 @@
+import { DestroyRef } from '@angular/core';
 import { Observable } from 'rxjs';
 import { MethodType } from '../../../domain/method';
 import { RatioIntensity } from '../../../domain/ratio';
@@ -10,6 +11,7 @@ export default interface CoffeeCalculatorView {
   setFormValue(value: Partial<CoffeCalculatorValue>): void;
   setResult(value: { water: string; coffee: string; cups: string }): void;
   formChanges: Observable<CoffeCalculatorValue>;
+  destroyRef: DestroyRef;
 }
 
 export type CoffeCalculatorValue = {

@@ -155,6 +155,7 @@
           } @else {
           <mat-radio-group
             class="flex flex-col"
+            [value]="ratioIntensity()"
             (change)="handleSelectedIntesity($event.value)"
           >
             @for (item of ratioOptions(); track $index) {

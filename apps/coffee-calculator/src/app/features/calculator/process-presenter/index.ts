@@ -1,10 +1,12 @@
-import { Inject, Injectable, inject } from '@angular/core';
+import { DestroyRef, Inject, Injectable, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Analytics, logEvent } from '@angular/fire/analytics';
 import { MethodType, MethodTypes } from '@domain/method';
 import { MethodProcess } from '@domain/method-process';
 import { RatioIntensities, RatioIntensity, ratioOptions } from '@domain/ratio';
 import { ratioIntensityByMethod } from '@domain/ratio-intensity';
 import { CUP_SIZE, unitOptions } from '@domain/unit';
+import { BrewStateService } from '@shared/services/brew-state.service';
 import { Observable } from 'rxjs';
 import { HistoryRepository } from '../../history/domain';
 import { HISTORY_REPOSITORY } from '../../history/infra';
@@ -19,7 +21,8 @@ export class ProcessPresenterService {
   private isBrowser = false;
 
   constructor(
-    @Inject(HISTORY_REPOSITORY) private historyRepo: HistoryRepository
+    @Inject(HISTORY_REPOSITORY) private historyRepo: HistoryRepository,
+    private brewService: BrewStateService
   ) {}
 
   init(component: CoffeeCalculatorView, isBrowser: boolean) {
@@ -30,16 +33,19 @@ export class ProcessPresenterService {
     this._component.setMethodOptions([...MethodTypes]);
     const defaultRatio = ratioOptions['French Press']['medium'];
 
-    this.handleFormChanges(component.formChanges);
+    this.handleFormChanges(component.formChanges, component.destroyRef);
     this._component.setFormValue({
       ratio: defaultRatio,
     });
   }
 
-  private handleFormChanges(observable: Observable<CoffeCalculatorValue>) {
+  private handleFormChanges(
+    observable: Observable<CoffeCalculatorValue>,
+    destroyRef: DestroyRef
+  ) {
     const calculator = new CoffeeCalculator();
 
-    observable.subscribe(value => {
+    observable.pipe(takeUntilDestroyed(destroyRef)).subscribe(value => {
       const { ratio, method, coffeeCups } = value;
 
       calculator.setRatio(ratio);
@@ -57,6 +63,7 @@ export class ProcessPresenterService {
         water,
         coffee,
       });
+      this.brewService.setProcess(undefined);
       if (this.isBrowser)
         this.logCalculation({ method, water, coffee, coffeeCups });
       this._component?.setResult({
