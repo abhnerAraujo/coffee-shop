@@ -23,13 +23,13 @@ export class CoffeeCalculator {
   }
 
   calculate() {
-    const water =
-      this.cups * convertUnit(CUP_SIZE, BASE_UNIT, this.units.water);
     const coffee = this.calculateCoffee(
       this.ratio.coffee,
       this.ratio.water,
-      water
+      CUP_SIZE * this.cups
     );
+    const water =
+      this.cups * convertUnit(CUP_SIZE, BASE_UNIT, this.units.water);
 
     return {
       water,

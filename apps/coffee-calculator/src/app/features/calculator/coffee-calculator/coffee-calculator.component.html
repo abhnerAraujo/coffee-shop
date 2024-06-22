@@ -200,21 +200,20 @@
 </form>
 
 <ng-template #calculatorResult>
-  <div class="portions flex flex-row gap-2">
-    <div>
-      <span>Water</span>
-      <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
-    </div>
-    <h3>+</h3>
+  <div class="portions flex flex-row gap-4">
     <div>
       <span>Coffee</span>
       <h3>{{ result().coffee }} {{ form.value.coffeeUnit }}</h3>
+    </div>
+    <h3>+</h3>
+    <div>
+      <span>Water</span>
+      <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
     </div>
   </div>
   <div class="result">
     <h2>=</h2>
     <div>
-      <span>Result</span>
       <h1>{{ result().cups }}</h1>
     </div>
   </div>

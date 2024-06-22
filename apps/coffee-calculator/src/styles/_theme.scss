@@ -1,0 +1,26 @@
+@use '@angular/material' as mat;
+// Plus imports for other components in your app.
+
+// Include the common styles for Angular Material. We include this here so that you only
+// have to load a single css file for Angular Material in your app.
+// Be sure that you only ever include this mixin once!
+@include mat.core();
+
+// Define the theme object.
+$coffee-calculator-theme: mat.define-theme(
+  (
+    color: (
+      theme-type: dark,
+      primary: mat.$magenta-palette,
+      tertiary: mat.$violet-palette,
+    ),
+    typography: (
+      plain-family: 'Lato',
+      brand-family: 'Bebas Neue',
+      bold-weight: 700,
+    ),
+    density: (
+      scale: 0,
+    ),
+  )
+);

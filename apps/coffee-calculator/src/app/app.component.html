@@ -1,1 +1,14 @@
 <router-outlet></router-outlet>
+<div class="nav-card rounded-b-none rounded-t-lg">
+  @for (item of nav; track $index) {
+  <button
+    [disabled]="item.disabled"
+    class="link"
+    mat-icon-button
+    [routerLink]="item.url"
+    [routerLinkActive]="'active'"
+  >
+    <mat-icon>{{ item.icon }}</mat-icon>
+  </button>
+  }
+</div>
