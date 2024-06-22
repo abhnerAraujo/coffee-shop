@@ -80,18 +80,18 @@ export class ProcessPresenterService {
   ) {
     this.historyRepo.saveDraft(
       MethodProcess.builder()
-        .setMethod(process.method)
-        .setCups({
+        .withMethod(process.method)
+        .withCups({
           amount: process.coffeeCups,
           volume: CUP_SIZE,
           unit: process.waterUnit,
         })
-        .setRatio(process.ratio)
-        .setUnits({
+        .withRatio(process.ratio)
+        .withUnits({
           coffee: process.coffeeUnit,
           water: process.waterUnit,
         })
-        .setQuantities({
+        .withQuantities({
           water: result.water,
           coffee: result.coffee,
         })

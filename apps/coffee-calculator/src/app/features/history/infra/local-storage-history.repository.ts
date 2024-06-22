@@ -56,13 +56,13 @@ export class LocalStorageHistoryRepository implements HistoryRepository {
 
     return Promise.resolve(
       MethodProcess.builder()
-        .setId(draft.id)
-        .setMethod(draft.method)
-        .setCreatedAt(draft.createdAt)
-        .setRatio(draft.ratio)
-        .setUnits(draft.units)
-        .setCups(draft.cups)
-        .setQuantities(draft.quantities)
+        .withId(draft.id)
+        .withMethod(draft.method)
+        .withCreatedAt(draft.createdAt)
+        .withRatio(draft.ratio)
+        .withUnits(draft.units)
+        .withCups(draft.cups)
+        .withQuantities(draft.quantities)
         .draft()
     );
   }

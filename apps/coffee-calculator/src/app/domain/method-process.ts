@@ -377,42 +377,42 @@ class MethodProcessBuilder {
     );
   }
 
-  setMethod(method: MethodType) {
+  withMethod(method: MethodType) {
     this.method = method;
     return this;
   }
 
-  setCreatedAt(createdAt: Date) {
+  withCreatedAt(createdAt: Date) {
     this.createdAt = createdAt;
     return this;
   }
 
-  setRatio(ratio: RatioOption) {
+  withRatio(ratio: RatioOption) {
     this.ratio = ratio;
     return this;
   }
 
-  setUnits(units: { water: Unit; coffee: Unit }) {
+  withUnits(units: { water: Unit; coffee: Unit }) {
     this.units = units;
     return this;
   }
 
-  setCups(cups: Cups) {
+  withCups(cups: Cups) {
     this.cups = cups;
     return this;
   }
 
-  setQuantities(quantities: Quantities) {
+  withQuantities(quantities: Quantities) {
     this.quantities = quantities;
     return this;
   }
 
-  setId(id: string) {
+  withId(id: string) {
     this.id = id;
     return this;
   }
 
-  setTime(time: number) {
+  withTime(time: number) {
     this.time = time;
     return this;
   }
