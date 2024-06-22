@@ -1,11 +1,41 @@
 <div class="min-h-80">
   <mat-tab-group>
-    @if (pre().length) {
+    @for (tab of listTabs(); track $index) {
+    <mat-tab label="{{ tab.label }}">
+      <ul>
+        @for (step of tab.list(); track $index) {
+        <li>
+          @if (step.mode === 'view') {
+          <span (click)="handleEdit(tab.list, $index)">{{ step.value }}</span>
+          } @else {
+          <mat-form-field class="w-full">
+            <textarea
+              matInput
+              [value]="step.value"
+              class="min-h-24"
+              (blur)="handleStepBlur(tab.list, $index, $event)"
+            ></textarea>
+            <mat-hint>Touch outside to confirm</mat-hint>
+          </mat-form-field>
+          }
+        </li>
+        }
+      </ul>
+    </mat-tab>
+    }
+    <!-- @if (pre().length) {
     <mat-tab label="Get Ready">
       <ul>
         @for (step of pre(); track $index) {
         <li>
-          {{ step }}
+          @if (step.mode === 'view') {
+          <span (click)="handleEdit(pre, $index)">{{ step.value }}</span>
+          } @else {
+          <mat-form-field class="w-full">
+            <textarea matInput [value]="step.value" class="min-h-24"></textarea>
+            <mat-hint>Touch outside to confirm</mat-hint>
+          </mat-form-field>
+          }
         </li>
         }
       </ul>
@@ -16,9 +46,16 @@
         <small><i>The instructions are for 1 cup</i></small>
       </p>
       <ol>
-        @for (step of steps(); track $index) {
+        @for (step of pre(); track $index) {
         <li>
-          {{ step }}
+          @if (step.mode === 'view') {
+          <span (click)="handleEdit(pre, $index)">{{ step.value }}</span>
+          } @else {
+          <mat-form-field class="w-full">
+            <textarea matInput [value]="step.value" class="min-h-24"></textarea>
+            <mat-hint>Touch outside to confirm</mat-hint>
+          </mat-form-field>
+          }
         </li>
         }
       </ol>
@@ -26,14 +63,22 @@
     @if (tips()) {
     <mat-tab label="Pro Tips">
       <ul>
-        @for (tip of tips(); track $index) {
+        @for (step of pre(); track $index) {
         <li>
-          {{ tip }}
+          @if (step.mode === 'view') {
+          <span (click)="handleEdit(pre, $index)">{{ step.value }}</span>
+          } @else {
+          <mat-form-field class="w-full">
+            <textarea matInput [value]="step.value" class="min-h-24"></textarea>
+            <mat-hint>Touch outside to confirm</mat-hint>
+          </mat-form-field>
+          }
         </li>
         }
       </ul>
     </mat-tab>
-    } @if (tutorialUrl()) {
+    } -->
+    @if (tutorialUrl()) {
     <mat-tab label="Tutorial">
       <div class="flex flex-row justify-center w-full">
         <iframe

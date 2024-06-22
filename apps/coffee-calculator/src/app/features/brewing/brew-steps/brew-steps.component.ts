@@ -1,6 +1,13 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
-import { Component, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import {
+  Component,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  WritableSignal,
+  signal,
+} from '@angular/core';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { MethodType } from '@domain/method';
 import { stepsByMethodProcess } from '@domain/steps';
@@ -12,10 +19,11 @@ import { BrewStateService } from '@shared/services/brew-state.service';
   styleUrl: './brew-steps.component.scss',
 })
 export class BrewStepsComponent implements OnInit {
-  pre = signal<string[]>([]);
-  steps = signal<string[]>([]);
+  pre = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
+  steps = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
   tutorialUrl = signal<SafeUrl>('');
-  tips = signal<string[]>([]);
+  tips = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
+  listTabs = signal<{ label: string; list: ListSignal }[]>([]);
   private readonly tutorials: { [key in MethodType]: SafeUrl };
   protected isMediumLayout = signal<boolean>(false);
   constructor(
@@ -41,6 +49,11 @@ export class BrewStepsComponent implements OnInit {
         'https://www.youtube.com/embed/zzlFOkD4Kz4?si=0kvvzthmhUwM0I3M'
       ),
     };
+    this.listTabs.set([
+      { label: 'Get Ready', list: this.pre },
+      { label: 'Steps', list: this.steps },
+      { label: 'Pro Tips', list: this.tips },
+    ]);
     if (isPlatformBrowser(platformId)) {
       const mediumBreakpoint = '(min-width: 768px)';
 
@@ -55,9 +68,9 @@ export class BrewStepsComponent implements OnInit {
       if (currentProcess) {
         const [pre, steps, tips] = stepsByMethodProcess(currentProcess);
 
-        this.pre.set(pre);
-        this.steps.set(steps);
-        this.tips.set(tips);
+        this.pre.set(pre.map(value => ({ mode: 'view', value })));
+        this.steps.set(steps.map(value => ({ mode: 'view', value })));
+        this.tips.set(tips.map(value => ({ mode: 'view', value })));
         this.tutorialUrl.set(this.tutorials[currentProcess.method]);
       } else {
         this.pre.set([]);
@@ -66,4 +79,33 @@ export class BrewStepsComponent implements OnInit {
       }
     });
   }
+
+  protected handleEdit(list: ListSignal, index: number) {
+    const current = list();
+    const item = current[index];
+
+    list.set([
+      ...current.slice(0, index),
+      { ...item, mode: 'edit' },
+      ...current.slice(index + 1),
+    ]);
+  }
+
+  protected handleStepBlur(
+    list: ListSignal,
+    index: number,
+    $event: FocusEvent
+  ) {
+    const current = list();
+    const item = current[index];
+    const target = $event.target as HTMLTextAreaElement;
+
+    list.set([
+      ...current.slice(0, index),
+      { ...item, mode: 'view', value: target?.value || item.value },
+      ...current.slice(index + 1),
+    ]);
+  }
 }
+
+type ListSignal = WritableSignal<{ mode: 'edit' | 'view'; value: string }[]>;

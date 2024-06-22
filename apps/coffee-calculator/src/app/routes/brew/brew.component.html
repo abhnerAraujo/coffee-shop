@@ -3,7 +3,20 @@
     <mat-icon>arrow_back</mat-icon>Back
   </button>
 </div>
-<h2>It's brewing time!</h2>
+@if (titleMode() === 'view') {
+<h2 (click)="titleMode.set('edit')">{{ brewName }}</h2>
+} @else {
+<mat-form-field appearance="fill">
+  <mat-label>Brewing name</mat-label>
+  <input matInput (blur)="handleInputBlur($event)" />
+  <mat-icon matIconSuffix> prompt_suggestion </mat-icon>
+  <!-- <button matSuffix mat-icon-button (click)="handlePromptSuggestion()">
+  </button> -->
+  <mat-hint (click)="handlePromptSuggestion()"
+    ><u>Suggestion: {{ suggestionName() }}</u></mat-hint
+  >
+</mat-form-field>
+}
 <div>
   <app-brew-configuration />
 </div>
