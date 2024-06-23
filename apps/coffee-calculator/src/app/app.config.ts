@@ -11,6 +11,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter } from '@angular/router';
 import { appRoutes } from './app.routes';
+import { provideHistoryRepository } from './features/history/infra';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -33,5 +34,6 @@ export const appConfig: ApplicationConfig = {
     ScreenTrackingService,
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
+    provideHistoryRepository(),
   ],
 };
