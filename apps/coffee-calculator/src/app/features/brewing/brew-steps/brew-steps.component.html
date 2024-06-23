@@ -13,6 +13,7 @@
               matInput
               [value]="step.value"
               class="min-h-24"
+              appAutoFocus
               (blur)="handleStepBlur(tab.list, $index, $event)"
             ></textarea>
             <mat-hint>Touch outside to confirm</mat-hint>
@@ -22,63 +23,7 @@
         }
       </ul>
     </mat-tab>
-    }
-    <!-- @if (pre().length) {
-    <mat-tab label="Get Ready">
-      <ul>
-        @for (step of pre(); track $index) {
-        <li>
-          @if (step.mode === 'view') {
-          <span (click)="handleEdit(pre, $index)">{{ step.value }}</span>
-          } @else {
-          <mat-form-field class="w-full">
-            <textarea matInput [value]="step.value" class="min-h-24"></textarea>
-            <mat-hint>Touch outside to confirm</mat-hint>
-          </mat-form-field>
-          }
-        </li>
-        }
-      </ul>
-    </mat-tab>
-    }
-    <mat-tab label="Steps">
-      <p>
-        <small><i>The instructions are for 1 cup</i></small>
-      </p>
-      <ol>
-        @for (step of pre(); track $index) {
-        <li>
-          @if (step.mode === 'view') {
-          <span (click)="handleEdit(pre, $index)">{{ step.value }}</span>
-          } @else {
-          <mat-form-field class="w-full">
-            <textarea matInput [value]="step.value" class="min-h-24"></textarea>
-            <mat-hint>Touch outside to confirm</mat-hint>
-          </mat-form-field>
-          }
-        </li>
-        }
-      </ol>
-    </mat-tab>
-    @if (tips()) {
-    <mat-tab label="Pro Tips">
-      <ul>
-        @for (step of pre(); track $index) {
-        <li>
-          @if (step.mode === 'view') {
-          <span (click)="handleEdit(pre, $index)">{{ step.value }}</span>
-          } @else {
-          <mat-form-field class="w-full">
-            <textarea matInput [value]="step.value" class="min-h-24"></textarea>
-            <mat-hint>Touch outside to confirm</mat-hint>
-          </mat-form-field>
-          }
-        </li>
-        }
-      </ul>
-    </mat-tab>
-    } -->
-    @if (tutorialUrl()) {
+    } @if (tutorialUrl()) {
     <mat-tab label="Tutorial">
       <div class="flex flex-row justify-center w-full">
         <iframe

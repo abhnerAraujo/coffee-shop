@@ -4,6 +4,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
+import { AutoFocusDirective } from '@shared/directives/auto-focus.directive';
 import { HistoryModule } from '../history';
 import { BrewConfigurationComponent } from './brew-configuration/brew-configuration.component';
 import { BrewStepsComponent } from './brew-steps/brew-steps.component';
@@ -17,6 +18,7 @@ import { BrewStepsComponent } from './brew-steps/brew-steps.component';
     MatTabsModule,
     MatFormFieldModule,
     MatInputModule,
+    AutoFocusDirective,
   ],
   exports: [BrewConfigurationComponent, BrewStepsComponent],
 })
