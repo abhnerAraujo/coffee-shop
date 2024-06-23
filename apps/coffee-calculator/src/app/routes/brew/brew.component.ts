@@ -1,4 +1,3 @@
-import { Location } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -7,6 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { ratioIntensityByMethod } from '@domain/ratio-intensity';
+import { AutoFocusDirective } from '@shared/directives/auto-focus.directive';
 import { BrewStateService } from '@shared/services/brew-state.service';
 import { BrewService } from '@shared/services/brew.service';
 import { distinctUntilChanged, forkJoin, of } from 'rxjs';
@@ -22,7 +22,13 @@ const MAT_MODULES = [
 @Component({
   selector: 'app-brew',
   standalone: true,
-  imports: [HistoryModule, BrewingModule, FormsModule, ...MAT_MODULES],
+  imports: [
+    HistoryModule,
+    BrewingModule,
+    FormsModule,
+    AutoFocusDirective,
+    ...MAT_MODULES,
+  ],
   templateUrl: './brew.component.html',
   styleUrl: './brew.component.scss',
 })
@@ -31,7 +37,6 @@ export class BrewComponent implements OnInit {
   protected suggestionName = signal<string>('');
   protected brewName = 'My brew';
   constructor(
-    protected location: Location,
     private brewState: BrewStateService,
     private brewService: BrewService
   ) {
@@ -56,10 +61,7 @@ export class BrewComponent implements OnInit {
     this.suggestionName.set(this.suggestName());
   }
 
-  protected handleInputBlur($event: FocusEvent) {
-    const input = $event.target as HTMLInputElement;
-
-    this.brewName = input.value;
+  protected handleInputBlur() {
     this.titleMode.set('view');
   }
 

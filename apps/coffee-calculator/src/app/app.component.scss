@@ -15,10 +15,10 @@
   gap: 4px;
 
   > .link:not(:disabled, .active) {
-    color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 90)
+    color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 40)
   }
   > .active {
-    color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 40);
+    color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 90);
   }
 
 }
