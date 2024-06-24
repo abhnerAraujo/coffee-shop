@@ -1,5 +1,6 @@
+import { MethodType, methodWaterAmount } from '@domain/method';
 import { RatioOption } from '../../../domain/ratio';
-import { BASE_UNIT, CUP_SIZE, Unit } from '../../../domain/unit';
+import { BASE_UNIT, Unit } from '../../../domain/unit';
 import { convertUnit } from '../../../domain/unit-converter';
 
 export class CoffeeCalculator {
@@ -9,6 +10,7 @@ export class CoffeeCalculator {
     coffee: BASE_UNIT,
   };
   private cups = 0;
+  private method = 'French Press' as MethodType;
 
   setRatio(ratio: RatioOption) {
     this.ratio = ratio;
@@ -22,14 +24,19 @@ export class CoffeeCalculator {
     this.cups = cups;
   }
 
+  setMethod(method: MethodType) {
+    this.method = method;
+  }
+
   calculate() {
     const coffee = this.calculateCoffee(
       this.ratio.coffee,
       this.ratio.water,
-      CUP_SIZE * this.cups
+      methodWaterAmount[this.method] * this.cups
     );
     const water =
-      this.cups * convertUnit(CUP_SIZE, BASE_UNIT, this.units.water);
+      this.cups *
+      convertUnit(methodWaterAmount[this.method], BASE_UNIT, this.units.water);
 
     return {
       water,

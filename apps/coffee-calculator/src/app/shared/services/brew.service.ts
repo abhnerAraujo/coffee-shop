@@ -28,6 +28,7 @@ export class BrewService {
     this.calculator.setCups(cups.amount);
     this.calculator.setRatio(ratio);
     this.calculator.setUnits(units);
+    this.calculator.setMethod(method);
     return MethodProcess.builder()
       .withMethod(method)
       .withCups(cups)

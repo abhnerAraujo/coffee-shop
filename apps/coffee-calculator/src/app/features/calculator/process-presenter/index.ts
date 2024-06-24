@@ -53,6 +53,7 @@ export class ProcessPresenterService {
         coffee: value.coffeeUnit,
         water: value.waterUnit,
       });
+      calculator.setMethod(method);
       calculator.setCups(coffeeCups);
       const { water, coffee } = calculator.calculate();
       const cups = `${value.coffeeCups} ${

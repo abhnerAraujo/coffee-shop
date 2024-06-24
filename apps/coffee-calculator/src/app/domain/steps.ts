@@ -86,7 +86,9 @@ function chemexSteps() {
       'Swirl the Chemex to mix the coffee',
       'Pour the coffee into your cup and enjoy.',
     ],
-    [],
+    [
+      'Due to the thicker filter, it can sometimes clog. To resolve this, lift the filter with both hands to allow air to enter, then lower it back down. It should resume flowing normally.',
+    ],
   ];
 }
 
