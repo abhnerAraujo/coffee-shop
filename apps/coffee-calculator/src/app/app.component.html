@@ -1,4 +1,5 @@
 <router-outlet></router-outlet>
+@if (this.showNav()) {
 <div class="nav-card rounded-b-none rounded-t-lg">
   @for (item of nav; track $index) {
   <button
@@ -11,3 +12,4 @@
   </button>
   }
 </div>
+}

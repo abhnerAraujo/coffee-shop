@@ -2,16 +2,19 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { isPlatformBrowser } from '@angular/common';
 import {
   Component,
+  DestroyRef,
   Inject,
   OnInit,
   PLATFORM_ID,
   WritableSignal,
   signal,
 } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
+import { Brewing } from '@domain/brewing';
 import { MethodType } from '@domain/method';
-import { stepsByMethodProcess } from '@domain/steps';
 import { BrewStateService } from '@shared/services/brew-state.service';
+import { BrewService } from '@shared/services/brew.service';
 
 @Component({
   selector: 'app-brew-steps',
@@ -27,10 +30,12 @@ export class BrewStepsComponent implements OnInit {
   private readonly tutorials: { [key in MethodType]: SafeUrl };
   protected isMediumLayout = signal<boolean>(false);
   constructor(
-    private brewService: BrewStateService,
+    private brewState: BrewStateService,
+    private brewService: BrewService,
     sanitizer: DomSanitizer,
     private layoutChanges: BreakpointObserver,
-    @Inject(PLATFORM_ID) platformId: object
+    @Inject(PLATFORM_ID) platformId: object,
+    private destroyRef: DestroyRef
   ) {
     this.tutorials = {
       'French Press': sanitizer.bypassSecurityTrustResourceUrl(
@@ -64,20 +69,27 @@ export class BrewStepsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.brewService.process$.subscribe(currentProcess => {
-      if (currentProcess) {
-        const [pre, steps, tips] = stepsByMethodProcess(currentProcess);
+    this.brewState.brewing$
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(brewing => this.updateBrewing(brewing));
+  }
 
-        this.pre.set(pre.map(value => ({ mode: 'view', value })));
-        this.steps.set(steps.map(value => ({ mode: 'view', value })));
-        this.tips.set(tips.map(value => ({ mode: 'view', value })));
-        this.tutorialUrl.set(this.tutorials[currentProcess.method]);
-      } else {
-        this.pre.set([]);
-        this.steps.set([]);
-        this.tutorialUrl.set('');
-      }
-    });
+  private updateBrewing(brewing: Brewing | undefined) {
+    if (brewing) {
+      this.pre.set(
+        brewing.getPreparation().map(value => ({ mode: 'view', value }))
+      );
+      this.steps.set(
+        brewing.getSteps().map(value => ({ mode: 'view', value }))
+      );
+      this.tips.set(brewing.getTips().map(value => ({ mode: 'view', value })));
+      this.tutorialUrl.set(this.tutorials[brewing.getMethodProcess().method]);
+    } else {
+      this.pre.set([]);
+      this.steps.set([]);
+      this.tips.set([]);
+      this.tutorialUrl.set('');
+    }
   }
 
   protected handleEdit(list: ListSignal, index: number) {
@@ -91,18 +103,30 @@ export class BrewStepsComponent implements OnInit {
     ]);
   }
 
-  protected handleStepBlur(
-    list: ListSignal,
-    index: number,
-    $event: FocusEvent
-  ) {
+  protected handleSaveStep(list: ListSignal, index: number, value: string) {
     const current = list();
     const item = current[index];
-    const target = $event.target as HTMLTextAreaElement;
 
     list.set([
       ...current.slice(0, index),
-      { ...item, mode: 'view', value: target?.value || item.value },
+      { ...item, mode: 'view', value: value || item.value },
+      ...current.slice(index + 1),
+    ]);
+    const brewing = this.brewState.getBrewing();
+
+    if (brewing) {
+      brewing.setSteps(current.map(({ value }) => value));
+      this.brewService.updateBrewing(brewing);
+    }
+  }
+
+  protected handleCancelStep(list: ListSignal, index: number) {
+    const current = list();
+    const item = current[index];
+
+    list.set([
+      ...current.slice(0, index),
+      { ...item, mode: 'view' },
       ...current.slice(index + 1),
     ]);
   }

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Brewing } from '@domain/brewing';
 import { DraftMethodProcess, MethodProcess } from '@domain/method-process';
 import { BehaviorSubject, Subject, interval, takeUntil } from 'rxjs';
 
@@ -20,6 +21,8 @@ export class BrewStateService {
   }>({ time: 0, status: 'stopped' });
   readonly timer$ = this.timer.asObservable();
   private readonly stopTimer$ = new Subject<void>();
+  private brewing = new BehaviorSubject<Brewing | undefined>(undefined);
+  readonly brewing$ = this.brewing.asObservable();
   constructor() {
     console.log('BrewStateService created');
   }
@@ -64,5 +67,13 @@ export class BrewStateService {
 
   setDraft(draft: DraftMethodProcess | undefined) {
     this.draft.next(draft);
+  }
+
+  setBrewing(brewing: Brewing | undefined) {
+    this.brewing.next(brewing);
+  }
+
+  getBrewing() {
+    return this.brewing.value;
   }
 }

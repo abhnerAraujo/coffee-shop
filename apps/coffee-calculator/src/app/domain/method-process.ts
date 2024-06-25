@@ -1,4 +1,5 @@
 import { Dispatchable } from './general/dispatchable';
+import { GrindSize } from './grind-size';
 import { MethodType } from './method';
 import { RatioOption } from './ratio';
 import { Unit } from './unit';
@@ -12,6 +13,7 @@ export abstract class MethodProcess extends Dispatchable {
     readonly units: { water: Unit; coffee: Unit },
     readonly cups: Cups,
     readonly quantities: Quantities,
+    readonly grindSize: GrindSize,
     readonly time = 0
   ) {
     super('MethodProcess');
@@ -32,7 +34,17 @@ class FrenchPressProcess extends MethodProcess {
     quantities: Quantities,
     time: number
   ) {
-    super(id, 'French Press', createdAt, ratio, units, cups, quantities, time);
+    super(
+      id,
+      'French Press',
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities,
+      'coarse',
+      time
+    );
   }
 
   static create(
@@ -87,7 +99,7 @@ class V60Process extends MethodProcess {
     quantities: Quantities,
     time: number
   ) {
-    super(id, 'V60', createdAt, ratio, units, cups, quantities, time);
+    super(id, 'V60', createdAt, ratio, units, cups, quantities, 'medium', time);
   }
 
   static create(
@@ -132,9 +144,20 @@ class AeroPressProcess extends MethodProcess {
     units: { water: Unit; coffee: Unit },
     cups: Cups,
     quantities: Quantities,
-    time: number
+    time: number,
+    grindSize = 'fine' as GrindSize
   ) {
-    super(id, 'AeroPress', createdAt, ratio, units, cups, quantities, time);
+    super(
+      id,
+      'AeroPress',
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities,
+      grindSize,
+      time
+    );
   }
 
   static create(
@@ -189,7 +212,17 @@ class ChemexProcess extends MethodProcess {
     quantities: Quantities,
     time: number
   ) {
-    super(id, 'Chemex', createdAt, ratio, units, cups, quantities, time);
+    super(
+      id,
+      'Chemex',
+      createdAt,
+      ratio,
+      units,
+      cups,
+      quantities,
+      'medium-coarse',
+      time
+    );
   }
 
   static create(
@@ -243,7 +276,7 @@ class MokaPotProcess extends MethodProcess {
     cups: Cups,
     quantities: Quantities
   ) {
-    super(id, 'Moka Pot', createdAt, ratio, units, cups, quantities);
+    super(id, 'Moka Pot', createdAt, ratio, units, cups, quantities, 'fine');
   }
 
   static create(
@@ -441,7 +474,7 @@ export class DraftMethodProcess extends MethodProcess {
     cups: Cups,
     quantities: Quantities
   ) {
-    super('', method, createdAt, ratio, units, cups, quantities);
+    super('', method, createdAt, ratio, units, cups, quantities, 'medium');
   }
 
   convert() {

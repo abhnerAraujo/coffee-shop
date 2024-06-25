@@ -8,8 +8,20 @@ export const appRoutes: Route[] = [
   },
   {
     path: 'brew',
-    loadComponent: () =>
-      import('./routes/brew/brew.component').then(m => m.BrewComponent),
+    children: [
+      {
+        path: '',
+        loadComponent: () =>
+          import('./routes/brews/brews.component').then(m => m.BrewsComponent),
+      },
+      {
+        path: ':brewingId',
+        loadComponent: () =>
+          import('./routes/brew-details/brew-details.component').then(
+            m => m.BrewDetailsComponent
+          ),
+      },
+    ],
   },
   {
     path: '**',

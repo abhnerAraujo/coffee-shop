@@ -1,0 +1,10 @@
+<button mat-stroked-button (click)="newBrewing()">New Brewing</button>
+
+<mat-list>
+  @for (item of list(); track $index) {
+  <mat-list-item>
+    <span matListItemTitle>{{ item.getName() }}</span>
+    <span matListItemLine>{{ item.getMethodProcess().method }}</span>
+  </mat-list-item>
+  }
+</mat-list>

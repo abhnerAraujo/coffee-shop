@@ -1,12 +1,14 @@
 @if (titleMode() === 'view') {
-<h2 (click)="titleMode.set('edit')">{{ brewName }}</h2>
+<h2 (click)="titleMode.set('edit')">{{ brewName() }}</h2>
 } @else {
 <mat-form-field appearance="fill">
   <mat-label>Brewing name</mat-label>
-  <input matInput (blur)="handleInputBlur()" appAutoFocus />
-  <mat-icon matIconSuffix> prompt_suggestion </mat-icon>
-  <!-- <button matSuffix mat-icon-button (click)="handlePromptSuggestion()">
-  </button> -->
+  <input
+    matInput
+    [value]="brewName()"
+    (blur)="handleInputBlur($event)"
+    appAutoFocus
+  />
   <mat-hint (click)="handlePromptSuggestion()"
     ><u>Suggestion: {{ suggestionName() }}</u></mat-hint
   >

@@ -1,6 +1,8 @@
 import { MethodProcess } from './method-process';
 
-export function stepsByMethodProcess(methodProcess: MethodProcess) {
+export function stepsByMethodProcess(
+  methodProcess: MethodProcess
+): [string[], string[], string[]] {
   switch (methodProcess.method) {
     case 'French Press':
       return frenchPressSteps();
@@ -13,11 +15,11 @@ export function stepsByMethodProcess(methodProcess: MethodProcess) {
     case 'Moka Pot':
       return mokaPotSteps();
     default:
-      return [];
+      return [[], [], []];
   }
 }
 
-function frenchPressSteps() {
+function frenchPressSteps(): [string[], string[], string[]] {
   return [
     [
       'Pour hot water into the French press to preheat it. This helps maintain the brewing temperature. Discard the water before adding the coffee grounds.',
@@ -44,7 +46,7 @@ function frenchPressSteps() {
   ];
 }
 
-function aeropressSteps() {
+function aeropressSteps(): [string[], string[], string[]] {
   return [
     [
       'Boil water and let it cool to about 200°F (93°C)',
@@ -68,7 +70,7 @@ function aeropressSteps() {
   ];
 }
 
-function chemexSteps() {
+function chemexSteps(): [string[], string[], string[]] {
   return [
     [
       'Place a Chemex paper filter in the top of the Chemex, ensuring the triple-folded side is against the spout',
@@ -92,7 +94,7 @@ function chemexSteps() {
   ];
 }
 
-function v60Steps() {
+function v60Steps(): [string[], string[], string[]] {
   return [
     [
       'Place the V60 dripper on top of your coffee cup or carafe',
@@ -115,7 +117,7 @@ function v60Steps() {
   ];
 }
 
-function mokaPotSteps() {
+function mokaPotSteps(): [string[], string[], string[]] {
   return [
     [
       '(Optional) Put some water in the top chamber to avoid overheating the coffee which can cause a burnt taste',

@@ -71,6 +71,7 @@ export class CoffeeCalculatorComponent
     cups: '',
   });
   protected isMediumLayout = signal<boolean>(false);
+
   protected readonly form: FormGroup<CoffeCalculatorForm>;
   public destroyRef = inject(DestroyRef);
   constructor(

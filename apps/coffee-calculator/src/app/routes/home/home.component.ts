@@ -1,8 +1,9 @@
-import { Component, Inject, OnDestroy } from '@angular/core';
+import { Component, Inject, OnDestroy, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { MethodProcess } from '@domain/method-process';
 import { BrewStateService } from '@shared/services/brew-state.service';
+import { BrewService } from '@shared/services/brew.service';
 import { from, mergeMap, of } from 'rxjs';
 import { CoffeeCalculatorComponent, HistoryModule } from 'src/app/features';
 import { HistoryRepository } from 'src/app/features/history/domain';
@@ -18,11 +19,20 @@ const MAT_MODULES = [MatButtonModule];
   styleUrl: './home.component.scss',
 })
 export class HomeComponent implements OnDestroy {
+  protected mode = signal<'brew' | 'calculator'>('calculator');
   constructor(
     @Inject(HISTORY_REPOSITORY) private historyRepo: HistoryRepository,
     private brewState: BrewStateService,
-    private router: Router
-  ) {}
+    private brewService: BrewService,
+    private router: Router,
+    private readonly activatedRoute: ActivatedRoute
+  ) {
+    const mode = this.activatedRoute.snapshot.queryParams['for'];
+
+    if (mode) {
+      this.mode.set(mode);
+    }
+  }
 
   protected handleSaveInHistory() {
     this.saveLastDraft().subscribe(process => {
@@ -56,6 +66,17 @@ export class HomeComponent implements OnDestroy {
         draft ? this.historyRepo.saveProcess(draft.convert()) : of(undefined)
       )
     );
+  }
+
+  protected handleConfirmSelection() {
+    this.saveLastDraft().subscribe(process => {
+      if (process) {
+        const brewing = this.brewService.startNewBrewing(process);
+
+        this.brewState.setBrewing(brewing);
+        this.router.navigate([`brew/${brewing.getId()}`]);
+      }
+    });
   }
 
   ngOnDestroy(): void {

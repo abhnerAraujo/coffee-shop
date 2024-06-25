@@ -8,16 +8,31 @@
           @if (step.mode === 'view') {
           <span (click)="handleEdit(tab.list, $index)">{{ step.value }}</span>
           } @else {
-          <mat-form-field class="w-full">
-            <textarea
-              matInput
-              [value]="step.value"
-              class="min-h-24"
-              appAutoFocus
-              (blur)="handleStepBlur(tab.list, $index, $event)"
-            ></textarea>
-            <mat-hint>Touch outside to confirm</mat-hint>
-          </mat-form-field>
+          <div>
+            <mat-form-field class="w-full">
+              <textarea
+                matInput
+                #stepInput
+                [value]="step.value"
+                class="min-h-24"
+                appAutoFocus
+              ></textarea>
+            </mat-form-field>
+            <div class="flex flex-row gap-2 justify-end">
+              <button
+                mat-icon-button
+                (click)="handleCancelStep(tab.list, $index)"
+              >
+                <mat-icon>close</mat-icon>
+              </button>
+              <button
+                mat-icon-button
+                (click)="handleSaveStep(tab.list, $index, stepInput.value)"
+              >
+                <mat-icon>save</mat-icon>
+              </button>
+            </div>
+          </div>
           }
         </li>
         }
