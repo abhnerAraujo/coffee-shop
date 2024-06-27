@@ -1,3 +1,4 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -19,7 +20,7 @@ const MAT_MODULES = [
 @Component({
   selector: 'app-brews',
   standalone: true,
-  imports: [...MAT_MODULES],
+  imports: [...MAT_MODULES, DatePipe],
   templateUrl: './brews.component.html',
   styleUrl: './brews.component.scss',
 })
@@ -35,5 +36,9 @@ export class BrewsComponent implements OnInit {
 
   newBrewing() {
     this.router.navigate(['/home'], { queryParams: { for: 'brew' } });
+  }
+
+  openBrew(brewing: Brewing) {
+    this.router.navigate(['/brew/' + brewing.getId()]);
   }
 }

@@ -93,4 +93,8 @@ export class Brewing {
   getId() {
     return this.props.id;
   }
+
+  getCreatedAt() {
+    return this.props.createdAt;
+  }
 }

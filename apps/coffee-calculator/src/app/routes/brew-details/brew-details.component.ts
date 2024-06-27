@@ -5,6 +5,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { Router } from '@angular/router';
 import { AutoFocusDirective } from '@shared/directives/auto-focus.directive';
 import { BrewStateService } from '@shared/services/brew-state.service';
 import { BrewService } from '@shared/services/brew.service';
@@ -38,7 +39,8 @@ export class BrewDetailsComponent implements OnInit {
   @Input() brewingId = '';
   constructor(
     private brewState: BrewStateService,
-    private brewService: BrewService
+    private brewService: BrewService,
+    private router: Router
   ) {
     this.brewState.process$
       .pipe(
@@ -90,5 +92,9 @@ export class BrewDetailsComponent implements OnInit {
       this.brewName.set(this.suggestionName());
     }
     this.titleMode.set('view');
+  }
+
+  protected handleBackClick() {
+    this.router.navigate(['/brew']);
   }
 }

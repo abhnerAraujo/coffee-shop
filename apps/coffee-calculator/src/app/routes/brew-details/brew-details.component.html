@@ -1,3 +1,8 @@
+<div>
+  <button mat-button (click)="handleBackClick()">
+    <mat-icon>arrow_back</mat-icon>Back
+  </button>
+</div>
 @if (titleMode() === 'view') {
 <h2 (click)="titleMode.set('edit')">{{ brewName() }}</h2>
 } @else {

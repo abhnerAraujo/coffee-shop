@@ -1,16 +1,5 @@
-.calculator-step {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-}
-
 .calculator-form {
-  // display: flex;
-  // flex-direction: column;
   gap: 2rem;
-  > .method {
-    @extend .calculator-step;
-  }
   > .row {
     display: flex;
     flex-direction: row;
