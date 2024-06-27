@@ -18,6 +18,10 @@
       <p class="text-sm">Time (min)</p>
       <h4>{{ time() }}</h4>
     </div>
+    <div class="flex flex-col">
+      <p class="text-sm">Grind size</p>
+      <h4>{{ grindSize() }}</h4>
+    </div>
   </div>
   <div class="timer flex flex-row justify-center items-center gap-2">
     @if (timerStatus() === 'stopped' || timerStatus() === 'paused') {

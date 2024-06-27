@@ -21,6 +21,7 @@ export class BrewConfigurationComponent implements OnInit {
     coffee: 'g',
   });
   protected time = signal<string>(this.displayTime(4 * 60));
+  protected grindSize = signal<string>('medium');
   protected timerStatus = signal<'paused' | 'counting' | 'stopped'>('stopped');
   protected timer = signal<string>('0:00');
 
@@ -29,31 +30,6 @@ export class BrewConfigurationComponent implements OnInit {
     private brewService: BrewService,
     private destroyRef: DestroyRef
   ) {
-    // brewService.process$
-    //   .pipe(
-    //     takeUntilDestroyed(destroyRef),
-    //     distinctUntilChanged((prev, next) => prev?.id === next?.id)
-    //   )
-    //   .subscribe(currentProcess => {
-    //     console.log(currentProcess);
-    //     if (currentProcess) {
-    //       this.quantities.set({
-    //         water: currentProcess.quantities.water.toFixed(2),
-    //         coffee: currentProcess.quantities.coffee.toFixed(2),
-    //       });
-    //       this.units.set({
-    //         water: currentProcess.units.water,
-    //         coffee: currentProcess.units.coffee,
-    //       });
-    //       this.method.set(currentProcess.method);
-    //       this.time.set(this.displayTime(currentProcess.time));
-    //     } else {
-    //       this.quantities.set({ water: '180', coffee: '11.25' });
-    //       this.units.set({ water: 'ml', coffee: 'g' });
-    //       this.method.set('French Press');
-    //       this.time.set(this.displayTime(4 * 60));
-    //     }
-    //   });
     brewState.timer$.subscribe(({ time, status }) => {
       this.timer.set(this.displayTime(time));
       this.timerStatus.set(status);
@@ -78,6 +54,7 @@ export class BrewConfigurationComponent implements OnInit {
         coffee: quantities.coffee.toFixed(2),
       });
       this.units.set(units);
+      this.grindSize.set(methodProcess.grindSize);
     } else {
       this.time.set(this.displayTime(4 * 60));
     }
