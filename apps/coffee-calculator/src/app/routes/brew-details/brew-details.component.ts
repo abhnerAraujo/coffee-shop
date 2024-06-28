@@ -1,3 +1,4 @@
+import { NgClass } from '@angular/common';
 import { Component, Input, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -27,6 +28,7 @@ const MAT_MODULES = [
     BrewingModule,
     FormsModule,
     AutoFocusDirective,
+    NgClass,
     ...MAT_MODULES,
   ],
   templateUrl: './brew-details.component.html',
@@ -36,6 +38,7 @@ export class BrewDetailsComponent implements OnInit {
   protected titleMode = signal<'edit' | 'view'>('view');
   protected suggestionName = signal<string>('');
   protected brewName = signal('My brew');
+  protected isEditing = signal(false);
   @Input() brewingId = '';
   constructor(
     private brewState: BrewStateService,
@@ -57,6 +60,9 @@ export class BrewDetailsComponent implements OnInit {
           );
         }
       });
+    brewState.editing$
+      .pipe(takeUntilDestroyed())
+      .subscribe(editing => this.isEditing.set(editing));
   }
 
   ngOnInit() {

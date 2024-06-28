@@ -23,9 +23,8 @@ export class BrewStateService {
   private readonly stopTimer$ = new Subject<void>();
   private brewing = new BehaviorSubject<Brewing | undefined>(undefined);
   readonly brewing$ = this.brewing.asObservable();
-  constructor() {
-    console.log('BrewStateService created');
-  }
+  private editing = new BehaviorSubject(false);
+  readonly editing$ = this.editing.asObservable();
 
   startTimer() {
     if (this.timer.value.status === 'stopped') {
@@ -75,5 +74,13 @@ export class BrewStateService {
 
   getBrewing() {
     return this.brewing.value;
+  }
+
+  setEditing(editing: boolean) {
+    this.editing.next(editing);
+  }
+
+  isEditing() {
+    return this.editing.value;
   }
 }

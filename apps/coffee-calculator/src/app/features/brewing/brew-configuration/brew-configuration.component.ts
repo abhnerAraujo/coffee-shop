@@ -3,7 +3,6 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Brewing } from '@domain/brewing';
 import { MethodType } from '@domain/method';
 import { BrewStateService } from '@shared/services/brew-state.service';
-import { BrewService } from '@shared/services/brew.service';
 
 @Component({
   selector: 'app-brew-configuration',
@@ -20,20 +19,29 @@ export class BrewConfigurationComponent implements OnInit {
     water: 'ml',
     coffee: 'g',
   });
+  protected cups = signal<{ amount: number; unit: string; volume: number }>({
+    amount: 1,
+    unit: 'ml',
+    volume: 180,
+  });
   protected time = signal<string>(this.displayTime(4 * 60));
   protected grindSize = signal<string>('medium');
   protected timerStatus = signal<'paused' | 'counting' | 'stopped'>('stopped');
   protected timer = signal<string>('0:00');
+  protected showTimer = signal(false);
+  protected isEditing = signal(false);
 
   constructor(
     protected brewState: BrewStateService,
-    private brewService: BrewService,
     private destroyRef: DestroyRef
   ) {
     brewState.timer$.subscribe(({ time, status }) => {
       this.timer.set(this.displayTime(time));
       this.timerStatus.set(status);
     });
+    brewState.editing$
+      .pipe(takeUntilDestroyed())
+      .subscribe(editing => this.isEditing.set(editing));
   }
 
   ngOnInit() {
@@ -45,7 +53,7 @@ export class BrewConfigurationComponent implements OnInit {
   private updateBrewing(brewing: Brewing | undefined) {
     if (brewing) {
       const methodProcess = brewing.getMethodProcess();
-      const { quantities, units } = methodProcess;
+      const { quantities, units, cups } = methodProcess;
 
       this.time.set(this.displayTime(brewing.getTimer()));
       this.method.set(brewing.getMethodProcess().method);
@@ -55,6 +63,7 @@ export class BrewConfigurationComponent implements OnInit {
       });
       this.units.set(units);
       this.grindSize.set(methodProcess.grindSize);
+      this.cups.set(cups);
     } else {
       this.time.set(this.displayTime(4 * 60));
     }

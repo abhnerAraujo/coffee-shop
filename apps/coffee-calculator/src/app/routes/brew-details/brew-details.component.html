@@ -4,7 +4,14 @@
   </button>
 </div>
 @if (titleMode() === 'view') {
-<h2 (click)="titleMode.set('edit')">{{ brewName() }}</h2>
+<h2
+  [ngClass]="{
+    'underline md:no-underline hover:underline': isEditing()
+  }"
+  (click)="isEditing() && titleMode.set('edit')"
+>
+  {{ brewName() }}
+</h2>
 } @else {
 <mat-form-field appearance="fill">
   <mat-label>Brewing name</mat-label>
@@ -22,6 +29,9 @@
 <div>
   <app-brew-configuration />
 </div>
-<div>
+<div class="mt-4">
+  <app-brew-notes />
+</div>
+<div class="mt-4">
   <app-brew-steps />
 </div>

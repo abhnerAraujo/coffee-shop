@@ -1,14 +1,20 @@
 <div class="min-h-80">
   <mat-tab-group>
-    @for (tab of listTabs(); track $index) {
+    @for (tab of listTabs(); track $index; let tabIdx = $index) {
     <mat-tab label="{{ tab.label }}">
       <ul>
         @for (step of tab.list(); track $index) {
         <li>
           @if (step.mode === 'view') {
-          <span (click)="handleEdit(tab.list, $index)">{{ step.value }}</span>
+          <span
+            [ngClass]="{
+              'underline md:no-underline hover:underline': isEditing()
+            }"
+            (click)="handleEdit(tab.list, $index)"
+            >{{ step.value }}</span
+          >
           } @else {
-          <div>
+          <div class="my-4">
             <mat-form-field class="w-full">
               <textarea
                 matInput
@@ -27,11 +33,39 @@
               </button>
               <button
                 mat-icon-button
-                (click)="handleSaveStep(tab.list, $index, stepInput.value)"
+                (click)="handleSaveStep(tabIdx, $index, stepInput.value)"
               >
                 <mat-icon>save</mat-icon>
               </button>
             </div>
+          </div>
+          }
+        </li>
+        } @if (isEditing()) {
+        <li>
+          @if (addState() === 'view') {
+          <button mat-stroked-button (click)="addState.set('edit')">Add</button>
+          } @else {
+          <mat-form-field class="w-full">
+            <textarea
+              matInput
+              #newStepInput
+              class="min-h-24"
+              appAutoFocus
+            ></textarea>
+          </mat-form-field>
+          <div class="flex flex-row gap-2 justify-end">
+            <button mat-icon-button (click)="addState.set('view')">
+              <mat-icon>close</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              (click)="
+                handleSaveStep(tabIdx, tab.list().length, newStepInput.value)
+              "
+            >
+              <mat-icon>save</mat-icon>
+            </button>
           </div>
           }
         </li>

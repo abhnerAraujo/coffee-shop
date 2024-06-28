@@ -97,4 +97,12 @@ export class Brewing {
   getCreatedAt() {
     return this.props.createdAt;
   }
+
+  getDescription() {
+    return this.props.description;
+  }
+
+  setDescription(description: string) {
+    this.props.description = description;
+  }
 }

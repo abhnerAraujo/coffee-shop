@@ -28,7 +28,9 @@ export class BrewStepsComponent implements OnInit {
   tips = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
   listTabs = signal<{ label: string; list: ListSignal }[]>([]);
   private readonly tutorials: { [key in MethodType]: SafeUrl };
+  protected addState = signal('view');
   protected isMediumLayout = signal<boolean>(false);
+  protected isEditing = signal(false);
   constructor(
     private brewState: BrewStateService,
     private brewService: BrewService,
@@ -65,6 +67,9 @@ export class BrewStepsComponent implements OnInit {
       this.layoutChanges.observe([mediumBreakpoint]).subscribe(result => {
         this.isMediumLayout.set(result.matches);
       });
+      brewState.editing$
+        .pipe(takeUntilDestroyed())
+        .subscribe(editing => this.isEditing.set(editing));
     }
   }
 
@@ -84,15 +89,18 @@ export class BrewStepsComponent implements OnInit {
       );
       this.tips.set(brewing.getTips().map(value => ({ mode: 'view', value })));
       this.tutorialUrl.set(this.tutorials[brewing.getMethodProcess().method]);
+      this.addState.set('view');
     } else {
       this.pre.set([]);
       this.steps.set([]);
       this.tips.set([]);
       this.tutorialUrl.set('');
+      this.addState.set('view');
     }
   }
 
   protected handleEdit(list: ListSignal, index: number) {
+    if (!this.isEditing()) return;
     const current = list();
     const item = current[index];
 
@@ -103,19 +111,61 @@ export class BrewStepsComponent implements OnInit {
     ]);
   }
 
-  protected handleSaveStep(list: ListSignal, index: number, value: string) {
-    const current = list();
-    const item = current[index];
-
-    list.set([
-      ...current.slice(0, index),
-      { ...item, mode: 'view', value: value || item.value },
-      ...current.slice(index + 1),
-    ]);
+  protected handleSaveStep(list: number, index: number, value: string) {
     const brewing = this.brewState.getBrewing();
 
     if (brewing) {
-      brewing.setSteps(current.map(({ value }) => value));
+      switch (list) {
+        case 0:
+          this.savePreparation(brewing, index, value);
+          break;
+        case 1:
+          this.saveSteps(brewing, index, value);
+          break;
+        case 2:
+          this.saveTips(brewing, index, value);
+          break;
+      }
+      this.brewService.updateBrewing(brewing);
+      this.brewState.setBrewing(brewing);
+    }
+  }
+
+  private savePreparation(brewing: Brewing, index: number, value: string) {
+    const current = brewing.getPreparation();
+
+    brewing.setPreparation([
+      ...current.slice(0, index),
+      value,
+      ...current.slice(index + 1),
+    ]);
+  }
+
+  private saveSteps(brewing: Brewing, index: number, value: string) {
+    const current = brewing.getSteps();
+
+    brewing.setSteps([
+      ...current.slice(0, index),
+      value,
+      ...current.slice(index + 1),
+    ]);
+  }
+
+  private saveTips(brewing: Brewing, index: number, value: string) {
+    const current = brewing.getTips();
+
+    brewing.setTips([
+      ...current.slice(0, index),
+      value,
+      ...current.slice(index + 1),
+    ]);
+  }
+
+  handleNewStep(list: ListSignal, value: string) {
+    const brewing = this.brewState.getBrewing();
+
+    if (brewing) {
+      brewing.setSteps([...list().map(({ value }) => value), value]);
       this.brewService.updateBrewing(brewing);
     }
   }

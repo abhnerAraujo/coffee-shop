@@ -1,0 +1,39 @@
+<h3>About this process</h3>
+@if (!editDescription()) { @if(description()) {
+<p
+  [ngClass]="{
+    'underline md:no-underline hover:underline': isEditing()
+  }"
+  (click)="handleDescriptionClick()"
+>
+  {{ description() }}
+</p>
+} @else {
+<p
+  [ngClass]="{
+    'underline md:no-underline hover:underline': isEditing()
+  }"
+  (click)="handleDescriptionClick()"
+>
+  No description yet :(
+</p>
+} } @else {
+<mat-form-field appearance="fill" class="w-full">
+  <mat-label>Description</mat-label>
+  <textarea
+    class="w-full min-h-20"
+    matInput
+    [value]="description()"
+    appAutoFocus
+    #descriptionInput
+  ></textarea>
+</mat-form-field>
+<div class="flex flex-row justify-end gap-2">
+  <button mat-icon-button (click)="editDescription.set(false)">
+    <mat-icon>close</mat-icon>
+  </button>
+  <button mat-icon-button (click)="saveDescription(descriptionInput.value)">
+    <mat-icon>save</mat-icon>
+  </button>
+</div>
+}

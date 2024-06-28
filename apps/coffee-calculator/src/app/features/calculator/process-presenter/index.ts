@@ -85,7 +85,7 @@ export class ProcessPresenterService {
         .withCups({
           amount: process.coffeeCups,
           volume: CUP_SIZE,
-          unit: process.waterUnit,
+          unit: 'ml',
         })
         .withRatio(process.ratio)
         .withUnits({
