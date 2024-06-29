@@ -3,7 +3,7 @@
     @for (tab of listTabs(); track $index; let tabIdx = $index) {
     <mat-tab label="{{ tab.label }}">
       <ul>
-        @for (step of tab.list(); track $index) {
+        @for (step of tab.list(); track $index; let count = $count) {
         <li>
           @if (step.mode === 'view') {
           <span
@@ -13,7 +13,24 @@
             (click)="handleEdit(tab.list, $index)"
             >{{ step.value }}</span
           >
-          } @else {
+          @if(isEditing()) {
+          <div class="flex flex-row justify-end gap-2">
+            <button
+              mat-icon-button
+              [disabled]="!$index"
+              (click)="swapSteps(tabIdx, $index, $index - 1)"
+            >
+              <mat-icon>expand_less</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              [disabled]="$index === $count - 1"
+              (click)="swapSteps(tabIdx, $index, $index + 1)"
+            >
+              <mat-icon>expand_more</mat-icon>
+            </button>
+          </div>
+          } } @else {
           <div class="my-4">
             <mat-form-field class="w-full">
               <textarea

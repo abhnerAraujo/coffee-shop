@@ -180,6 +180,35 @@ export class BrewStepsComponent implements OnInit {
       ...current.slice(index + 1),
     ]);
   }
+
+  protected swapSteps(list: number, from: number, to: number) {
+    const brewing = this.brewState.getBrewing();
+    const swap = (steps: string[], setFunction: (steps: string[]) => void) => {
+      const temp = steps[from];
+
+      steps[from] = steps[to];
+      steps[to] = temp;
+      setFunction(steps);
+    };
+
+    if (brewing) {
+      switch (list) {
+        case 0:
+          swap(brewing.getPreparation(), steps =>
+            brewing.setPreparation(steps)
+          );
+          break;
+        case 1:
+          swap(brewing.getSteps(), steps => brewing.setSteps(steps));
+          break;
+        case 2:
+          swap(brewing.getTips(), steps => brewing.setTips(steps));
+          break;
+      }
+      this.brewService.updateBrewing(brewing);
+      this.brewState.setBrewing(brewing);
+    }
+  }
 }
 
 type ListSignal = WritableSignal<{ mode: 'edit' | 'view'; value: string }[]>;
