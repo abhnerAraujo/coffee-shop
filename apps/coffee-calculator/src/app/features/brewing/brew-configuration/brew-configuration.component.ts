@@ -35,9 +35,10 @@ export class BrewConfigurationComponent implements OnInit {
     protected brewState: BrewStateService,
     private destroyRef: DestroyRef
   ) {
-    brewState.timer$.subscribe(({ time, status }) => {
+    brewState.timer$.subscribe(({ time, status, hidden }) => {
       this.timer.set(this.displayTime(time));
       this.timerStatus.set(status);
+      this.showTimer.set(!hidden);
     });
     brewState.editing$
       .pipe(takeUntilDestroyed())

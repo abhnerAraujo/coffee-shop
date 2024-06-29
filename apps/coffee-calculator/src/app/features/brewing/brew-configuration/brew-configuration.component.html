@@ -28,23 +28,6 @@
     </div>
   </div>
   <mat-divider />
-  <div class="flex flex-row justify-end items-center gap-4">
-    <button mat-icon-button (click)="showTimer.set(!showTimer())">
-      <mat-icon>{{ showTimer() ? 'timer_off' : 'timer' }}</mat-icon>
-    </button>
-    <!-- <button mat-icon-button>
-      <mat-icon>content_copy</mat-icon>
-    </button> -->
-    <!-- <button mat-icon-button>
-      <mat-icon>favorite</mat-icon>
-    </button> -->
-    <button
-      mat-icon-button
-      (click)="brewState.setEditing(!brewState.isEditing())"
-    >
-      <mat-icon>{{ isEditing() ? 'edit_off' : 'edit' }}</mat-icon>
-    </button>
-  </div>
   @if (showTimer()) {
   <div class="timer flex flex-row justify-center items-center gap-2">
     @if (timerStatus() === 'stopped' || timerStatus() === 'paused') {

@@ -2,7 +2,6 @@
 @import 'typography';
 @import 'theme';
 
-
 :root {
   @include mat.all-component-themes($coffee-calculator-theme);
   @include mat.typography-hierarchy($coffee-calculator-theme);

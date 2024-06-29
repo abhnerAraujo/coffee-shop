@@ -1,109 +1,106 @@
 <div class="min-h-80">
-  <mat-tab-group>
-    @for (tab of listTabs(); track $index; let tabIdx = $index) {
-    <mat-tab label="{{ tab.label }}">
-      <ul>
-        @for (step of tab.list(); track $index; let count = $count) {
-        <li>
-          @if (step.mode === 'view') {
-          <span
-            [ngClass]="{
-              'underline md:no-underline hover:underline': isEditing()
-            }"
-            (click)="handleEdit(tab.list, $index)"
-            >{{ step.value }}</span
-          >
-          @if(isEditing()) {
-          <div class="flex flex-row justify-end gap-2">
-            <button
-              mat-icon-button
-              [disabled]="!$index"
-              (click)="swapSteps(tabIdx, $index, $index - 1)"
-            >
-              <mat-icon>expand_less</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              [disabled]="$index === $count - 1"
-              (click)="swapSteps(tabIdx, $index, $index + 1)"
-            >
-              <mat-icon>expand_more</mat-icon>
-            </button>
-          </div>
-          } } @else {
-          <div class="my-4">
-            <mat-form-field class="w-full">
-              <textarea
-                matInput
-                #stepInput
-                [value]="step.value"
-                class="min-h-24"
-                appAutoFocus
-              ></textarea>
-            </mat-form-field>
-            <div class="flex flex-row gap-2 justify-end">
-              <button
-                mat-icon-button
-                (click)="handleCancelStep(tab.list, $index)"
-              >
-                <mat-icon>close</mat-icon>
-              </button>
-              <button
-                mat-icon-button
-                (click)="handleSaveStep(tabIdx, $index, stepInput.value)"
-              >
-                <mat-icon>save</mat-icon>
-              </button>
-            </div>
-          </div>
-          }
-        </li>
-        } @if (isEditing()) {
-        <li>
-          @if (addState() === 'view') {
-          <button mat-stroked-button (click)="addState.set('edit')">Add</button>
-          } @else {
-          <mat-form-field class="w-full">
-            <textarea
-              matInput
-              #newStepInput
-              class="min-h-24"
-              appAutoFocus
-            ></textarea>
-          </mat-form-field>
-          <div class="flex flex-row gap-2 justify-end">
-            <button mat-icon-button (click)="addState.set('view')">
-              <mat-icon>close</mat-icon>
-            </button>
-            <button
-              mat-icon-button
-              (click)="
-                handleSaveStep(tabIdx, tab.list().length, newStepInput.value)
-              "
-            >
-              <mat-icon>save</mat-icon>
-            </button>
-          </div>
-          }
-        </li>
-        }
-      </ul>
-    </mat-tab>
-    } @if (tutorialUrl()) {
-    <mat-tab label="Tutorial">
-      <div class="flex flex-row justify-center w-full">
-        <iframe
-          [width]="isMediumLayout() ? 900 : '100%'"
-          [height]="isMediumLayout() ? 506 : 315"
-          [src]="tutorialUrl()"
-          title="YouTube video player"
-          frameborder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-          referrerpolicy="strict-origin-when-cross-origin"
-          allowfullscreen
-        ></iframe>
+  @for (tab of listTabs(); track $index; let tabIdx = $index) {
+  <h3 class="title">{{ tab.label }}</h3>
+  <ul>
+    @for (step of tab.list(); track $index; let count = $count) {
+    <li>
+      @if (step.mode === 'view') {
+      <span
+        [ngClass]="{
+          'underline md:no-underline hover:underline': isEditing()
+        }"
+        (click)="handleEdit(tab.list, $index)"
+        >{{ step.value }}</span
+      >
+      @if(isEditing()) {
+      <div class="flex flex-row justify-end gap-2">
+        <button mat-icon-button (click)="handleRemoveStep(tabIdx, $index)">
+          <mat-icon>delete</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          [disabled]="!$index"
+          (click)="swapSteps(tabIdx, $index, $index - 1)"
+        >
+          <mat-icon>expand_less</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          [disabled]="$index === $count - 1"
+          (click)="swapSteps(tabIdx, $index, $index + 1)"
+        >
+          <mat-icon>expand_more</mat-icon>
+        </button>
       </div>
-    </mat-tab>
+      } } @else {
+      <div class="my-4">
+        <mat-form-field class="w-full">
+          <textarea
+            matInput
+            #stepInput
+            [value]="step.value"
+            class="min-h-24"
+            appAutoFocus
+          ></textarea>
+        </mat-form-field>
+        <div class="flex flex-row gap-2 justify-end">
+          <button mat-icon-button (click)="handleCancelStep(tab.list, $index)">
+            <mat-icon>close</mat-icon>
+          </button>
+          <button
+            mat-icon-button
+            (click)="handleSaveStep(tabIdx, $index, stepInput.value)"
+          >
+            <mat-icon>save</mat-icon>
+          </button>
+        </div>
+      </div>
+      <mat-divider></mat-divider>
+      }
+    </li>
+    } @if (isEditing()) {
+    <li>
+      @if (addState() !== tabIdx) {
+      <button mat-stroked-button (click)="addState.set(tabIdx)">Add</button>
+      } @else {
+      <mat-form-field class="w-full">
+        <textarea
+          matInput
+          #newStepInput
+          class="min-h-24"
+          appAutoFocus
+        ></textarea>
+      </mat-form-field>
+      <div class="flex flex-row gap-2 justify-end">
+        <button mat-icon-button (click)="addState.set(undefined)">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button
+          mat-icon-button
+          (click)="
+            handleSaveStep(tabIdx, tab.list().length, newStepInput.value)
+          "
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+      }
+    </li>
     }
-  </mat-tab-group>
+  </ul>
+  } @if (tutorialUrl()) {
+  <h3 class="title">Tutorial</h3>
+  <div class="flex flex-row justify-center w-full">
+    <iframe
+      [width]="isMediumLayout() ? 900 : '100%'"
+      [height]="isMediumLayout() ? 506 : 315"
+      [src]="tutorialUrl()"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+  </div>
+  }
 </div>

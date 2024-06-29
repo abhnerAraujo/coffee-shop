@@ -18,7 +18,8 @@ export class BrewStateService {
   readonly timer = new BehaviorSubject<{
     time: number;
     status: 'paused' | 'counting' | 'stopped';
-  }>({ time: 0, status: 'stopped' });
+    hidden: boolean;
+  }>({ time: 0, status: 'stopped', hidden: true });
   readonly timer$ = this.timer.asObservable();
   private readonly stopTimer$ = new Subject<void>();
   private brewing = new BehaviorSubject<Brewing | undefined>(undefined);
@@ -28,14 +29,14 @@ export class BrewStateService {
 
   startTimer() {
     if (this.timer.value.status === 'stopped') {
-      this.timer.next({ time: 0, status: 'counting' });
+      this.timer.next({ ...this.timer.value, time: 0, status: 'counting' });
       interval(1000)
         .pipe(takeUntil(this.stopTimer$))
         .subscribe(() => {
           const { time, status } = this.timer.value;
 
           if (status === 'counting') {
-            this.timer.next({ time: time + 1, status });
+            this.timer.next({ ...this.timer.value, time: time + 1, status });
           }
         });
     } else {
@@ -48,8 +49,12 @@ export class BrewStateService {
   }
 
   stopTimer() {
-    this.timer.next({ time: 0, status: 'stopped' });
+    this.timer.next({ ...this.timer.value, time: 0, status: 'stopped' });
     this.stopTimer$.next();
+  }
+
+  toggleTimerVisibility() {
+    this.timer.next({ ...this.timer.value, hidden: !this.timer.value.hidden });
   }
 
   setProcess(process: MethodProcess | undefined) {

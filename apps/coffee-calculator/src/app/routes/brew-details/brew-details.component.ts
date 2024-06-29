@@ -41,7 +41,7 @@ export class BrewDetailsComponent implements OnInit {
   protected isEditing = signal(false);
   @Input() brewingId = '';
   constructor(
-    private brewState: BrewStateService,
+    protected brewState: BrewStateService,
     private brewService: BrewService,
     private router: Router
   ) {

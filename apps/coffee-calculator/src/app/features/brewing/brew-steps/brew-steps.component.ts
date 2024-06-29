@@ -28,7 +28,7 @@ export class BrewStepsComponent implements OnInit {
   tips = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
   listTabs = signal<{ label: string; list: ListSignal }[]>([]);
   private readonly tutorials: { [key in MethodType]: SafeUrl };
-  protected addState = signal('view');
+  protected addState = signal<number | undefined>(undefined);
   protected isMediumLayout = signal<boolean>(false);
   protected isEditing = signal(false);
   constructor(
@@ -89,13 +89,13 @@ export class BrewStepsComponent implements OnInit {
       );
       this.tips.set(brewing.getTips().map(value => ({ mode: 'view', value })));
       this.tutorialUrl.set(this.tutorials[brewing.getMethodProcess().method]);
-      this.addState.set('view');
+      this.addState.set(undefined);
     } else {
       this.pre.set([]);
       this.steps.set([]);
       this.tips.set([]);
       this.tutorialUrl.set('');
-      this.addState.set('view');
+      this.addState.set(undefined);
     }
   }
 
@@ -126,6 +126,7 @@ export class BrewStepsComponent implements OnInit {
           this.saveTips(brewing, index, value);
           break;
       }
+      this.addState.set(undefined);
       this.brewService.updateBrewing(brewing);
       this.brewState.setBrewing(brewing);
     }
@@ -203,6 +204,28 @@ export class BrewStepsComponent implements OnInit {
           break;
         case 2:
           swap(brewing.getTips(), steps => brewing.setTips(steps));
+          break;
+      }
+      this.brewService.updateBrewing(brewing);
+      this.brewState.setBrewing(brewing);
+    }
+  }
+
+  protected handleRemoveStep(list: number, index: number) {
+    const brewing = this.brewState.getBrewing();
+
+    if (brewing) {
+      switch (list) {
+        case 0:
+          brewing.setPreparation(
+            brewing.getPreparation().filter((_, i) => i !== index)
+          );
+          break;
+        case 1:
+          brewing.setSteps(brewing.getSteps().filter((_, i) => i !== index));
+          break;
+        case 2:
+          brewing.setTips(brewing.getTips().filter((_, i) => i !== index));
           break;
       }
       this.brewService.updateBrewing(brewing);

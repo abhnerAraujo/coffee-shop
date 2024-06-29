@@ -7,11 +7,15 @@ ul {
   list-style-type: bullet;
 }
 
+.title {
+  margin-top: 24px !important;
+}
+
 ol, ul {
-  padding: 1.75rem;
-  max-height: 234px;
+  padding: 0 1.5rem;
+  // max-height: 234px;
   @include mqGt('md') {
-    max-height: 32vh;
+    // max-height: 32vh;
   }
   li {
     margin-bottom: .5rem;
