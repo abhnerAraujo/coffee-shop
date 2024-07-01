@@ -1,6 +1,10 @@
-<router-outlet></router-outlet>
+<main class="md:max-w-5xl md:mx-auto pb-14">
+  <router-outlet></router-outlet>
+</main>
 @if (this.showNav()) {
-<div class="nav-card rounded-b-none rounded-t-lg">
+<div
+  class="nav-card rounded-b-none rounded-t-lg fixed right-6 bottom-0 w-2/5 md:w-1/4 flex flex-row justify-around gap-1 z-10"
+>
   @for (item of nav; track $index) {
   <button
     class="link"

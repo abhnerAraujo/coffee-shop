@@ -4,16 +4,6 @@
 .nav-card {
   background: mat.get-theme-color($coffee-calculator-theme, 'neutral', 20);
   padding: .5rem 1rem;
-  position: fixed;
-  right: 1.5rem;
-  bottom: 0;
-  width: 45%;
-  height: fit-content;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  gap: 4px;
-  z-index: 9999;
 
   > .link:not(:disabled, .active) {
     color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 40)

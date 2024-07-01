@@ -1,3 +1,4 @@
+@import "mixins";
 .calculator-form {
   gap: 2rem;
   > .row {
@@ -12,8 +13,10 @@
 }
 
 .form-control {
-  mat-form-field {
-    max-width: 150px;
+  @include mqGt('sm') {
+    mat-form-field {
+      max-width: 150px;
+    }
   }
 }
 
@@ -22,6 +25,11 @@
   flex-direction: row;
   gap: 1rem;
   align-items: center;
+  justify-content: space-evenly;
+  width: 100%;
+  @include mqGt('sm') {
+    justify-content: start;
+  }
 }
 
 .calculator-result {

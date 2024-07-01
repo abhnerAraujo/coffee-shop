@@ -1,7 +1,7 @@
 <form [formGroup]="form" class="flex flex-col calculator-form">
-  <div class="flex flex-col lg:flex-row justify-center items-center">
-    <div class="calculator-step">
-      <h1>Method</h1>
+  <div class="flex flex-col lg:flex-row justify-between items-center">
+    <div>
+      <h2>Method</h2>
       @if (isMediumLayout()) {
       <mat-button-toggle-group formControlName="method">
         @for (item of methodOptions(); track $index) {
@@ -22,23 +22,18 @@
       </mat-radio-group>
       }
     </div>
-    <div
-      class="calculator-result hidden md:flex md:flex-col items-center justify-center"
-    >
-      <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
-    </div>
     @if(isMediumLayout()) {
     <app-method-image [method]="form.value.method ?? 'AeroPress'" />
     }
   </div>
-  @if (isMediumLayout()) {
   <mat-divider></mat-divider>
-  }
-  <div class="flex flex-col md:flex-row gap-5">
-    <div class="flex-auto flex flex-row flex-wrap gap-4">
-      <h1 class="w-full">Units</h1>
+  <!-- @if (isMediumLayout()) {
+  } -->
+  <div class="flex flex-col md:flex-row gap-8">
+    <div class="flex-1 flex flex-row flex-wrap gap-4">
+      <h2 class="w-full">Units</h2>
       <div class="flex-auto">
-        <h3>Water</h3>
+        <h4>Water</h4>
         <div class="flex flex-col items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="waterUnit">
@@ -60,7 +55,7 @@
         </div>
       </div>
       <div class="flex-auto">
-        <h3>Coffee</h3>
+        <h4>Coffee</h4>
         <div class="flex flex-col items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="coffeeUnit">
@@ -84,16 +79,14 @@
     </div>
     @if (isMediumLayout()) {
     <mat-divider vertical></mat-divider>
+    } @if (!isMediumLayout()) {
+    <mat-divider></mat-divider>
     }
-    <div class="flex-auto flex flex-col gap-5">
-      <h1>Amount</h1>
-      <div>
-        <h3>Cups</h3>
-        <div
-          class="form-control flex flex-col-reverse md:items-center md:flex-row gap-1"
-        >
-          <div class="flex flex-col md:flex-row gap-4">
-            @if (isMediumLayout()) {
+    <div class="flex-1 flex flex-row flex-wrap gap-4">
+      <div class="flex-auto">
+        <h4>Cups</h4>
+        <div class="form-control flex flex-col items-center md:flex-row gap-1">
+          <div class="flex flex-col md:flex-row items-center gap-4">
             <mat-button-toggle-group
               value="1"
               (change)="handleSelectedCoffeeCups($event.value)"
@@ -104,11 +97,12 @@
               <mat-button-toggle value="10">10</mat-button-toggle>
               <mat-button-toggle value="">More</mat-button-toggle>
             </mat-button-toggle-group>
-            }
             <small>1 cup = 180ml | 6oz | 180g</small>
           </div>
-          @if (showCupsAmountInput() || !isMediumLayout()) {
-          <mat-form-field appearance="fill">
+          <!-- @if (isMediumLayout()) {
+          }  -->
+          @if (showCupsAmountInput()) {
+          <mat-form-field appearance="fill" class="w-2/3">
             <mat-label>Amount</mat-label>
             <button
               (click)="handleAddCups(-0.5)"
@@ -138,11 +132,9 @@
           }
         </div>
       </div>
-      <div>
-        <h3>Ratio</h3>
-        <div
-          class="form-control flex flex-col md:flex-row gap-4 justify-start items-start"
-        >
+      <div class="flex-auto">
+        <h4>Ratio</h4>
+        <div class="form-control flex flex-col gap-4 justify-start items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group
             [value]="ratioIntensity()"
@@ -154,7 +146,7 @@
           </mat-button-toggle-group>
           } @else {
           <mat-radio-group
-            class="flex flex-col"
+            class="flex flex-row flex-wrap"
             [value]="ratioIntensity()"
             (change)="handleSelectedIntesity($event.value)"
           >
@@ -163,9 +155,8 @@
             }
           </mat-radio-group>
           }
-
           <div formGroupName="ratio" class="amount-ratio">
-            <mat-form-field appearance="fill">
+            <mat-form-field appearance="fill" class="max-w-20">
               <mat-label>Coffee</mat-label>
               <input
                 matInput
@@ -175,8 +166,8 @@
                 (change)="ratioIntensity.set('custom')"
               />
             </mat-form-field>
-            <span>:</span>
-            <mat-form-field appearance="fill">
+            <h2>:</h2>
+            <mat-form-field appearance="fill" class="max-w-20">
               <mat-label>Water</mat-label>
               <input
                 matInput
@@ -191,27 +182,27 @@
       </div>
     </div>
   </div>
-  @if (isMediumLayout()) {
+
   <mat-divider></mat-divider>
-  }
-  <div class="block md:hidden">
+
+  <div class="flex flex-col md:flex-row gap-4">
     <ng-container *ngTemplateOutlet="calculatorResult"></ng-container>
   </div>
 </form>
 
 <ng-template #calculatorResult>
-  <div class="portions flex flex-row gap-4">
+  <div class="flex flex-row gap-4">
     <div>
       <span>Coffee</span>
       <h3>{{ result().coffee }} {{ form.value.coffeeUnit }}</h3>
     </div>
-    <h3>+</h3>
+    <h2>+</h2>
     <div>
       <span>Water</span>
       <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
     </div>
   </div>
-  <div class="result">
+  <div class="flex flex-row gap-4">
     <h2>=</h2>
     <div>
       <h1>{{ result().cups }}</h1>
