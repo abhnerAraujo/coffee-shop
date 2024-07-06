@@ -3,6 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Brewing } from '@domain/brewing';
 import { MethodType } from '@domain/method';
 import { BrewStateService } from '@shared/services/brew-state.service';
+import { BrewService } from '@shared/services/brew.service';
 
 @Component({
   selector: 'app-brew-configuration',
@@ -24,7 +25,8 @@ export class BrewConfigurationComponent implements OnInit {
     unit: 'ml',
     volume: 180,
   });
-  protected time = signal<string>(this.displayTime(4 * 60));
+  protected time = signal(240);
+  protected timeEdit = signal(false);
   protected grindSize = signal<string>('medium');
   protected timerStatus = signal<'paused' | 'counting' | 'stopped'>('stopped');
   protected timer = signal<string>('0:00');
@@ -33,16 +35,18 @@ export class BrewConfigurationComponent implements OnInit {
 
   constructor(
     protected brewState: BrewStateService,
-    private destroyRef: DestroyRef
+    private destroyRef: DestroyRef,
+    private brewService: BrewService
   ) {
     brewState.timer$.subscribe(({ time, status, hidden }) => {
       this.timer.set(this.displayTime(time));
       this.timerStatus.set(status);
       this.showTimer.set(!hidden);
     });
-    brewState.editing$
-      .pipe(takeUntilDestroyed())
-      .subscribe(editing => this.isEditing.set(editing));
+    brewState.editing$.pipe(takeUntilDestroyed()).subscribe(editing => {
+      this.isEditing.set(editing);
+      this.timeEdit.set(false);
+    });
   }
 
   ngOnInit() {
@@ -56,7 +60,7 @@ export class BrewConfigurationComponent implements OnInit {
       const methodProcess = brewing.getMethodProcess();
       const { quantities, units, cups } = methodProcess;
 
-      this.time.set(this.displayTime(brewing.getTimer()));
+      this.time.set(brewing.getTimer());
       this.method.set(brewing.getMethodProcess().method);
       this.quantities.set({
         water: quantities.water.toFixed(2),
@@ -66,7 +70,7 @@ export class BrewConfigurationComponent implements OnInit {
       this.grindSize.set(methodProcess.grindSize);
       this.cups.set(cups);
     } else {
-      this.time.set(this.displayTime(4 * 60));
+      this.time.set(240);
     }
   }
 
@@ -74,5 +78,16 @@ export class BrewConfigurationComponent implements OnInit {
     const minutes = Math.floor(time / 60);
     const seconds = time % 60;
     return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  }
+
+  protected updateTime(time: string) {
+    const brewing = this.brewState.getBrewing();
+
+    if (brewing) {
+      brewing.setTimer(Number(time));
+      this.brewService.updateBrewing(brewing);
+      this.brewState.setBrewing(brewing);
+      this.timeEdit.set(false);
+    }
   }
 }

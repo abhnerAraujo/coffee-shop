@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { Brewing } from '@domain/brewing';
-import { methodWaterAmount } from '@domain/method';
+import { methodTime, methodWaterAmount } from '@domain/method';
 import { MethodProcess } from '@domain/method-process';
 import { ratioOptions } from '@domain/ratio';
 import { ratioIntensityByMethod } from '@domain/ratio-intensity';
@@ -30,6 +30,7 @@ export class BrewService {
       methodProcess,
       name: 'My brew',
       steps: stepsByMethodProcess(methodProcess),
+      timer: methodTime[methodProcess.method],
     });
 
     this.brewRepo.save(brewing);

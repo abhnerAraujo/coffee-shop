@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AutoFocusDirective } from '@shared/directives/auto-focus.directive';
+import { DisplayTimePipe } from '@shared/pipes/display-time/display-time.pipe';
 import { HistoryModule } from '../history';
 import { BrewConfigurationComponent } from './brew-configuration/brew-configuration.component';
 import { BrewNotesComponent } from './brew-notes/brew-notes.component';
@@ -28,6 +29,7 @@ import { BrewStepsComponent } from './brew-steps/brew-steps.component';
     AutoFocusDirective,
     MatDividerModule,
     NgClass,
+    DisplayTimePipe,
   ],
   exports: [BrewConfigurationComponent, BrewStepsComponent, BrewNotesComponent],
 })

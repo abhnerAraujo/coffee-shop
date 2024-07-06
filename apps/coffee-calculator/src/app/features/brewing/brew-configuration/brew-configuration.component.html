@@ -15,8 +15,31 @@
       <h4>{{ quantities().coffee }}</h4>
     </div>
     <div class="flex flex-col">
+      @if (timeEdit()) {
+      <mat-form-field>
+        <mat-label>Time</mat-label>
+        <input matInput type="number" [value]="time()" #timeInput />
+        <button
+          mat-icon-button
+          matSuffix
+          [disabled]="!timeInput.value.trim()"
+          (click)="updateTime(timeInput.value)"
+        >
+          <mat-icon>save</mat-icon>
+        </button>
+        <mat-hint>Seconds</mat-hint>
+      </mat-form-field>
+      } @else {
       <p class="text-sm">Time (min)</p>
-      <h4>{{ time() }}</h4>
+      <h4
+        [ngClass]="{
+          'underline md:no-underline hover:underline': isEditing()
+        }"
+        (click)="isEditing() && timeEdit.set(true)"
+      >
+        {{ time() | displayTime }}
+      </h4>
+      }
     </div>
     <div class="flex flex-col">
       <p class="text-sm">Grind size</p>

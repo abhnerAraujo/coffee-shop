@@ -17,3 +17,11 @@ export const methodWaterAmount = {
   V60: 200,
   'Moka Pot': 60,
 } as const;
+
+export const methodTime = {
+  AeroPress: 60,
+  Chemex: 240,
+  'French Press': 240,
+  V60: 240,
+  'Moka Pot': 0,
+} as const;

@@ -13,8 +13,7 @@ export abstract class MethodProcess extends Dispatchable {
     readonly units: { water: Unit; coffee: Unit },
     readonly cups: Cups,
     readonly quantities: Quantities,
-    readonly grindSize: GrindSize,
-    readonly time = 0
+    readonly grindSize: GrindSize
   ) {
     super('MethodProcess');
   }
@@ -31,8 +30,7 @@ class FrenchPressProcess extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
     super(
       id,
@@ -42,8 +40,7 @@ class FrenchPressProcess extends MethodProcess {
       units,
       cups,
       quantities,
-      'coarse',
-      time
+      'coarse'
     );
   }
 
@@ -61,8 +58,7 @@ class FrenchPressProcess extends MethodProcess {
       ratio,
       units,
       cups,
-      quantities,
-      4 * 60
+      quantities
     );
 
     instance.markForDispatch();
@@ -74,8 +70,7 @@ class FrenchPressProcess extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
     return new FrenchPressProcess(
       id,
@@ -83,8 +78,7 @@ class FrenchPressProcess extends MethodProcess {
       ratio,
       units,
       cups,
-      quantities,
-      time
+      quantities
     );
   }
 }
@@ -96,10 +90,9 @@ class V60Process extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
-    super(id, 'V60', createdAt, ratio, units, cups, quantities, 'medium', time);
+    super(id, 'V60', createdAt, ratio, units, cups, quantities, 'medium');
   }
 
   static create(
@@ -116,8 +109,7 @@ class V60Process extends MethodProcess {
       ratio,
       units,
       cups,
-      quantities,
-      2 * 60
+      quantities
     );
 
     instance.markForDispatch();
@@ -129,10 +121,9 @@ class V60Process extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
-    return new V60Process(id, createdAt, ratio, units, cups, quantities, time);
+    return new V60Process(id, createdAt, ratio, units, cups, quantities);
   }
 }
 
@@ -144,7 +135,6 @@ class AeroPressProcess extends MethodProcess {
     units: { water: Unit; coffee: Unit },
     cups: Cups,
     quantities: Quantities,
-    time: number,
     grindSize = 'fine' as GrindSize
   ) {
     super(
@@ -155,8 +145,7 @@ class AeroPressProcess extends MethodProcess {
       units,
       cups,
       quantities,
-      grindSize,
-      time
+      grindSize
     );
   }
 
@@ -174,8 +163,7 @@ class AeroPressProcess extends MethodProcess {
       ratio,
       units,
       cups,
-      quantities,
-      1 * 60
+      quantities
     );
 
     instance.markForDispatch();
@@ -187,18 +175,9 @@ class AeroPressProcess extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
-    return new AeroPressProcess(
-      id,
-      createdAt,
-      ratio,
-      units,
-      cups,
-      quantities,
-      time
-    );
+    return new AeroPressProcess(id, createdAt, ratio, units, cups, quantities);
   }
 }
 
@@ -209,8 +188,7 @@ class ChemexProcess extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
     super(
       id,
@@ -220,8 +198,7 @@ class ChemexProcess extends MethodProcess {
       units,
       cups,
       quantities,
-      'medium-coarse',
-      time
+      'medium-coarse'
     );
   }
 
@@ -239,8 +216,7 @@ class ChemexProcess extends MethodProcess {
       ratio,
       units,
       cups,
-      quantities,
-      3 * 60
+      quantities
     );
 
     instance.markForDispatch();
@@ -252,18 +228,9 @@ class ChemexProcess extends MethodProcess {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time: number
+    quantities: Quantities
   ) {
-    return new ChemexProcess(
-      id,
-      createdAt,
-      ratio,
-      units,
-      cups,
-      quantities,
-      time
-    );
+    return new ChemexProcess(id, createdAt, ratio, units, cups, quantities);
   }
 }
 
@@ -319,8 +286,7 @@ class MethodProcessFactory {
     ratio: RatioOption,
     units: { water: Unit; coffee: Unit },
     cups: Cups,
-    quantities: Quantities,
-    time = 0
+    quantities: Quantities
   ): MethodProcess {
     switch (method) {
       case 'French Press':
@@ -331,21 +297,12 @@ class MethodProcessFactory {
               ratio,
               units,
               cups,
-              quantities,
-              time
+              quantities
             )
           : FrenchPressProcess.create(ratio, units, cups, quantities);
       case 'V60':
         return id
-          ? V60Process.restore(
-              id,
-              createdAt,
-              ratio,
-              units,
-              cups,
-              quantities,
-              time
-            )
+          ? V60Process.restore(id, createdAt, ratio, units, cups, quantities)
           : V60Process.create(ratio, units, cups, quantities);
       case 'AeroPress':
         return id
@@ -355,21 +312,12 @@ class MethodProcessFactory {
               ratio,
               units,
               cups,
-              quantities,
-              time
+              quantities
             )
           : AeroPressProcess.create(ratio, units, cups, quantities);
       case 'Chemex':
         return id
-          ? ChemexProcess.restore(
-              id,
-              createdAt,
-              ratio,
-              units,
-              cups,
-              quantities,
-              time
-            )
+          ? ChemexProcess.restore(id, createdAt, ratio, units, cups, quantities)
           : ChemexProcess.create(ratio, units, cups, quantities);
       case 'Moka Pot':
         return id
@@ -396,7 +344,6 @@ class MethodProcessBuilder {
   private units = { water: 'ml' as Unit, coffee: 'g' as Unit };
   private cups = { amount: 0, volume: 0, unit: 'ml' as Unit } as Cups;
   private quantities = { water: 0, coffee: 0 } as Quantities;
-  private time = 0;
 
   draft() {
     console.log('[MethodProcessBuilder]', 'draft created');
@@ -445,11 +392,6 @@ class MethodProcessBuilder {
     return this;
   }
 
-  withTime(time: number) {
-    this.time = time;
-    return this;
-  }
-
   build() {
     console.log('[MethodProcessBuilder]', this.method + ' created');
     return MethodProcessFactory.create(
@@ -459,8 +401,7 @@ class MethodProcessBuilder {
       this.ratio,
       this.units,
       this.cups,
-      this.quantities,
-      this.time
+      this.quantities
     );
   }
 }
