@@ -1,5 +1,6 @@
 import { NgClass } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -31,6 +32,7 @@ import { BrewStepsComponent } from './brew-steps/brew-steps.component';
     NgClass,
     DisplayTimePipe,
   ],
+  providers: [provideFirestore(() => getFirestore())],
   exports: [BrewConfigurationComponent, BrewStepsComponent, BrewNotesComponent],
 })
 export class BrewingModule {}

@@ -1,0 +1,22 @@
+@defer (on timer(1000)) { @if(user()) {
+<div class="flex flex-col items-center gap-4">
+  <img
+    src="{{ user()?.picture }}"
+    alt="{{ user()?.name }}"
+    style="border-radius: 50%; width: 100px; height: 100px"
+  />
+  <h3>{{ user()?.name }}</h3>
+  <button mat-stroked-button (click)="handleSignout()">Sign out</button>
+</div>
+} @else {
+<h1>Account</h1>
+<p>
+  Create an account to access your brews on any device and share them with your
+  friends.
+</p>
+<div id="buttonDiv"></div>
+} } @placeholder {
+<div>
+  <h2 class="text-center">Loading...</h2>
+</div>
+}

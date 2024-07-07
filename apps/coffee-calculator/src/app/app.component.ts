@@ -37,6 +37,11 @@ export class AppComponent {
       url: '/brew',
       icon: 'coffee_maker',
     },
+    {
+      title: 'User',
+      url: '/user',
+      icon: 'person',
+    },
   ];
   protected showNav = signal<boolean>(true);
   private analytics = inject(Analytics);
@@ -49,20 +54,24 @@ export class AppComponent {
   ) {
     if (isPlatformBrowser(platformId)) {
       logEvent(this.analytics, 'app loaded');
-      combineLatest([
-        this.activatedRoute.url,
-        this.activatedRoute.queryParams,
-      ]).subscribe(([url, query]) => {
-        if (
-          (url[0].path === 'home' || url[0].path === '') &&
-          query['for'] === 'brew'
-        ) {
-          this.showNav.set(false);
-        } else {
-          this.showNav.set(true);
-        }
-      });
+      this.handleNavBar();
     }
     title.setTitle(this.title);
+  }
+
+  private handleNavBar() {
+    combineLatest([
+      this.activatedRoute.url,
+      this.activatedRoute.queryParams,
+    ]).subscribe(([url, query]) => {
+      if (
+        (url[0].path === 'home' || url[0].path === '') &&
+        query['for'] === 'brew'
+      ) {
+        this.showNav.set(false);
+      } else {
+        this.showNav.set(true);
+      }
+    });
   }
 }

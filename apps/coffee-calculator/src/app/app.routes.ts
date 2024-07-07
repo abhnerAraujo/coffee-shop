@@ -24,6 +24,11 @@ export const appRoutes: Route[] = [
     ],
   },
   {
+    path: 'user',
+    loadComponent: () =>
+      import('./routes/user/user.component').then(m => m.UserComponent),
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full',

@@ -5,6 +5,7 @@ import {
   provideAnalytics,
 } from '@angular/fire/analytics';
 import { initializeApp, provideFirebaseApp } from '@angular/fire/app';
+import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { provideClientHydration } from '@angular/platform-browser';
@@ -35,6 +36,7 @@ export const appConfig: ApplicationConfig = {
     ScreenTrackingService,
     provideFirestore(() => getFirestore()),
     provideFunctions(() => getFunctions()),
+    provideAuth(() => getAuth()),
     provideHistoryRepository(),
     provideBrewingRepository(),
   ],
