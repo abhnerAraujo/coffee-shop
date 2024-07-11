@@ -1,3 +1,4 @@
+import { Dispatchable } from './general/dispatchable';
 import { uid } from './general/uid';
 import { MethodProcess } from './method-process';
 
@@ -10,15 +11,22 @@ export interface BrewingProps {
   tutorial: string;
   timer: number;
   createdAt: Date;
+  updatedAt: Date;
+  author?: {
+    id: string;
+    name: string;
+  };
 }
-export class Brewing {
-  private constructor(private props: BrewingProps) {}
+export class Brewing extends Dispatchable {
+  private constructor(private props: BrewingProps) {
+    super('Brewing');
+  }
 
   static create(
     props: Partial<Omit<BrewingProps, 'createdAt' | 'id'>> &
       Pick<BrewingProps, 'methodProcess' | 'name'>
   ) {
-    return new Brewing({
+    const brewing = new Brewing({
       description: props.description || '',
       steps: props.steps || [[], [], []],
       methodProcess: props.methodProcess,
@@ -27,7 +35,12 @@ export class Brewing {
       tutorial: props.tutorial || '',
       id: uid(),
       createdAt: new Date(),
+      updatedAt: new Date(),
+      author: props.author,
     });
+
+    brewing.markForDispatch();
+    return brewing;
   }
 
   static restore(props: BrewingProps) {
@@ -36,6 +49,7 @@ export class Brewing {
 
   setName(name: string) {
     this.props.name = name;
+    this.update();
   }
 
   getName() {
@@ -44,6 +58,7 @@ export class Brewing {
 
   setMethodProcess(methodProcess: MethodProcess) {
     this.props.methodProcess = methodProcess;
+    this.update();
   }
 
   getMethodProcess() {
@@ -52,6 +67,7 @@ export class Brewing {
 
   setTips(tips: Array<string>) {
     this.props.steps[2] = tips;
+    this.update();
   }
 
   getTips() {
@@ -60,6 +76,7 @@ export class Brewing {
 
   setTutorial(tutorial: string) {
     this.props.tutorial = tutorial;
+    this.update();
   }
 
   getTutorial() {
@@ -68,6 +85,7 @@ export class Brewing {
 
   setPreparation(preparation: Array<string>) {
     this.props.steps[0] = preparation;
+    this.update();
   }
 
   getPreparation() {
@@ -76,6 +94,7 @@ export class Brewing {
 
   setSteps(brewing: Array<string>) {
     this.props.steps[1] = brewing;
+    this.update();
   }
 
   getSteps() {
@@ -84,6 +103,7 @@ export class Brewing {
 
   setTimer(timer: number) {
     this.props.timer = timer;
+    this.update();
   }
 
   getTimer() {
@@ -98,11 +118,34 @@ export class Brewing {
     return this.props.createdAt;
   }
 
+  getUpdatedAt() {
+    return this.props.updatedAt;
+  }
+
   getDescription() {
     return this.props.description;
   }
 
   setDescription(description: string) {
     this.props.description = description;
+    this.update();
+  }
+
+  setAuthor(author: BrewingProps['author']) {
+    this.props.author = author;
+    this.update();
+  }
+
+  getAuthor() {
+    return this.props.author;
+  }
+
+  toJson() {
+    return { ...this.props };
+  }
+
+  private update() {
+    this.props.updatedAt = new Date();
+    this.markForDispatch();
   }
 }

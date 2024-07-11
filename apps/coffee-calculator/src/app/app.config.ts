@@ -12,7 +12,10 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { appRoutes } from './app.routes';
-import { provideBrewingRepository } from './features/brewing/infra';
+import {
+  provideBrewingRepository,
+  provideRemoteBrewingRepository,
+} from './features/brewing/infra';
 import { provideHistoryRepository } from './features/history/infra';
 
 export const appConfig: ApplicationConfig = {
@@ -39,5 +42,6 @@ export const appConfig: ApplicationConfig = {
     provideAuth(() => getAuth()),
     provideHistoryRepository(),
     provideBrewingRepository(),
+    provideRemoteBrewingRepository(),
   ],
 };

@@ -12,6 +12,7 @@ import { BrewStateService } from '@shared/services/brew-state.service';
 import { BrewService } from '@shared/services/brew.service';
 import { distinctUntilChanged, forkJoin, of } from 'rxjs';
 import { BrewingModule, HistoryModule } from 'src/app/features';
+import { AfterBrewChangedService } from 'src/app/features/brewing/services/after-brew-changed/after-brew-changed.service';
 
 const MAT_MODULES = [
   MatIconModule,
@@ -43,7 +44,8 @@ export class BrewDetailsComponent implements OnInit {
   constructor(
     protected brewState: BrewStateService,
     private brewService: BrewService,
-    private router: Router
+    private router: Router,
+    private afterBrewChanged: AfterBrewChangedService
   ) {
     this.brewState.process$
       .pipe(
@@ -66,11 +68,10 @@ export class BrewDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.brewingId);
     this.brewService.getBrewing(this.brewingId).then(brewing => {
-      console.log(brewing);
       if (brewing) {
         this.brewState.setBrewing(brewing);
+        this.brewName.set(brewing.getName());
         this.suggestionName.set(brewing.getName());
       }
     });

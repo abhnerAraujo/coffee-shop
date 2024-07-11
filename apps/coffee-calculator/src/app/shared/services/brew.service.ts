@@ -10,6 +10,7 @@ import { from, map } from 'rxjs';
 import { BREWING_REPOSITORY } from 'src/app/features/brewing/infra';
 import { CoffeeCalculator } from 'src/app/features/calculator/domain';
 import { HISTORY_REPOSITORY } from 'src/app/features/history/infra';
+import { BrewSyncService } from './brew-sync.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class BrewService {
   private history = inject(HISTORY_REPOSITORY);
   private brewRepo = inject(BREWING_REPOSITORY);
   private calculator = new CoffeeCalculator();
+  private brewSync = inject(BrewSyncService);
 
   getLastProcess() {
     return from(this.history.getHistory()).pipe(
@@ -77,5 +79,9 @@ export class BrewService {
 
   listBrewings() {
     return from(this.brewRepo.listBrewings());
+  }
+
+  syncBrewings() {
+    this.brewSync.sync();
   }
 }

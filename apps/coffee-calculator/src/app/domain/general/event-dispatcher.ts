@@ -1,7 +1,7 @@
 export class EventDispatcher {
   static listeners: { [key: string]: ((event: DomainEvent) => void)[] } = {};
 
-  static listen(event: string, listener: (event: DomainEvent) => void) {
+  static listen<T>(event: string, listener: (event: DomainEvent<T>) => void) {
     console.log('[EventDispatcher]', event, 'listener add');
     if (!this.listeners[event]) this.listeners[event] = [];
 
@@ -21,7 +21,7 @@ export class EventDispatcher {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-interface DomainEvent<T = any> {
+export interface DomainEvent<T = any> {
   name: string;
   payload: T;
 }

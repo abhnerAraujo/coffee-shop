@@ -11,8 +11,9 @@ export class AppStateService {
     picture: string;
     id: string;
   } | null>(null);
-
   readonly user$ = this.user.asObservable();
+  private syncing = new BehaviorSubject<boolean>(false);
+  readonly syncing$ = this.syncing.asObservable();
 
   constructor() {
     onAuthStateChanged(getAuth(), user => {
@@ -36,5 +37,9 @@ export class AppStateService {
 
   get currentUser() {
     return this.user.getValue();
+  }
+
+  setSyncing(syncing: boolean) {
+    this.syncing.next(syncing);
   }
 }

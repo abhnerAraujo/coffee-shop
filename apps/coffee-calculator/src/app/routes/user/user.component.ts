@@ -8,44 +8,49 @@ import {
 } from '@angular/core';
 import { getAuth, GoogleAuthProvider } from '@angular/fire/auth';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { signInWithCredential } from '@firebase/auth';
 import { AppStateService } from '@shared/services/app-state.service';
-import { skip } from 'rxjs';
+import { BrewService } from '@shared/services/brew.service';
+
+const MAT_MODULES = [MatButtonModule, MatDividerModule];
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, MatButtonModule],
+  imports: [CommonModule, ...MAT_MODULES],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })
 export class UserComponent implements AfterViewInit {
   protected user = signal<{ picture: string; name: string } | null>(null);
+  protected promptTimeout: NodeJS.Timeout | undefined;
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
-    private appState: AppStateService
+    private appState: AppStateService,
+    private brewService: BrewService
   ) {}
 
   ngAfterViewInit(): void {
     if (!isPlatformBrowser(this.platformId)) return;
-    this.appState.user$.pipe(skip(1)).subscribe(user => {
+    this.appState.user$.subscribe(user => {
       this.handleUser(user);
     });
-    setTimeout(() => {
-      const user = this.appState.currentUser;
-
-      this.handleUser(user);
-    }, 1000);
   }
 
   private handleUser(user: { name: string; picture: string } | null) {
     if (!user) {
       this.handleGoogleSignIn();
       this.user.set(null);
-    } else
+    } else {
+      clearTimeout(this.promptTimeout);
       this.user.set({
         ...user,
       });
+      this.brewService.listBrewings().subscribe(brewings => {
+        console.log(brewings);
+      });
+    }
   }
 
   private handleGoogleSignIn() {
@@ -71,12 +76,16 @@ export class UserComponent implements AfterViewInit {
         logo_alignment: 'left',
       } // customization attributes
     );
-    setTimeout(() => {
+    this.promptTimeout = setTimeout(() => {
       google.accounts.id.prompt(); // also display the One Tap dialog
-    }, 3 * 1000);
+    }, 5000 * 1000);
   }
 
   protected handleSignout() {
     this.appState.logout();
+  }
+
+  protected handleSync() {
+    this.brewService.syncBrewings();
   }
 }
