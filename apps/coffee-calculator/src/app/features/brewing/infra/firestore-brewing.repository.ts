@@ -31,7 +31,7 @@ export class FirestoreBrewingRepository implements BrewingRepository {
       return getDocs(this.collection).then(snapshot =>
         snapshot.docs.map(this.firestoreToBrewing)
       );
-    const q = query(this.collection, where('user.id', '==', filters.userId));
+    const q = query(this.collection, where('author.id', '==', filters.userId));
 
     return getDocs(q).then(snapshot =>
       snapshot.docs.map(this.firestoreToBrewing)

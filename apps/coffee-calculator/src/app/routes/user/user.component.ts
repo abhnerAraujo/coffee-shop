@@ -66,19 +66,21 @@ export class UserComponent implements AfterViewInit {
         '416547090427-g6dslunn5v7qjnk7q7ivd6q9596v8dcp.apps.googleusercontent.com',
       callback: handleCredentialResponse,
     });
-    google.accounts.id.renderButton(
-      document.getElementById('buttonDiv'),
-      {
-        theme: 'filled_black',
-        size: 'large',
-        type: 'standard',
-        shape: 'pill',
-        logo_alignment: 'left',
-      } // customization attributes
-    );
+    setTimeout(() => {
+      google.accounts.id.renderButton(
+        document.getElementById('buttonDiv'),
+        {
+          theme: 'filled_black',
+          size: 'large',
+          type: 'standard',
+          shape: 'pill',
+          logo_alignment: 'left',
+        } // customization attributes
+      );
+    }, 550);
     this.promptTimeout = setTimeout(() => {
       google.accounts.id.prompt(); // also display the One Tap dialog
-    }, 5000 * 1000);
+    }, 5000);
   }
 
   protected handleSignout() {

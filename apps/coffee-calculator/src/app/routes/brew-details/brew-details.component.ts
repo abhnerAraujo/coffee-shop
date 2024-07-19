@@ -12,7 +12,6 @@ import { BrewStateService } from '@shared/services/brew-state.service';
 import { BrewService } from '@shared/services/brew.service';
 import { distinctUntilChanged, forkJoin, of } from 'rxjs';
 import { BrewingModule, HistoryModule } from 'src/app/features';
-import { AfterBrewChangedService } from 'src/app/features/brewing/services/after-brew-changed/after-brew-changed.service';
 
 const MAT_MODULES = [
   MatIconModule,
@@ -44,8 +43,7 @@ export class BrewDetailsComponent implements OnInit {
   constructor(
     protected brewState: BrewStateService,
     private brewService: BrewService,
-    private router: Router,
-    private afterBrewChanged: AfterBrewChangedService
+    private router: Router
   ) {
     this.brewState.process$
       .pipe(

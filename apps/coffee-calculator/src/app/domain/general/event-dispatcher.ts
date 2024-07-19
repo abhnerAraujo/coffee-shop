@@ -11,7 +11,8 @@ export class EventDispatcher {
   static dispatch(event: DomainEvent) {
     console.log(
       '[EventDispatcher]',
-      'event received to dispatch',
+      event.name,
+      'received to dispatch',
       this.listeners
     );
     if (!this.listeners[event.name]) return;

@@ -10,6 +10,7 @@ import { from, map } from 'rxjs';
 import { BREWING_REPOSITORY } from 'src/app/features/brewing/infra';
 import { CoffeeCalculator } from 'src/app/features/calculator/domain';
 import { HISTORY_REPOSITORY } from 'src/app/features/history/infra';
+import { AppStateService } from './app-state.service';
 import { BrewSyncService } from './brew-sync.service';
 
 @Injectable({
@@ -20,6 +21,7 @@ export class BrewService {
   private brewRepo = inject(BREWING_REPOSITORY);
   private calculator = new CoffeeCalculator();
   private brewSync = inject(BrewSyncService);
+  private appState = inject(AppStateService);
 
   getLastProcess() {
     return from(this.history.getHistory()).pipe(
@@ -28,11 +30,18 @@ export class BrewService {
   }
 
   startNewBrewing(methodProcess: MethodProcess) {
+    const { currentUser } = this.appState;
     const brewing = Brewing.create({
       methodProcess,
       name: 'My brew',
       steps: stepsByMethodProcess(methodProcess),
       timer: methodTime[methodProcess.method],
+      ...(currentUser && {
+        author: {
+          id: currentUser.id,
+          name: currentUser.name,
+        },
+      }),
     });
 
     this.brewRepo.save(brewing);

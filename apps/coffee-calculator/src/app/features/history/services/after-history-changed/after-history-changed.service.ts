@@ -9,7 +9,7 @@ export class AfterHistoryChangedService {
   private historyUpdated = new EventEmitter<void>();
   constructor() {
     EventDispatcher.listen(
-      MethodProcess.name,
+      MethodProcess.CREATE,
       this.handleMethodProcess.bind(this)
     );
   }

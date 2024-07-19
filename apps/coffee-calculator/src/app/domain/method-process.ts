@@ -21,6 +21,7 @@ export abstract class MethodProcess extends Dispatchable {
   static builder() {
     return new MethodProcessBuilder();
   }
+  static CREATE = 'MethodProcess.CREATE';
 }
 
 class FrenchPressProcess extends MethodProcess {
@@ -61,7 +62,7 @@ class FrenchPressProcess extends MethodProcess {
       quantities
     );
 
-    instance.markForDispatch();
+    instance.markForDispatch(MethodProcess.CREATE);
     return instance;
   }
   static restore(
@@ -112,7 +113,7 @@ class V60Process extends MethodProcess {
       quantities
     );
 
-    instance.markForDispatch();
+    instance.markForDispatch(MethodProcess.CREATE);
     return instance;
   }
   static restore(
@@ -166,7 +167,7 @@ class AeroPressProcess extends MethodProcess {
       quantities
     );
 
-    instance.markForDispatch();
+    instance.markForDispatch(MethodProcess.CREATE);
     return instance;
   }
   static restore(
@@ -219,7 +220,7 @@ class ChemexProcess extends MethodProcess {
       quantities
     );
 
-    instance.markForDispatch();
+    instance.markForDispatch(MethodProcess.CREATE);
     return instance;
   }
   static restore(
@@ -263,7 +264,7 @@ class MokaPotProcess extends MethodProcess {
       quantities
     );
 
-    instance.markForDispatch();
+    instance.markForDispatch(MethodProcess.CREATE);
     return instance;
   }
   static restore(

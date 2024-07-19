@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Brewing } from '@domain/brewing';
 import { DomainEvent, EventDispatcher } from '@domain/general/event-dispatcher';
 import { BrewSyncService } from '@shared/services/brew-sync.service';
-import { BREWING_REPOSITORY } from '../../infra';
+import { BREWING_REPOSITORY } from '../../../features/brewing/infra';
 
 @Injectable({
   providedIn: 'root',
@@ -11,7 +11,9 @@ export class AfterBrewChangedService {
   private brewingRepo = inject(BREWING_REPOSITORY);
   private brewSync = inject(BrewSyncService);
   constructor() {
-    EventDispatcher.listen(Brewing.name, this.handleBrewingEvents.bind(this));
+    console.log('[AfterBrewChangedService]', 'init');
+    EventDispatcher.listen(Brewing.CREATE, this.handleBrewingEvents.bind(this));
+    EventDispatcher.listen(Brewing.UPDATE, this.handleBrewingEvents.bind(this));
   }
 
   private async handleBrewingEvents(event: DomainEvent<Brewing>) {

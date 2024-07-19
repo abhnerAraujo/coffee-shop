@@ -1,4 +1,8 @@
-import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
+import {
+  APP_INITIALIZER,
+  ApplicationConfig,
+  provideZoneChangeDetection,
+} from '@angular/core';
 import {
   ScreenTrackingService,
   getAnalytics,
@@ -11,6 +15,7 @@ import { getFunctions, provideFunctions } from '@angular/fire/functions';
 import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
+import { AfterBrewChangedService } from '@shared/services/after-brew-changed/after-brew-changed.service';
 import { appRoutes } from './app.routes';
 import {
   provideBrewingRepository,
@@ -43,5 +48,13 @@ export const appConfig: ApplicationConfig = {
     provideHistoryRepository(),
     provideBrewingRepository(),
     provideRemoteBrewingRepository(),
+    {
+      provide: APP_INITIALIZER,
+      useFactory: (brewChanged: AfterBrewChangedService) => () => {
+        return brewChanged;
+      },
+      deps: [AfterBrewChangedService],
+      multi: true,
+    },
   ],
 };

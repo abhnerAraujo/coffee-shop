@@ -39,7 +39,7 @@ export class Brewing extends Dispatchable {
       author: props.author,
     });
 
-    brewing.markForDispatch();
+    brewing.markForDispatch(Brewing.CREATE);
     return brewing;
   }
 
@@ -146,6 +146,9 @@ export class Brewing extends Dispatchable {
 
   private update() {
     this.props.updatedAt = new Date();
-    this.markForDispatch();
+    this.markForDispatch(Brewing.UPDATE);
   }
+
+  static CREATE = 'Brewing.CREATE';
+  static UPDATE = 'Brewing.UPDATE';
 }

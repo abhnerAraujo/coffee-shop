@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { forkJoin, mergeMap } from 'rxjs';
+import { forkJoin, map, mergeMap } from 'rxjs';
 import {
   BREWING_REPOSITORY,
   REMOTE_BREWING_REPOSITORY,
@@ -26,6 +26,17 @@ export class BrewSyncService {
       }),
     ])
       .pipe(
+        map(brewings => {
+          const [localBrewings] = brewings;
+
+          localBrewings.forEach(brewing => {
+            if (!brewing.getAuthor()) {
+              brewing.setAuthor({ id: user.id, name: user.name });
+            }
+          });
+
+          return brewings;
+        }),
         mergeMap(([localBrewings, remoteBrewings]) => {
           const syncLocals = localBrewings.map(localBrewing => {
             const remoteBrewing = remoteBrewings.find(

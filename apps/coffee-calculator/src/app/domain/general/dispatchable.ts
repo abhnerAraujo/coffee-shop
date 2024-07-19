@@ -4,11 +4,11 @@ export abstract class Dispatchable {
   constructor(readonly name: string) {
     console.log('[Dispatchable]', this.name, 'created');
   }
-  protected markForDispatch() {
+  protected markForDispatch(event: string) {
     EventDispatcher.dispatch({
-      name: this.name,
+      name: event,
       payload: this,
     });
-    console.log('[Dispatchable]', this.name, 'dispatched');
+    console.log('[Dispatchable]', event, 'dispatched');
   }
 }

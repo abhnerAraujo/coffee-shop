@@ -1,7 +1,6 @@
 <form [formGroup]="form" class="flex flex-col calculator-form">
   <div class="flex flex-col lg:flex-row justify-between items-center">
     <div>
-      <h2>Method</h2>
       @if (isMediumLayout()) {
       <mat-button-toggle-group formControlName="method">
         @for (item of methodOptions(); track $index) {
@@ -31,9 +30,9 @@
   } -->
   <div class="flex flex-col md:flex-row gap-8">
     <div class="flex-1 flex flex-row flex-wrap gap-4">
-      <h2 class="w-full">Units</h2>
+      <h6 class="w-full">Units</h6>
       <div class="flex-auto">
-        <h4>Water</h4>
+        <p>Water</p>
         <div class="flex flex-col items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="waterUnit">
@@ -55,7 +54,7 @@
         </div>
       </div>
       <div class="flex-auto">
-        <h4>Coffee</h4>
+        <p>Coffee</p>
         <div class="flex flex-col items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="coffeeUnit">
@@ -84,7 +83,7 @@
     }
     <div class="flex-1 flex flex-row flex-wrap gap-4">
       <div class="flex-auto">
-        <h4>Cups</h4>
+        <h6>Cups</h6>
         <div class="form-control flex flex-col items-center md:flex-row gap-1">
           <div class="flex flex-col md:flex-row items-center gap-4">
             <mat-button-toggle-group
@@ -133,7 +132,7 @@
         </div>
       </div>
       <div class="flex-auto">
-        <h4>Ratio</h4>
+        <h6>Ratio</h6>
         <div class="form-control flex flex-col gap-4 justify-start items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group

@@ -1,6 +1,7 @@
 {
   "projects": {
-    "stage": "coffee-calculator-245be"
+    "stage": "coffee-calculator-245be",
+    "default": "coffee-calculator-245be"
   },
   "targets": {
     "coffee-calculator-245be": {
