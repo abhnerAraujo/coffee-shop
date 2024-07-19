@@ -5,6 +5,12 @@
   "prefix": "app",
   "sourceRoot": "apps/coffee-calculator/src",
   "tags": [],
+  "i18n": {
+    "sourceLocale": "en-US",
+    "locales": {
+      "pt-BR": "apps/coffee-calculator/src/locale/messages.pt.json"
+    }
+  },
   "targets": {
     "build": {
       "executor": "@angular-builders/custom-esbuild:application",
@@ -32,9 +38,17 @@
         "ssr": {
           "entry": "apps/coffee-calculator/server.ts"
         },
-        "plugins": ["./apps/coffee-calculator/esbuild/firebase-env.ts"]
+        "plugins": ["./apps/coffee-calculator/esbuild/firebase-env.ts"],
+        "localize": ["en-US", "pt-BR"],
+        "i18nMissingTranslation": "warning"
       },
       "configurations": {
+        "pt-BR": {
+          "localize": ["pt-BR"]
+        },
+        "en": {
+          "localize": ["en"]
+        },
         "production": {
           "budgets": [
             {
@@ -68,12 +82,17 @@
           "buildTarget": "coffee-calculator:build:development"
         }
       },
+      "options": {
+        "buildTarget": "coffee-calculator:build:en"
+      },
       "defaultConfiguration": "development"
     },
     "extract-i18n": {
       "executor": "@angular-devkit/build-angular:extract-i18n",
       "options": {
-        "buildTarget": "coffee-calculator:build"
+        "buildTarget": "coffee-calculator:build",
+        "outputPath": "apps/coffee-calculator/src/locale",
+        "format": "json"
       }
     },
     "lint": {
