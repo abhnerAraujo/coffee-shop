@@ -1,0 +1,27 @@
+{
+  "locale": "pt-BR",
+  "translations": {
+    "8864288285279476751": "Método",
+    "8497528947328199741": "Tempo",
+    "8874012390997067175": "Segundos",
+    "8784140793791706500": "Tempo (min)",
+    "5375735542401530609": "Tamanho da moagem",
+    "8036593861538691321": "Sobre este processo",
+    "2201395534134399053": "Nenhuma descrição ainda :(\n",
+    "4902817035128594900": "Descrição",
+    "6862047713855275333": "Tutorial",
+    "9074327260054432941": "Unidades",
+    "5257899700285331716": "Café",
+    "8433591167010444747": "Xícaras",
+    "5937251202465808296": "Mais",
+    "1352062979981564930": "1 xícara = 180ml | 6oz | 180g",
+    "6533918067030990396": "Quantidade",
+    "1712198024026254502": "Proporção",
+    "6399303218734406494": "Água",
+    "4596397071200542508": "HISTÓRICO",
+    "2871431995159613198": "Nenhum histórico ainda",
+    "7341845373635462392": "Novo preparo",
+    "4662651282778135976": "Comece um novo preparo configurando um método, unidades e proporção.",
+    "7493866107544558339": "Tudo pronto, vamos preparar!"
+  }
+}

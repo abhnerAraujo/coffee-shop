@@ -60,3 +60,9 @@ It will show tasks that you can run with Nx.
 - [Join the community](https://nx.dev/community)
 - [Subscribe to the Nx Youtube Channel](https://www.youtube.com/@nxdevtools)
 - [Follow us on Twitter](https://twitter.com/nxdevtools)
+
+## Extract i18n
+
+- Switch the executor to `@angular-devkit/build-angular:application`
+- Remove the `plugins` build option
+- Run `nx i18n-extract <app-name>`

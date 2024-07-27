@@ -1,5 +1,5 @@
 <mat-list>
-  <h1 mat-subheader>HISTORY</h1>
+  <h1 mat-subheader i18n>HISTORY</h1>
   @for (item of history(); track $index) {
   <mat-list-item>
     <mat-icon matListItemIcon>coffee</mat-icon>
@@ -23,7 +23,7 @@
   </mat-list-item>
   } @empty {
   <mat-list-item>
-    <div matListItemTitle>No history yet</div>
+    <div matListItemTitle i18n>No history yet</div>
   </mat-list-item>
   }
 </mat-list>

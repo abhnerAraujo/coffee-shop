@@ -1,4 +1,4 @@
-<h3>About this process</h3>
+<h3 i18n>About this process</h3>
 @if (!editDescription()) { @if(description()) {
 <p
   [ngClass]="{
@@ -14,12 +14,13 @@
     'underline md:no-underline hover:underline': isEditing()
   }"
   (click)="handleDescriptionClick()"
+  i18n
 >
   No description yet :(
 </p>
 } } @else {
 <mat-form-field appearance="fill" class="w-full">
-  <mat-label>Description</mat-label>
+  <mat-label i18n>Description</mat-label>
   <textarea
     class="w-full min-h-20"
     matInput

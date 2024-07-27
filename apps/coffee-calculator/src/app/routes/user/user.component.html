@@ -6,18 +6,32 @@
     style="border-radius: 50%; width: 100px; height: 100px"
   />
   <h3>{{ user()?.name }}</h3>
-  <button mat-stroked-button (click)="handleSignout()">Sign out</button>
-  <button mat-stroked-button (click)="handleSync()">Sync brewings</button>
+  <button mat-stroked-button (click)="handleSignout()" i18n="@@account:signOut">
+    Sign out
+  </button>
+  <button mat-stroked-button (click)="handleSync()" i18n="@@account:sync">
+    Sync brewings
+  </button>
 </div>
 } @else {
-<h1>Account</h1>
-<p>
+<h1 i18n="@@account:title">Account</h1>
+<p i18n="@@account:cta">
   Create an account to access your brews on any device and share them with your
   friends.
 </p>
 <div id="buttonDiv"></div>
 } } @placeholder {
 <div>
-  <h2 class="text-center">Loading...</h2>
+  <h2 class="text-center" i18n="@@account:loading">Loading...</h2>
 </div>
 }
+<div class="mt-10">
+  <h3 i18n="@@account:language">Language</h3>
+  <div class="flex flex-col gap-2 items-start">
+    @for (item of languages(); track $index) {
+    <button mat-button (click)="changeLanguage(item.code)">
+      {{ item.label }}
+    </button>
+    }
+  </div>
+</div>

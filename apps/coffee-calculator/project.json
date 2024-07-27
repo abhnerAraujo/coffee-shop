@@ -6,9 +6,9 @@
   "sourceRoot": "apps/coffee-calculator/src",
   "tags": [],
   "i18n": {
-    "sourceLocale": "en-US",
+    "sourceLocale": "en",
     "locales": {
-      "pt-BR": "apps/coffee-calculator/src/locale/messages.pt.json"
+      "pt": "apps/coffee-calculator/src/locale/messages.pt.json"
     }
   },
   "targets": {
@@ -39,12 +39,12 @@
           "entry": "apps/coffee-calculator/server.ts"
         },
         "plugins": ["./apps/coffee-calculator/esbuild/firebase-env.ts"],
-        "localize": ["en-US", "pt-BR"],
+        "localize": ["en", "pt"],
         "i18nMissingTranslation": "warning"
       },
       "configurations": {
-        "pt-BR": {
-          "localize": ["pt-BR"]
+        "pt": {
+          "localize": ["pt"]
         },
         "en": {
           "localize": ["en"]
@@ -67,7 +67,11 @@
         "development": {
           "optimization": false,
           "extractLicenses": false,
-          "sourceMap": true
+          "sourceMap": true,
+          "define": {
+            "PT_URL": "'http://localhost:4201'",
+            "EN_URL": "'http://localhost:4200'"
+          }
         }
       },
       "defaultConfiguration": "production"
@@ -80,6 +84,9 @@
         },
         "development": {
           "buildTarget": "coffee-calculator:build:development"
+        },
+        "pt": {
+          "buildTarget": "coffee-calculator:build:development,pt"
         }
       },
       "options": {

@@ -20,7 +20,6 @@ const MAT_MODULES = [MatButtonModule];
 })
 export class HomeComponent implements OnDestroy {
   protected mode = signal<'brew' | 'calculator'>('calculator');
-  protected test = $localize`Teste`;
   constructor(
     @Inject(HISTORY_REPOSITORY) private historyRepo: HistoryRepository,
     private brewState: BrewStateService,

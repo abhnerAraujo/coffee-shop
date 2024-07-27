@@ -2,10 +2,12 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import {
   AfterViewInit,
   Component,
+  inject,
   Inject,
   PLATFORM_ID,
   signal,
 } from '@angular/core';
+import { Analytics, logEvent } from '@angular/fire/analytics';
 import { getAuth, GoogleAuthProvider } from '@angular/fire/auth';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
@@ -24,6 +26,11 @@ const MAT_MODULES = [MatButtonModule, MatDividerModule];
 })
 export class UserComponent implements AfterViewInit {
   protected user = signal<{ picture: string; name: string } | null>(null);
+  protected languages = signal([
+    { code: Language.EN, label: $localize`@@english` },
+    { code: Language.PT, label: $localize`@@portuguese` },
+  ]);
+  private analytics = inject(Analytics);
   protected promptTimeout: NodeJS.Timeout | undefined;
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
@@ -90,4 +97,23 @@ export class UserComponent implements AfterViewInit {
   protected handleSync() {
     this.brewService.syncBrewings();
   }
+
+  protected changeLanguage(lang: string) {
+    logEvent(this.analytics, 'language change', { lang });
+    switch (lang) {
+      case Language.PT:
+        window.location.href = PT_URL;
+        break;
+      case Language.EN:
+        window.location.href = EN_URL;
+        break;
+      default:
+        window.location.href = EN_URL;
+    }
+  }
+}
+
+enum Language {
+  PT = 'pt',
+  EN = 'en',
 }

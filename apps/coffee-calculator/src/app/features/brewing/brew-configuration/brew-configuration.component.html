@@ -3,7 +3,7 @@
     class="quantities grid grid-cols-3 gap-8 justify-between md:justify-start"
   >
     <div class="flex flex-col">
-      <p class="text-sm">Method</p>
+      <p class="text-sm" i18n>Method</p>
       <h4>{{ method() }}</h4>
     </div>
     <div class="flex flex-col">
@@ -17,7 +17,7 @@
     <div class="flex flex-col">
       @if (timeEdit()) {
       <mat-form-field>
-        <mat-label>Time</mat-label>
+        <mat-label i18n>Time</mat-label>
         <input matInput type="number" [value]="time()" #timeInput />
         <button
           mat-icon-button
@@ -27,10 +27,10 @@
         >
           <mat-icon>save</mat-icon>
         </button>
-        <mat-hint>Seconds</mat-hint>
+        <mat-hint i18n>Seconds</mat-hint>
       </mat-form-field>
       } @else {
-      <p class="text-sm">Time (min)</p>
+      <p class="text-sm" i18n>Time (min)</p>
       <h4
         [ngClass]="{
           'underline md:no-underline hover:underline': isEditing()
@@ -42,7 +42,7 @@
       }
     </div>
     <div class="flex flex-col">
-      <p class="text-sm">Grind size</p>
+      <p class="text-sm" i18n>Grind size</p>
       <h4>{{ grindSize() }}</h4>
     </div>
     <div class="flex flex-col">

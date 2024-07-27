@@ -1,7 +1,6 @@
-{{ test }}
 @if (mode() === 'brew') {
-<h6 i18n>New brewing</h6>
-<p>Start a new brewing by setting a method, units and ratio.</p>
+<h6 i18n="@@brewing-list-title">New brewing</h6>
+<p i18n>Start a new brewing by setting a method, units and ratio.</p>
 }
 <section>
   <app-coffee-calculator />
@@ -12,6 +11,7 @@
     class="w-fill md:w-auto"
     mat-stroked-button
     (click)="handleConfirmSelection()"
+    i18n
   >
     All set, let's brew!
   </button>

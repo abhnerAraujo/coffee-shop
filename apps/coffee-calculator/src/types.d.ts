@@ -21,3 +21,6 @@ declare const google: {
     };
   };
 };
+
+declare const PT_URL: string;
+declare const EN_URL: string;

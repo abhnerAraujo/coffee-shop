@@ -30,7 +30,7 @@
   } -->
   <div class="flex flex-col md:flex-row gap-8">
     <div class="flex-1 flex flex-row flex-wrap gap-4">
-      <h6 class="w-full">Units</h6>
+      <h6 class="w-full" i18n>Units</h6>
       <div class="flex-auto">
         <p>Water</p>
         <div class="flex flex-col items-start">
@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class="flex-auto">
-        <p>Coffee</p>
+        <p i18n>Coffee</p>
         <div class="flex flex-col items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group formControlName="coffeeUnit">
@@ -83,7 +83,7 @@
     }
     <div class="flex-1 flex flex-row flex-wrap gap-4">
       <div class="flex-auto">
-        <h6>Cups</h6>
+        <h6 i18n>Cups</h6>
         <div class="form-control flex flex-col items-center md:flex-row gap-1">
           <div class="flex flex-col md:flex-row items-center gap-4">
             <mat-button-toggle-group
@@ -94,15 +94,15 @@
               <mat-button-toggle value="2">2</mat-button-toggle>
               <mat-button-toggle value="5">5</mat-button-toggle>
               <mat-button-toggle value="10">10</mat-button-toggle>
-              <mat-button-toggle value="">More</mat-button-toggle>
+              <mat-button-toggle value="" i18n>More</mat-button-toggle>
             </mat-button-toggle-group>
-            <small>1 cup = 180ml | 6oz | 180g</small>
+            <small i18n>1 cup = 180ml | 6oz | 180g</small>
           </div>
           <!-- @if (isMediumLayout()) {
           }  -->
           @if (showCupsAmountInput()) {
           <mat-form-field appearance="fill" class="w-2/3">
-            <mat-label>Amount</mat-label>
+            <mat-label i18n>Amount</mat-label>
             <button
               (click)="handleAddCups(-0.5)"
               type="button"
@@ -132,7 +132,7 @@
         </div>
       </div>
       <div class="flex-auto">
-        <h6>Ratio</h6>
+        <h6 i18n>Ratio</h6>
         <div class="form-control flex flex-col gap-4 justify-start items-start">
           @if (isMediumLayout()) {
           <mat-button-toggle-group
@@ -156,7 +156,7 @@
           }
           <div formGroupName="ratio" class="amount-ratio">
             <mat-form-field appearance="fill" class="max-w-20">
-              <mat-label>Coffee</mat-label>
+              <mat-label i18n>Coffee</mat-label>
               <input
                 matInput
                 formControlName="coffee"
@@ -167,7 +167,7 @@
             </mat-form-field>
             <h2>:</h2>
             <mat-form-field appearance="fill" class="max-w-20">
-              <mat-label>Water</mat-label>
+              <mat-label i18n>Water</mat-label>
               <input
                 matInput
                 formControlName="water"
@@ -192,12 +192,12 @@
 <ng-template #calculatorResult>
   <div class="flex flex-row gap-4">
     <div>
-      <span>Coffee</span>
+      <span i18n>Coffee</span>
       <h3>{{ result().coffee }} {{ form.value.coffeeUnit }}</h3>
     </div>
     <h2>+</h2>
     <div>
-      <span>Water</span>
+      <span i18n>Water</span>
       <h3>{{ result().water }} {{ form.value.waterUnit }}</h3>
     </div>
   </div>
