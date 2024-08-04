@@ -20,8 +20,16 @@
     "6399303218734406494": "Water",
     "4596397071200542508": "HISTORY",
     "2871431995159613198": "No history yet",
-    "brewing-list-title": "New brewing",
+    "brewing:list:action": "New brewing",
     "4662651282778135976": "Start a new brewing by setting a method, units and ratio.",
-    "7493866107544558339": " All set, let's brew! "
+    "7493866107544558339": " All set, let's brew! ",
+    "account:signOut": " Sign out ",
+    "account:sync": " Sync brewings ",
+    "account:title": "Account",
+    "account:cta": " Create an account to access your brews on any device and share them with your friends.\n",
+    "account:loading": "Loading...",
+    "account:language": "Language",
+    "english": "English",
+    "portuguese": "Português"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "locale": "pt-BR",
+  "locale": "pt",
   "translations": {
     "8864288285279476751": "Método",
     "8497528947328199741": "Tempo",
@@ -22,6 +22,15 @@
     "2871431995159613198": "Nenhum histórico ainda",
     "7341845373635462392": "Novo preparo",
     "4662651282778135976": "Comece um novo preparo configurando um método, unidades e proporção.",
-    "7493866107544558339": "Tudo pronto, vamos preparar!"
+    "7493866107544558339": "Tudo pronto, vamos preparar!",
+    "brewing:list:action": "Preparar",
+    "account:signOut": "Sair",
+    "account:sync": "Sincronizar preparos",
+    "account:title": "Perfil",
+    "account:cta": "Crie um perfil para acessar seus preparos em qualquer dispositivo e compartilhá-los com seus amigos.",
+    "account:loading": "Carregando...",
+    "account:language": "Idioma",
+    "english": "English",
+    "portuguese": "Português"
   }
 }

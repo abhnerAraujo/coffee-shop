@@ -14,22 +14,19 @@ import { MatDividerModule } from '@angular/material/divider';
 import { signInWithCredential } from '@firebase/auth';
 import { AppStateService } from '@shared/services/app-state.service';
 import { BrewService } from '@shared/services/brew.service';
+import { LanguagesComponent } from 'src/app/features/localization/languages.component';
 
 const MAT_MODULES = [MatButtonModule, MatDividerModule];
 
 @Component({
   selector: 'app-user',
   standalone: true,
-  imports: [CommonModule, ...MAT_MODULES],
+  imports: [CommonModule, LanguagesComponent, ...MAT_MODULES],
   templateUrl: './user.component.html',
   styleUrl: './user.component.scss',
 })
 export class UserComponent implements AfterViewInit {
   protected user = signal<{ picture: string; name: string } | null>(null);
-  protected languages = signal([
-    { code: Language.EN, label: $localize`@@english` },
-    { code: Language.PT, label: $localize`@@portuguese` },
-  ]);
   private analytics = inject(Analytics);
   protected promptTimeout: NodeJS.Timeout | undefined;
   constructor(
@@ -91,29 +88,11 @@ export class UserComponent implements AfterViewInit {
   }
 
   protected handleSignout() {
+    logEvent(this.analytics, 'logout');
     this.appState.logout();
   }
 
   protected handleSync() {
     this.brewService.syncBrewings();
   }
-
-  protected changeLanguage(lang: string) {
-    logEvent(this.analytics, 'language change', { lang });
-    switch (lang) {
-      case Language.PT:
-        window.location.href = PT_URL;
-        break;
-      case Language.EN:
-        window.location.href = EN_URL;
-        break;
-      default:
-        window.location.href = EN_URL;
-    }
-  }
-}
-
-enum Language {
-  PT = 'pt',
-  EN = 'en',
 }

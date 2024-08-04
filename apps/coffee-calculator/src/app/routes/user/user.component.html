@@ -26,12 +26,5 @@
 </div>
 }
 <div class="mt-10">
-  <h3 i18n="@@account:language">Language</h3>
-  <div class="flex flex-col gap-2 items-start">
-    @for (item of languages(); track $index) {
-    <button mat-button (click)="changeLanguage(item.code)">
-      {{ item.label }}
-    </button>
-    }
-  </div>
+ <app-languages />
 </div>
