@@ -21,6 +21,7 @@ export type CoffeCalculatorValue = {
   waterUnit: Unit;
   method: MethodType;
   coffeeCups: number;
+  cupSize: number;
   ratio: {
     coffee: number;
     water: number;

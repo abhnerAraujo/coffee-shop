@@ -13,8 +13,8 @@ export type MethodType = (typeof MethodTypes)[number];
 export const methodWaterAmount = {
   AeroPress: 220,
   Chemex: 300,
-  'French Press': 200,
-  V60: 200,
+  'French Press': 180,
+  V60: 180,
   'Moka Pot': 60,
 } as const;
 

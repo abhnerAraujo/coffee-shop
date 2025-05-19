@@ -8,6 +8,8 @@ export interface BrewingProps {
   methodProcess: MethodProcess;
   description: string;
   steps: [Array<string>, Array<string>, Array<string>];
+  timeline: Array<[number, string]>;
+  properties: Array<{ name: string; value: string }>
   tutorial: string;
   timer: number;
   createdAt: Date;
@@ -28,11 +30,13 @@ export class Brewing extends Dispatchable {
   ) {
     const brewing = new Brewing({
       description: props.description || '',
+      properties: props.properties || [],
       steps: props.steps || [[], [], []],
       methodProcess: props.methodProcess,
       name: props.name,
       timer: props.timer || 0,
       tutorial: props.tutorial || '',
+      timeline: props.timeline || [],
       id: uid(),
       createdAt: new Date(),
       updatedAt: new Date(),
@@ -54,6 +58,24 @@ export class Brewing extends Dispatchable {
 
   getName() {
     return this.props.name;
+  }
+
+  setTimeline(timeline: Array<[number, string]>) {
+    this.props.timeline = timeline;
+    this.update();
+  }
+
+  getTimeline() {
+    return this.props.timeline;
+  }
+
+  setProperties(properties: Array<{ name: string; value: string }>) {
+    this.props.properties = properties;
+    this.update();
+  }
+
+  getProperties() {
+    return this.props.properties;
   }
 
   setMethodProcess(methodProcess: MethodProcess) {
@@ -140,6 +162,22 @@ export class Brewing extends Dispatchable {
     return this.props.author;
   }
 
+  addTimelineItem(item: [number, string]) {
+    this.props.timeline.push(item);
+    this.reorderTimeline();
+    this.update();
+  }
+
+  deleteTimelineItem(index: number) {
+    this.props.timeline.splice(index, 1);
+    this.reorderTimeline();
+    this.update();
+  }
+
+  private reorderTimeline() {
+    this.props.timeline = this.props.timeline.sort((a, b) => a[0] - b[0]);
+  }
+
   toJson() {
     return { ...this.props };
   }
@@ -147,6 +185,31 @@ export class Brewing extends Dispatchable {
   private update() {
     this.props.updatedAt = new Date();
     this.markForDispatch(Brewing.UPDATE);
+  }
+
+  static extractPropertiesFromMethodProcess(methodProcess: MethodProcess) {
+    return [
+      {
+        name: 'Ratio',
+        value: `${methodProcess.ratio.coffee}:${methodProcess.ratio.water}`,
+      },
+      {
+        name: `Water (${methodProcess.units.water})`,
+        value: methodProcess.quantities.water.toString(),
+      },
+      {
+        name: `Coffee (${methodProcess.units.coffee})`,
+        value: methodProcess.quantities.coffee.toString(),
+      },
+      {
+        name: 'Grind Size',
+        value: methodProcess.grindSize.toString(),
+      },
+      {
+        name: `Cup Size (${methodProcess.cups.unit})`,
+        value: methodProcess.cups.volume.toString(),
+      },
+    ];
   }
 
   static CREATE = 'Brewing.CREATE';

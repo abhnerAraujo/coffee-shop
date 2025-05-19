@@ -32,6 +32,7 @@ export class BrewConfigurationComponent implements OnInit {
   protected timer = signal<string>('0:00');
   protected showTimer = signal(false);
   protected isEditing = signal(false);
+  protected properties = signal<Array<{ name: string; value: string }>>([]);
 
   constructor(
     protected brewState: BrewStateService,
@@ -69,6 +70,7 @@ export class BrewConfigurationComponent implements OnInit {
       this.units.set(units);
       this.grindSize.set(methodProcess.grindSize);
       this.cups.set(cups);
+      this.properties.set(brewing.getProperties());
     } else {
       this.time.set(240);
     }
@@ -89,5 +91,12 @@ export class BrewConfigurationComponent implements OnInit {
       this.brewState.setBrewing(brewing);
       this.timeEdit.set(false);
     }
+  }
+
+  protected addProperty() {
+    this.properties.update(properties => [
+      ...properties,
+      { name: '', value: '' },
+    ]);
   }
 }

@@ -36,6 +36,8 @@ export class BrewService {
       name: 'My brew',
       steps: stepsByMethodProcess(methodProcess),
       timer: methodTime[methodProcess.method],
+      properties: Brewing.extractPropertiesFromMethodProcess(methodProcess),
+      timeline: [],
       ...(currentUser && {
         author: {
           id: currentUser.id,
@@ -44,7 +46,6 @@ export class BrewService {
       }),
     });
 
-    this.brewRepo.save(brewing);
     return brewing;
   }
 

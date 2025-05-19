@@ -1,0 +1,39 @@
+<div class="timeline-steps">
+  @for (step of timeline(); track step; let i = $index) {
+    <div class="step">
+      @if (brewState.editing$ | async) {
+        <button mat-icon-button (click)="handleDelete(i)">
+          <mat-icon>close</mat-icon>
+        </button>
+      }
+      <span>{{ step[0] }}</span>
+      <span>{{ step[1] }}</span>
+    </div>
+  }
+  <div class="add">
+    @if (addState() === 'editing' && (brewState.editing$ | async)) {
+      <div class="flex flex-row gap-2">
+        <mat-form-field>
+          <mat-label>Time</mat-label>
+          <input matInput type="text" [(ngModel)]="newStep.time" />
+        </mat-form-field>
+        <mat-form-field>
+          <mat-label>Step</mat-label>
+          <input matInput type="text" [(ngModel)]="newStep.step" />
+        </mat-form-field>
+      </div>
+      <div class="flex flex-row gap-2">
+        <button mat-icon-button (click)="handleClose()">
+          <mat-icon>close</mat-icon>
+        </button>
+        <button mat-icon-button (click)="addStep()">
+          <mat-icon>save</mat-icon>
+        </button>
+      </div>
+    } @else if (brewState.editing$ | async) {
+      <button mat-icon-button (click)="handleAdd()">
+        <mat-icon>add</mat-icon>
+      </button>
+    }
+  </div>
+</div> 

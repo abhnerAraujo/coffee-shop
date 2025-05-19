@@ -22,7 +22,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatRadioModule } from '@angular/material/radio';
-import { MethodType } from '@domain/method';
+import { MethodType, methodWaterAmount } from '@domain/method';
 import { RatioIntensity } from '@domain/ratio';
 import { Unit, UnitOptions } from '@domain/unit';
 import { MethodImageComponent } from '@shared/components';
@@ -86,6 +86,7 @@ export class CoffeeCalculatorComponent
       waterAmount: 0,
       waterUnit: 'g' as Unit,
       method: 'French Press' as MethodType,
+      cupSize: methodWaterAmount['French Press'] as number,
       coffeeCups: 1,
       ratio: this.formBuilder.group({
         coffee: 0,
@@ -160,6 +161,7 @@ export class CoffeeCalculatorComponent
       waterUnit: values.waterUnit ?? 'ml',
       method: values.method ?? 'French Press',
       coffeeCups: values.coffeeCups ?? 1,
+      cupSize: values.cupSize ?? methodWaterAmount[values.method ?? 'French Press'],
       ratio: {
         coffee: values.ratio?.coffee ?? 0,
         water: values.ratio?.water ?? 0,
@@ -175,6 +177,7 @@ type CoffeCalculatorForm = {
   waterUnit: FormControl<Unit | null>;
   method: FormControl<MethodType | null>;
   coffeeCups: FormControl<number | null>;
+  cupSize: FormControl<number | null>;
   ratio: FormGroup<{
     coffee: FormControl<number | null>;
     water: FormControl<number | null>;

@@ -96,10 +96,7 @@
               <mat-button-toggle value="10">10</mat-button-toggle>
               <mat-button-toggle value="" i18n>More</mat-button-toggle>
             </mat-button-toggle-group>
-            <small i18n>1 cup = 180ml | 6oz | 180g</small>
           </div>
-          <!-- @if (isMediumLayout()) {
-          }  -->
           @if (showCupsAmountInput()) {
           <mat-form-field appearance="fill" class="w-2/3">
             <mat-label i18n>Amount</mat-label>
@@ -129,6 +126,17 @@
             </button>
           </mat-form-field>
           }
+        </div>
+        <div class="form-control flex flex-col items-center md:flex-row gap-1 mt-4">
+          <mat-form-field appearance="fill" class="w-2/3">
+            <mat-label i18n>Cup size</mat-label>
+            <input
+              matInput
+              formControlName="cupSize"
+              min="1"
+              type="number"
+            />
+          </mat-form-field>
         </div>
       </div>
       <div class="flex-auto">

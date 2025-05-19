@@ -1,8 +1,36 @@
 <div class="flex flex-col gap-8">
   <div
-    class="quantities grid grid-cols-3 gap-8 justify-between md:justify-start"
+    class="quantities gap-8 justify-between md:justify-start"
+    [ngClass]="{ 
+      'grid grid-cols-3': !isEditing(),
+      'flex flex-col': isEditing()
+      }"
   >
-    <div class="flex flex-col">
+    @for (property of properties(); track property.name) {
+      @if (!isEditing()) {
+        <div class="flex flex-col">
+          <p class="text-sm" i18n>{{ property.name }}</p>
+          <h4>{{ property.value }}</h4>
+        </div>
+      } @else {
+        <div class="flex flex-col">
+          <mat-form-field>
+            <mat-label i18n>Label</mat-label>
+            <input matInput [(ngModel)]="property.name" />
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label i18n>Value</mat-label>
+            <input matInput [(ngModel)]="property.value" />
+          </mat-form-field>
+        </div>
+      }
+    }
+    @if (isEditing()) {
+      <button mat-icon-button (click)="addProperty()">
+        <mat-icon>add</mat-icon>
+      </button>
+    }
+    <!-- <div class="flex flex-col">
       <p class="text-sm" i18n>Method</p>
       <h4>{{ method() }}</h4>
     </div>
@@ -48,7 +76,7 @@
     <div class="flex flex-col">
       <p class="text-sm">Cups ({{ cups().volume }}{{ cups().unit }})</p>
       <h4>{{ cups().amount }}</h4>
-    </div>
+    </div> -->
   </div>
   <mat-divider />
   @if (showTimer()) {

@@ -1,6 +1,7 @@
-import { NgClass } from '@angular/common';
+import { AsyncPipe, NgClass } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
+import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -13,12 +14,14 @@ import { HistoryModule } from '../history';
 import { BrewConfigurationComponent } from './brew-configuration/brew-configuration.component';
 import { BrewNotesComponent } from './brew-notes/brew-notes.component';
 import { BrewStepsComponent } from './brew-steps/brew-steps.component';
+import { TimelineStepsComponent } from './timeline-steps/timeline-steps.component';
 
 @NgModule({
   declarations: [
     BrewConfigurationComponent,
     BrewStepsComponent,
     BrewNotesComponent,
+    TimelineStepsComponent,
   ],
   imports: [
     HistoryModule,
@@ -31,8 +34,15 @@ import { BrewStepsComponent } from './brew-steps/brew-steps.component';
     MatDividerModule,
     NgClass,
     DisplayTimePipe,
+    FormsModule,
+    AsyncPipe,
   ],
   providers: [provideFirestore(() => getFirestore())],
-  exports: [BrewConfigurationComponent, BrewStepsComponent, BrewNotesComponent],
+  exports: [
+    BrewConfigurationComponent, 
+    BrewStepsComponent, 
+    BrewNotesComponent,
+    TimelineStepsComponent
+  ],
 })
 export class BrewingModule {}

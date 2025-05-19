@@ -46,7 +46,7 @@ export class ProcessPresenterService {
     const calculator = new CoffeeCalculator();
 
     observable.pipe(takeUntilDestroyed(destroyRef)).subscribe(value => {
-      const { ratio, method, coffeeCups } = value;
+      const { ratio, method, coffeeCups, cupSize } = value;
 
       calculator.setRatio(ratio);
       calculator.setUnits({
@@ -55,6 +55,7 @@ export class ProcessPresenterService {
       });
       calculator.setMethod(method);
       calculator.setCups(coffeeCups);
+      calculator.setCupSize(cupSize);
       const { water, coffee } = calculator.calculate();
       const cups = `${value.coffeeCups} ${
         coffeeCups > 1 ? 'cups' : 'cup'
@@ -84,7 +85,7 @@ export class ProcessPresenterService {
         .withMethod(process.method)
         .withCups({
           amount: process.coffeeCups,
-          volume: CUP_SIZE,
+          volume: process.cupSize ?? CUP_SIZE,
           unit: 'ml',
         })
         .withRatio(process.ratio)

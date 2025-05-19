@@ -11,6 +11,7 @@ export class CoffeeCalculator {
   };
   private cups = 0;
   private method = 'French Press' as MethodType;
+  private cupSize: number = methodWaterAmount['French Press'];
 
   setRatio(ratio: RatioOption) {
     this.ratio = ratio;
@@ -24,6 +25,10 @@ export class CoffeeCalculator {
     this.cups = cups;
   }
 
+  setCupSize(cupSize: number) {
+    this.cupSize = cupSize;
+  }
+
   setMethod(method: MethodType) {
     this.method = method;
   }
@@ -32,11 +37,11 @@ export class CoffeeCalculator {
     const coffee = this.calculateCoffee(
       this.ratio.coffee,
       this.ratio.water,
-      methodWaterAmount[this.method] * this.cups
+      this.cupSize * this.cups
     );
     const water =
       this.cups *
-      convertUnit(methodWaterAmount[this.method], BASE_UNIT, this.units.water);
+      convertUnit(this.cupSize, BASE_UNIT, this.units.water);
 
     return {
       water,
