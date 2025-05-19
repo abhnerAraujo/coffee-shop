@@ -212,6 +212,11 @@ export class Brewing extends Dispatchable {
     ];
   }
 
+  static updateBrewing(brewing: Brewing, changes: Partial<Brewing>) {
+    Object.assign(brewing, changes);
+    brewing.update();
+  }
+
   static CREATE = 'Brewing.CREATE';
   static UPDATE = 'Brewing.UPDATE';
 }

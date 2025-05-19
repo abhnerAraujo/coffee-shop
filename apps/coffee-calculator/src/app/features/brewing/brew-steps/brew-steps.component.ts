@@ -113,6 +113,7 @@ export class BrewStepsComponent implements OnInit {
 
   protected handleSaveStep(list: number, index: number, value: string) {
     const brewing = this.brewState.getBrewing();
+    console.log('handleSaveStep');
 
     if (brewing) {
       switch (list) {
@@ -127,8 +128,6 @@ export class BrewStepsComponent implements OnInit {
           break;
       }
       this.addState.set(undefined);
-      this.brewService.updateBrewing(brewing);
-      this.brewState.setBrewing(brewing);
     }
   }
 
@@ -167,7 +166,6 @@ export class BrewStepsComponent implements OnInit {
 
     if (brewing) {
       brewing.setSteps([...list().map(({ value }) => value), value]);
-      this.brewService.updateBrewing(brewing);
     }
   }
 
@@ -206,8 +204,6 @@ export class BrewStepsComponent implements OnInit {
           swap(brewing.getTips(), steps => brewing.setTips(steps));
           break;
       }
-      this.brewService.updateBrewing(brewing);
-      this.brewState.setBrewing(brewing);
     }
   }
 
@@ -228,8 +224,6 @@ export class BrewStepsComponent implements OnInit {
           brewing.setTips(brewing.getTips().filter((_, i) => i !== index));
           break;
       }
-      this.brewService.updateBrewing(brewing);
-      this.brewState.setBrewing(brewing);
     }
   }
 }

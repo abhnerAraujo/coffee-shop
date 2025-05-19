@@ -99,4 +99,14 @@ export class BrewConfigurationComponent implements OnInit {
       { name: '', value: '' },
     ]);
   }
+
+  protected updateProperties() {
+    const brewing = this.brewState.getBrewing();
+
+    if (brewing) {
+      brewing.setProperties(this.properties())
+      this.brewService.updateBrewing(brewing);
+      this.brewState.setBrewing(brewing);
+    }
+  }
 }
