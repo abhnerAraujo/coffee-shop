@@ -1,0 +1,29 @@
+@if (safeUrl() || isEditing()) {
+  <h3 class="title" i18n>Tutorial</h3>
+}
+@if (isEditing()) {
+  <mat-form-field class="w-full">
+    <textarea
+      matInput
+      #tutorialInput
+      [value]="safeUrl()"
+      class="min-h-24"
+    ></textarea>
+    <button mat-icon-button (click)="handleSaveTutorial(tutorialInput.value)">
+      <mat-icon>save</mat-icon>
+    </button>
+  </mat-form-field>
+} @else if (safeUrl()) {
+  <div class="flex flex-row justify-center w-full">
+    <iframe
+      [width]="isMediumLayout() ? 900 : '100%'"
+      [height]="isMediumLayout() ? 506 : 315"
+      [src]="safeUrl()"
+      title="YouTube video player"
+      frameborder="0"
+      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+      referrerpolicy="strict-origin-when-cross-origin"
+      allowfullscreen
+    ></iframe>
+  </div>
+}

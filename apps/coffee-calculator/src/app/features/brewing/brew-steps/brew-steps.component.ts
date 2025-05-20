@@ -10,11 +10,8 @@ import {
   signal,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DomSanitizer, SafeUrl } from '@angular/platform-browser';
 import { Brewing } from '@domain/brewing';
-import { MethodType } from '@domain/method';
 import { BrewStateService } from '@shared/services/brew-state.service';
-import { BrewService } from '@shared/services/brew.service';
 
 @Component({
   selector: 'app-brew-steps',
@@ -24,38 +21,17 @@ import { BrewService } from '@shared/services/brew.service';
 export class BrewStepsComponent implements OnInit {
   pre = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
   steps = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
-  tutorialUrl = signal<SafeUrl>('');
   tips = signal<{ mode: 'edit' | 'view'; value: string }[]>([]);
   listTabs = signal<{ label: string; list: ListSignal }[]>([]);
-  private readonly tutorials: { [key in MethodType]: SafeUrl };
   protected addState = signal<number | undefined>(undefined);
   protected isMediumLayout = signal<boolean>(false);
   protected isEditing = signal(false);
   constructor(
     private brewState: BrewStateService,
-    private brewService: BrewService,
-    sanitizer: DomSanitizer,
     private layoutChanges: BreakpointObserver,
     @Inject(PLATFORM_ID) platformId: object,
     private destroyRef: DestroyRef
   ) {
-    this.tutorials = {
-      'French Press': sanitizer.bypassSecurityTrustResourceUrl(
-        'https://www.youtube.com/embed/w3A_Z1J78HY?si=rpAMPe7OyTTxV3Yt'
-      ),
-      Chemex: sanitizer.bypassSecurityTrustResourceUrl(
-        'https://www.youtube.com/embed/JrcH-4wHK9w?si=Jx5jHbHksRKb540t'
-      ),
-      AeroPress: sanitizer.bypassSecurityTrustResourceUrl(
-        'https://www.youtube.com/embed/tRIX9G7D_9Q?si=BHu3L0awvqgLWj7Q'
-      ),
-      V60: sanitizer.bypassSecurityTrustResourceUrl(
-        'https://www.youtube.com/embed/YVYbcEatZ5s?si=qPTOvzk1fzakYgU4'
-      ),
-      'Moka Pot': sanitizer.bypassSecurityTrustResourceUrl(
-        'https://www.youtube.com/embed/zzlFOkD4Kz4?si=0kvvzthmhUwM0I3M'
-      ),
-    };
     this.listTabs.set([
       { label: 'Get Ready', list: this.pre },
       { label: 'Steps', list: this.steps },
@@ -88,13 +64,11 @@ export class BrewStepsComponent implements OnInit {
         brewing.getSteps().map(value => ({ mode: 'view', value }))
       );
       this.tips.set(brewing.getTips().map(value => ({ mode: 'view', value })));
-      this.tutorialUrl.set(this.tutorials[brewing.getMethodProcess().method]);
       this.addState.set(undefined);
     } else {
       this.pre.set([]);
       this.steps.set([]);
       this.tips.set([]);
-      this.tutorialUrl.set('');
       this.addState.set(undefined);
     }
   }

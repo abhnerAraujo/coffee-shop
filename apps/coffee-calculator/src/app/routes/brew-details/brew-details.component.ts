@@ -4,6 +4,7 @@ import { Component, Inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
@@ -19,6 +20,7 @@ const MAT_MODULES = [
   MatButtonModule,
   MatInputModule,
   MatFormFieldModule,
+  MatDividerModule,
 ];
 
 @Component({

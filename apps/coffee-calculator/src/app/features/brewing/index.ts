@@ -15,8 +15,8 @@ import { BrewConfigurationComponent } from './brew-configuration/brew-configurat
 import { BrewNotesComponent } from './brew-notes/brew-notes.component';
 import { BrewStepsComponent } from './brew-steps/brew-steps.component';
 import { BrewTimerComponent } from './brew-timer/brew-timer.component';
+import { BrewTutorialComponent } from './brew-tutorial/brew-tutorial.component';
 import { TimelineStepsComponent } from './timeline-steps/timeline-steps.component';
-
 @NgModule({
   declarations: [
     BrewConfigurationComponent,
@@ -38,6 +38,7 @@ import { TimelineStepsComponent } from './timeline-steps/timeline-steps.componen
     FormsModule,
     AsyncPipe,
     BrewTimerComponent,
+    BrewTutorialComponent
   ],
   providers: [provideFirestore(() => getFirestore())],
   exports: [
@@ -45,7 +46,8 @@ import { TimelineStepsComponent } from './timeline-steps/timeline-steps.componen
     BrewStepsComponent, 
     BrewNotesComponent,
     TimelineStepsComponent,
-    BrewTimerComponent
+    BrewTimerComponent,
+    BrewTutorialComponent
   ],
 })
 export class BrewingModule {}

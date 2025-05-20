@@ -1,5 +1,8 @@
-import { Component, ElementRef, inject, OnInit, signal, ViewChild } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, DestroyRef, ElementRef, Inject, inject, OnInit, PLATFORM_ID, signal, ViewChild } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { BrewStateService } from '@shared/services/brew-state.service';
+import { debounceTime, delay, distinctUntilChanged, filter, fromEvent, tap } from 'rxjs';
 import { TimelineService } from '../services/timeline/timeline.service';
 
 @Component({
@@ -17,18 +20,36 @@ export class TimelineStepsComponent implements OnInit {
   protected addState = signal<'idle' | 'editing'>('idle');
   protected brewState = inject(BrewStateService);
   private timelineService = inject(TimelineService);
+  private destroyRef = inject(DestroyRef);
+  private userWheeled = false;
+
+  constructor(@Inject(PLATFORM_ID) private platform: object) {}
 
   ngOnInit() {
-    this.brewState.brewing$.subscribe(brewing => {
-      if (brewing) {
-        this.timeline.set(
-          brewing.getTimeline().map(item => this.formatTimeline(item))
-        );
-      }
-    });
-    this.brewState.timer$.subscribe(({fullscreen}) => {
-      this.scrollToCurrentStep(fullscreen);
-    });
+    if (isPlatformBrowser(this.platform)) {
+      this.brewState.brewing$.subscribe(brewing => {
+        if (brewing) {
+          this.timeline.set(
+            brewing.getTimeline().map(item => this.formatTimeline(item))
+          );
+        }
+      });
+      this.brewState.timer$.pipe(
+        filter(() => !this.userWheeled),
+        delay(1000),
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe(({fullscreen}) => {
+        this.scrollToCurrentStep(fullscreen);
+      });
+      fromEvent(window, 'wheel').pipe(
+        tap(() => this.userWheeled = true),
+        debounceTime(300),
+        distinctUntilChanged(),
+        takeUntilDestroyed(this.destroyRef)
+      ).subscribe(() => {
+        this.userWheeled = false;
+      });
+    }
   }
 
   private scrollToCurrentStep(isFullscreen = false) {
