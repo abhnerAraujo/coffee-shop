@@ -11,7 +11,7 @@
   "hosting": [
     {
       "target": "coffee-calculator",
-      "public": "dist/apps/coffee-calculator/browser",
+      "public": "dist/apps/coffee-calculator/browser/en",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
