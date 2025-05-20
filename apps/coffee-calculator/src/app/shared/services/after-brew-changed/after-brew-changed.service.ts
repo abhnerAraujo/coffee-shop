@@ -1,4 +1,5 @@
-import { inject, Injectable } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { Inject, inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { Brewing } from '@domain/brewing';
 import { DomainEvent, EventDispatcher } from '@domain/general/event-dispatcher';
 import { BrewSyncService } from '@shared/services/brew-sync.service';
@@ -17,7 +18,8 @@ export class AfterBrewChangedService {
     event: DomainEvent<Brewing>,
     handler: (event: DomainEvent<Brewing>) => void;
   }>();
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
+    if (isPlatformServer(platformId)) return;
     console.log('[AfterBrewChangedService]', 'init');
     EventDispatcher.listen<Brewing>(Brewing.CREATE, (event) =>
       this.brewQueue.next({

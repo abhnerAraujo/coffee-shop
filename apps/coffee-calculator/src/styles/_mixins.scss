@@ -1,3 +1,6 @@
+@use '@angular/material' as mat;
+@import "theme";
+
 @mixin mq($breakpoint) {
   @if $breakpoint == 'xs' {
     @media (max-width: 599px) { @content; }
@@ -44,4 +47,11 @@
   @else if $breakpoint == 'xl' {
     @media (max-width: 1919px) { @content; }
   }
+}
+
+@mixin stickyHeader() {
+  z-index: 100;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 20);
 }

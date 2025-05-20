@@ -1,9 +1,12 @@
-<div class="flex flex-row justify-between items-center">
+<header class="flex flex-row justify-between items-center" [ngClass]="{'sticky top-0': stickyHeader()}">
   <button mat-button (click)="handleBackClick()">
     <mat-icon>arrow_back</mat-icon>Back
   </button>
+  @if ((brewState.timer$ | async)?.fullscreen && stickyHeader() && isMediumLayout()) {
+    <app-brew-timer [fullscreen]="true" />
+  }
   <div class="flex flex-row justify-end items-center gap-4">
-    <button mat-icon-button (click)="brewState.toggleTimerVisibility()">
+    <button mat-icon-button (click)="handleTimerVisibility()">
       <mat-icon>{{
         brewState.timer.value.hidden ? 'timer' : 'timer_off'
       }}</mat-icon>
@@ -21,7 +24,13 @@
       <mat-icon>{{ isEditing() ? 'edit_off' : 'edit' }}</mat-icon>
     </button>
   </div>
+</header>
+@if ((brewState.timer$ | async)?.fullscreen) {
+<div class="fullscreen-container">
+  <app-brew-timer />
+  <app-timeline-steps />
 </div>
+} @else {
 @if (titleMode() === 'view') {
 <h2
   [ngClass]="{
@@ -48,12 +57,16 @@
 <div>
   <app-brew-configuration />
 </div>
-<div class="mt-4">
-  <app-timeline-steps />
-</div>
+@if (!(brewState.timer$ | async)?.hidden) {
+  <div class="mt-4" id="timer-timeline-container">
+    <app-brew-timer />
+    <app-timeline-steps />
+  </div>
+}
 <div class="mt-4">
   <app-brew-notes />
 </div>
 <div class="mt-4">
   <app-brew-steps />
 </div>
+}

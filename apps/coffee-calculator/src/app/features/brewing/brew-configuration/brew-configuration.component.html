@@ -1,9 +1,9 @@
 <div class="flex flex-col gap-8">
   <div
-    class="quantities gap-8 justify-between md:justify-start"
+    class="quantities flex gap-8 justify-between md:justify-start"
     [ngClass]="{ 
-      'grid grid-cols-3': !isEditing(),
-      'flex flex-col': isEditing()
+      'flex-row flex-wrap gap-4': !isEditing(),
+      'flex-col': isEditing() || !isMediumLayout()
       }"
   >
     @for (property of properties(); track property.name; let i = $index) {
@@ -17,6 +17,9 @@
           <mat-form-field>
             <mat-label i18n>Label</mat-label>
             <input matInput [(ngModel)]="property.name" (blur)="updateProperties()" />
+            <button mat-icon-button (click)="removeProperty(i)" matSuffix>
+              <mat-icon>close</mat-icon>
+            </button>
           </mat-form-field>
           <mat-form-field>
             <mat-label i18n>Value</mat-label>
@@ -79,27 +82,4 @@
     </div> -->
   </div>
   <mat-divider />
-  @if (showTimer()) {
-  <div class="timer flex flex-row justify-center items-center gap-2">
-    @if (timerStatus() === 'stopped' || timerStatus() === 'paused') {
-    <button mat-icon-button (click)="brewState.startTimer()">
-      <mat-icon>play_arrow</mat-icon>
-    </button>
-    } @else {
-    <button mat-icon-button (click)="brewState.pauseTimer()">
-      <mat-icon>pause</mat-icon>
-    </button>
-    }
-    <div class="flex flex-col items-center justify-center">
-      <h1 class="timer-count">{{ timer() }}</h1>
-    </div>
-    <button
-      (click)="brewState.stopTimer()"
-      [disabled]="timerStatus() === 'stopped'"
-      mat-icon-button
-    >
-      <mat-icon>stop</mat-icon>
-    </button>
-  </div>
-  }
 </div>

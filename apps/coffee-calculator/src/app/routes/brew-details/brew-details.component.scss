@@ -1,9 +1,17 @@
+@import "mixins";
+
 :host {
   display: flex;
   flex-direction: column;
   padding: 1rem;
   gap: 1rem;
   margin-bottom: 5rem;
+}
+
+header {
+  &.sticky {
+    @include stickyHeader();
+  }
 }
 
 .quantities {

@@ -1,4 +1,5 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { isPlatformServer } from '@angular/common';
+import { EventEmitter, Inject, Injectable, PLATFORM_ID } from '@angular/core';
 import { EventDispatcher } from '@domain/general/event-dispatcher';
 import { MethodProcess } from '@domain/method-process';
 
@@ -7,7 +8,8 @@ import { MethodProcess } from '@domain/method-process';
 })
 export class AfterHistoryChangedService {
   private historyUpdated = new EventEmitter<void>();
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) platformId: object) {
+    if (isPlatformServer(platformId)) return;
     EventDispatcher.listen(
       MethodProcess.CREATE,
       this.handleMethodProcess.bind(this)

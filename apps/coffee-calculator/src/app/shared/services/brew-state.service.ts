@@ -19,7 +19,8 @@ export class BrewStateService {
     time: number;
     status: 'paused' | 'counting' | 'stopped';
     hidden: boolean;
-  }>({ time: 0, status: 'stopped', hidden: true });
+    fullscreen: boolean;
+  }>({ time: 0, status: 'stopped', hidden: true, fullscreen: false });
   readonly timer$ = this.timer.asObservable();
   private readonly stopTimer$ = new Subject<void>();
   private brewing = new BehaviorSubject<Brewing | undefined>(undefined);
@@ -51,6 +52,10 @@ export class BrewStateService {
   stopTimer() {
     this.timer.next({ ...this.timer.value, time: 0, status: 'stopped' });
     this.stopTimer$.next();
+  }
+
+  toggleFullscreen() {
+    this.timer.next({ ...this.timer.value, fullscreen: !this.timer.value.fullscreen });
   }
 
   toggleTimerVisibility() {

@@ -1,12 +1,30 @@
+@use "mixins" as *;
+
 .timeline-steps {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 24px;
+  overflow-y: auto;
+  max-height: 200px;
 
   > .step {
     display: flex;
     flex-direction: row;
     align-items: center;
-    gap: 10px;
+    gap: 16px;
+    color: #a6a6a6;
+    font-size: 1.5rem;
+    @include mqGt(md) {
+      font-size: 2rem;
+    }
+  }
+
+  > .step.-highlight {
+    color: white;
+    font-weight: 600;
+  }
+
+  &.fullscreen {
+    max-height: 100%;
   }
 }

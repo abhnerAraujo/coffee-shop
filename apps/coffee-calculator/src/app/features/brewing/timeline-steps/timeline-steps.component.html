@@ -1,6 +1,6 @@
-<div class="timeline-steps">
+<div class="timeline-steps" #timelineSteps [class.fullscreen]="(brewState.timer$ | async)?.fullscreen">
   @for (step of timeline(); track step; let i = $index) {
-    <div class="step">
+    <div class="step" [class.-highlight]="isCurrentStep(i)">
       @if (brewState.editing$ | async) {
         <button mat-icon-button (click)="handleDelete(i)">
           <mat-icon>close</mat-icon>

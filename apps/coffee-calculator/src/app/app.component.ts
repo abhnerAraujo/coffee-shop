@@ -10,7 +10,8 @@ import {
   RouterLinkActive,
   RouterOutlet,
 } from '@angular/router';
-import { combineLatest } from 'rxjs';
+import { BrewStateService } from '@shared/services/brew-state.service';
+import { combineLatest, map } from 'rxjs';
 
 @Component({
   standalone: true,
@@ -50,7 +51,8 @@ export class AppComponent {
   constructor(
     title: Title,
     @Inject(PLATFORM_ID) platformId: object,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private brewState: BrewStateService
   ) {
     if (isPlatformBrowser(platformId)) {
       logEvent(this.analytics, 'app loaded');
@@ -63,10 +65,12 @@ export class AppComponent {
     combineLatest([
       this.activatedRoute.url,
       this.activatedRoute.queryParams,
-    ]).subscribe(([url, query]) => {
+      this.brewState.timer$.pipe(map(({fullscreen}) => fullscreen))
+    ]).subscribe(([url, query, fullscreen]) => {
       if (
-        (url[0].path === 'home' || url[0].path === '') &&
-        query['for'] === 'brew'
+        ((url[0].path === 'home' || url[0].path === '') &&
+        query['for'] === 'brew') ||
+        fullscreen
       ) {
         this.showNav.set(false);
       } else {

@@ -1,0 +1,33 @@
+@if (showTimer()) {
+  <div id="timer" class="timer flex flex-row justify-center items-center gap-2">
+    @if (timerStatus() === 'stopped' || timerStatus() === 'paused') {
+    <button mat-icon-button (click)="brewState.startTimer()">
+      <mat-icon>play_arrow</mat-icon>
+    </button>
+    } @else {
+    <button mat-icon-button (click)="brewState.pauseTimer()">
+      <mat-icon>pause</mat-icon>
+    </button>
+    }
+    <div class="flex flex-col items-center justify-center">
+      <h1 class="timer-count">{{ timer() }}</h1>
+    </div>
+    <button
+      (click)="brewState.stopTimer()"
+      [disabled]="timerStatus() === 'stopped'"
+      mat-icon-button
+    >
+      <mat-icon>stop</mat-icon>
+    </button>
+    <button
+      (click)="brewState.toggleFullscreen()"
+      mat-icon-button
+    >
+      @if ((brewState.timer$ | async)?.fullscreen) {
+        <mat-icon>fullscreen_exit</mat-icon>
+      } @else {
+        <mat-icon>fullscreen</mat-icon>
+      }
+    </button>
+  </div>
+  }

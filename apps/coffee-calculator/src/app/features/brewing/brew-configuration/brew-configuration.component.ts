@@ -1,9 +1,10 @@
-import { Component, DestroyRef, OnInit, signal } from '@angular/core';
+import { BreakpointObserver } from '@angular/cdk/layout';
+import { isPlatformBrowser } from '@angular/common';
+import { Component, DestroyRef, Inject, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Brewing } from '@domain/brewing';
 import { MethodType } from '@domain/method';
 import { BrewStateService } from '@shared/services/brew-state.service';
-import { BrewService } from '@shared/services/brew.service';
 
 @Component({
   selector: 'app-brew-configuration',
@@ -28,26 +29,28 @@ export class BrewConfigurationComponent implements OnInit {
   protected time = signal(240);
   protected timeEdit = signal(false);
   protected grindSize = signal<string>('medium');
-  protected timerStatus = signal<'paused' | 'counting' | 'stopped'>('stopped');
-  protected timer = signal<string>('0:00');
-  protected showTimer = signal(false);
+  
   protected isEditing = signal(false);
   protected properties = signal<Array<{ name: string; value: string }>>([]);
+  protected isMediumLayout = signal(false);
 
   constructor(
     protected brewState: BrewStateService,
     private destroyRef: DestroyRef,
-    private brewService: BrewService
+    private layoutChanges: BreakpointObserver,
+    @Inject(PLATFORM_ID) platformId: object
   ) {
-    brewState.timer$.subscribe(({ time, status, hidden }) => {
-      this.timer.set(this.displayTime(time));
-      this.timerStatus.set(status);
-      this.showTimer.set(!hidden);
-    });
     brewState.editing$.pipe(takeUntilDestroyed()).subscribe(editing => {
       this.isEditing.set(editing);
       this.timeEdit.set(false);
     });
+    if (isPlatformBrowser(platformId)) {
+      const mediumBreakpoint = '(min-width: 768px)';
+
+      this.layoutChanges.observe([mediumBreakpoint]).subscribe(result => {
+        this.isMediumLayout.set(result.matches);
+      });
+    }
   }
 
   ngOnInit() {
@@ -76,10 +79,8 @@ export class BrewConfigurationComponent implements OnInit {
     }
   }
 
-  protected displayTime(time: number): string {
-    const minutes = Math.floor(time / 60);
-    const seconds = time % 60;
-    return `${minutes}:${seconds.toString().padStart(2, '0')}`;
+  protected removeProperty(index: number) {
+    this.properties.update(properties => properties.filter((_, i) => i !== index));
   }
 
   protected updateTime(time: string) {
@@ -87,8 +88,6 @@ export class BrewConfigurationComponent implements OnInit {
 
     if (brewing) {
       brewing.setTimer(Number(time));
-      this.brewService.updateBrewing(brewing);
-      this.brewState.setBrewing(brewing);
       this.timeEdit.set(false);
     }
   }
@@ -105,8 +104,6 @@ export class BrewConfigurationComponent implements OnInit {
 
     if (brewing) {
       brewing.setProperties(this.properties())
-      this.brewService.updateBrewing(brewing);
-      this.brewState.setBrewing(brewing);
     }
   }
 }
