@@ -11,14 +11,28 @@
   "hosting": [
     {
       "target": "coffee-calculator",
-      "public": "dist/apps/coffee-calculator/browser/en",
+      "public": "dist/apps/coffee-calculator/browser/",
       "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
+          "source": "/pt/**",
+          "destination": "/pt/index.csr.html"
+        },
+        {
+          "source": "/en/**",
+          "destination": "/en/index.csr.html"
+        },
+        {
+          "source": "/",
+          "destination": "/en/index.csr.html"
+        },
+        {
           "source": "**",
-          "destination": "/index.csr.html"
+          "destination": "/en/index.csr.html"
         }
-      ]
+      ],
+      "cleanUrls": true,
+      "trailingSlash": false
     }
   ]
 }

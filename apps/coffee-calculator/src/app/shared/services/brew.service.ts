@@ -40,8 +40,8 @@ export class BrewService {
       timeline: [],
       ...(currentUser && {
         author: {
-          id: currentUser.id,
-          name: currentUser.name,
+          id: currentUser.getId(),
+          name: currentUser.getName(),
         },
       }),
     });

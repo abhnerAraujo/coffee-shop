@@ -29,6 +29,11 @@ export const appRoutes: Route[] = [
       import('./routes/user/user.component').then(m => m.UserComponent),
   },
   {
+    path: '',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
     path: '**',
     redirectTo: 'home',
     pathMatch: 'full',

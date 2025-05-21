@@ -13,7 +13,7 @@ export class MethodImageComponent {
   protected methodImage = signal<string>('');
   protected alt = signal<string>('');
   @Input() set method(value: MethodType) {
-    this.methodImage.set(`/img/${this.methodImages[value]}`);
+    this.methodImage.set(`assets/img/${this.methodImages[value]}`);
     this.alt.set(value);
   }
   private readonly methodImages = {

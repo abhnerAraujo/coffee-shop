@@ -48,7 +48,10 @@ export class Brewing extends Dispatchable {
   }
 
   static restore(props: BrewingProps) {
-    return new Brewing(props);
+    const brewing = new Brewing(props);
+
+    // brewing.update();
+    return brewing;
   }
 
   setName(name: string) {

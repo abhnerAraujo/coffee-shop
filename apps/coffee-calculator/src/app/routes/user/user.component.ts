@@ -12,6 +12,7 @@ import { getAuth, GoogleAuthProvider } from '@angular/fire/auth';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { User } from '@domain/user';
 import { signInWithCredential } from '@firebase/auth';
 import { AppStateService } from '@shared/services/app-state.service';
 import { BrewService } from '@shared/services/brew.service';
@@ -27,7 +28,7 @@ const MAT_MODULES = [MatButtonModule, MatDividerModule, MatProgressSpinnerModule
   styleUrl: './user.component.scss',
 })
 export class UserComponent implements AfterViewInit {
-  protected user = signal<{ picture: string; name: string } | null>(null);
+  protected user = signal<User | null>(null);
   private analytics = inject(Analytics);
   protected promptTimeout: NodeJS.Timeout | undefined;
   protected isSyncing = signal(false);
@@ -47,15 +48,13 @@ export class UserComponent implements AfterViewInit {
     });
   }
 
-  private handleUser(user: { name: string; picture: string } | null) {
+  private handleUser(user: User | null) {
     if (!user) {
       this.handleGoogleSignIn();
       this.user.set(null);
     } else {
       clearTimeout(this.promptTimeout);
-      this.user.set({
-        ...user,
-      });
+      this.user.set(user);
     }
   }
 

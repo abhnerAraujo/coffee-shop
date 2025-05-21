@@ -25,7 +25,8 @@
         "assets": [
           {
             "glob": "**/*",
-            "input": "apps/coffee-calculator/public"
+            "input": "apps/coffee-calculator/public/assets",
+            "output": "/assets"
           }
         ],
         "styles": ["apps/coffee-calculator/src/styles.scss"],
@@ -44,10 +45,14 @@
       },
       "configurations": {
         "pt": {
-          "localize": ["pt"]
+          "localize": ["pt"],
+          "baseHref": "/pt/",
+          "outputPath": "dist/apps/coffee-calculator/browser/pt"
         },
         "en": {
-          "localize": ["en"]
+          "localize": ["en"],
+          "baseHref": "/en/",
+          "outputPath": "dist/apps/coffee-calculator/browser/en"
         },
         "production": {
           "budgets": [
