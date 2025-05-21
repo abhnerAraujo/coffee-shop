@@ -20,4 +20,9 @@ export class MemoryBrewingRepository implements BrewingRepository {
   getBrewing(id: string): Promise<Brewing | undefined> {
     return Promise.resolve(this.brewings.find(b => b.getId() === id));
   }
+  delete(id: string): Promise<void> {
+    const index = this.brewings.findIndex(b => b.getId() === id);
+    if (index >= 0) this.brewings[index].setDeleted();
+    return Promise.resolve();
+  }
 }

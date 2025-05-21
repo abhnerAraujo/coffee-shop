@@ -6,7 +6,7 @@ import { ratioOptions } from '@domain/ratio';
 import { ratioIntensityByMethod } from '@domain/ratio-intensity';
 import { stepsByMethodProcess } from '@domain/steps';
 import { Unit } from '@domain/unit';
-import { from, map } from 'rxjs';
+import { filter, from, map, switchMap } from 'rxjs';
 import { BREWING_REPOSITORY } from 'src/app/features/brewing/infra';
 import { CoffeeCalculator } from 'src/app/features/calculator/domain';
 import { HISTORY_REPOSITORY } from 'src/app/features/history/infra';
@@ -88,7 +88,13 @@ export class BrewService {
   }
 
   listBrewings() {
-    return from(this.brewRepo.listBrewings());
+    return this.appState.syncing$.pipe(
+      filter(syncing => !syncing),
+      switchMap(() => this.brewRepo.listBrewings()),
+      map(brewings => brewings.sort(
+        (a, b) => b.getUpdatedAt().getTime() - a.getUpdatedAt().getTime()
+      )),
+    );
   }
 
   syncBrewings() {

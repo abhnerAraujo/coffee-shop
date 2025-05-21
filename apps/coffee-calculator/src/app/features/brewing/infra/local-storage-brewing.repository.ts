@@ -24,6 +24,7 @@ export class LocalStorageBrewingRepository implements BrewingRepository {
           ...brewing.props,
           createdAt: new Date(brewing.props.createdAt),
           updatedAt: new Date(brewing.props.updatedAt),
+          deletedAt: brewing.props.deletedAt ? new Date(brewing.props.deletedAt) : undefined,
         })
       )
     );
@@ -41,5 +42,11 @@ export class LocalStorageBrewingRepository implements BrewingRepository {
     const brewings = await this.listBrewings();
 
     return Promise.resolve(brewings.find(b => b.getId() === id));
+  }
+
+  async delete(id: string): Promise<void> {
+    const brewings = (await this.listBrewings()).filter(b => b.getId() !== id);
+
+    localStorage.setItem(this.brewingKey, JSON.stringify(brewings));
   }
 }

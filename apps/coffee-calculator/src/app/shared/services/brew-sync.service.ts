@@ -34,7 +34,7 @@ export class BrewSyncService {
           const syncOperations: {
             payload: Brewing,
             repository: BrewingRepository,
-            operation: 'save' | 'update'
+            operation: 'save' | 'update' | 'delete'
           }[] = [];
 
           // Handle local brewings
@@ -43,13 +43,26 @@ export class BrewSyncService {
               remote => remote.getId() === localBrewing.getId()
             );
 
-            if (!remoteBrewing) {
+            if (remoteBrewing && localBrewing.getDeletedAt()) {
+              syncOperations.push({
+                payload: localBrewing,
+                repository: this.remoteBrewingRepo,
+                operation: 'delete'
+              });
+              // Delete it permanently from the local repository
+              syncOperations.push({
+                payload: localBrewing,
+                repository: this.brewingRepo,
+                operation: 'delete'
+              });
+            } else if (!remoteBrewing && !localBrewing.getDeletedAt()) {
               syncOperations.push({
                 payload: localBrewing,
                 repository: this.remoteBrewingRepo,
                 operation: 'save'
               });
             } else if (
+              remoteBrewing &&
               localBrewing.getUpdatedAt() > remoteBrewing.getUpdatedAt()
             ) {
               syncOperations.push({
@@ -57,30 +70,45 @@ export class BrewSyncService {
                 repository: this.remoteBrewingRepo,
                 operation: 'update'
               });
-            } else {
+            } else if (!remoteBrewing && localBrewing.getDeletedAt()) {
               syncOperations.push({
-                payload: remoteBrewing,
+                payload: localBrewing,
                 repository: this.brewingRepo,
-                operation: 'update'
+                operation: 'delete'
               });
             }
           }
 
           // Handle remote brewings that don't exist locally
           for (const remoteBrewing of remoteBrewings) {
-            if (!localBrewings.find(
+            const localBrewing = localBrewings.find(
               local => local.getId() === remoteBrewing.getId()
-            )) {
+            )
+            
+            if (!localBrewing && !remoteBrewing.getDeletedAt()) {
               syncOperations.push({
                 payload: remoteBrewing,
                 repository: this.brewingRepo,
                 operation: 'save'
               });
+              continue;
             }
-            const localBrewing = localBrewings.find(
-              local => local.getId() === remoteBrewing.getId()
-            );
-            
+
+            // If it was removed from the remote repository,
+            // delete it from the local repository
+            if (remoteBrewing.getDeletedAt()) {
+              syncOperations.push({
+                payload: remoteBrewing,
+                repository: this.brewingRepo,
+                operation: 'delete'
+              });
+              // Delete it permanently from the remote repository
+              syncOperations.push({
+                payload: remoteBrewing,
+                repository: this.remoteBrewingRepo,
+                operation: 'delete'
+              });
+            }
             // If the local brewing is not the same as the remote brewing,
             // update the local brewing
             if (
@@ -117,11 +145,14 @@ export class BrewSyncService {
   private execute(
     payload: Brewing,
     repository: BrewingRepository,
-    operation: 'save' | 'update') {
+    operation: 'save' | 'update' | 'delete'
+  ) {
     if (operation === 'save') {
       return from(repository.save(payload));
-    } else {
+    } else if (operation === 'update') {
       return from(repository.update(payload));
+    } else {
+      return from(repository.delete(payload.getId()));
     }
   }
 

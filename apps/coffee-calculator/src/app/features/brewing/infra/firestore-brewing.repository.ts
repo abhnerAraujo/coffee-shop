@@ -1,6 +1,7 @@
 import { inject } from '@angular/core';
 import {
   collection,
+  deleteDoc,
   doc,
   Firestore,
   getDoc,
@@ -58,6 +59,7 @@ export class FirestoreBrewingRepository implements BrewingRepository {
       tips: plain.steps[2],
       createdAt: plain.createdAt.toISOString(),
       updatedAt: plain.updatedAt.toISOString(),
+      deletedAt: plain.deletedAt ? plain.deletedAt.toISOString() : undefined,
       timeline: plain.timeline.reduce((acc, item) => {
         acc[item[0]] = item[1];
         return acc;
@@ -73,6 +75,7 @@ export class FirestoreBrewingRepository implements BrewingRepository {
       ...data,
       createdAt: new Date(data.createdAt),
       updatedAt: new Date(data.updatedAt),
+      deletedAt: data.deletedAt ? new Date(data.deletedAt) : undefined,
       steps: [data.preparation, data.steps, data.tips],
       timeline: data.timeline
         ? Object.entries(data.timeline).map(([key, value]) => [
@@ -81,5 +84,9 @@ export class FirestoreBrewingRepository implements BrewingRepository {
           ])
         : [],
     });
+  }
+
+  async delete(id: string): Promise<void> {
+    return deleteDoc(doc(this.collection, id));
   }
 }

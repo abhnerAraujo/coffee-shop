@@ -5,4 +5,5 @@ export interface BrewingRepository {
   listBrewings(query?: { userId?: string }): Promise<Brewing[]>;
   update(brewing: Brewing): Promise<void>;
   getBrewing(id: string): Promise<Brewing | undefined>;
+  delete(id: string): Promise<void>;
 }

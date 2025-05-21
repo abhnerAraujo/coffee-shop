@@ -5,6 +5,7 @@ import { DomainEvent, EventDispatcher } from '@domain/general/event-dispatcher';
 import { BrewSyncService } from '@shared/services/brew-sync.service';
 import { concatMap, delay, of, Subject } from 'rxjs';
 import { BREWING_REPOSITORY } from '../../../features/brewing/infra';
+import { AppStateService } from '../app-state.service';
 import { BrewStateService } from '../brew-state.service';
 
 @Injectable({
@@ -18,6 +19,7 @@ export class AfterBrewChangedService {
     event: DomainEvent<Brewing>,
     handler: (event: DomainEvent<Brewing>) => void;
   }>();
+  private appState = inject(AppStateService);
   constructor(@Inject(PLATFORM_ID) platformId: object) {
     if (isPlatformServer(platformId)) return;
     console.log('[AfterBrewChangedService]', 'init');
@@ -31,6 +33,12 @@ export class AfterBrewChangedService {
       this.brewQueue.next({
         event,
         handler: this.handleUpdateBrewing.bind(this),
+      })
+    );
+    EventDispatcher.listen<Brewing>(Brewing.DELETE, (event) =>
+      this.brewQueue.next({
+        event,
+        handler: this.handleDeleteBrewing.bind(this),
       })
     );
     this.brewQueue
@@ -54,5 +62,18 @@ export class AfterBrewChangedService {
     await this.brewingRepo.update(event.payload);
     this.brewState.setBrewing(event.payload);
     this.brewSync.sync();
+  }
+
+  private async handleDeleteBrewing(event: DomainEvent<Brewing>) {
+    console.log('[AfterBrewChangedService]', 'brewing deleted');
+    this.brewState.setBrewing(undefined);
+    const currentUser = this.appState.currentUser;
+    
+    if (!currentUser) {
+      await this.brewingRepo.delete(event.payload.getId());
+    } else {
+      await this.brewingRepo.update(event.payload);
+      this.brewSync.sync();
+    }
   }
 }

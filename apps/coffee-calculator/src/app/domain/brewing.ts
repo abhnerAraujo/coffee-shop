@@ -14,6 +14,7 @@ export interface BrewingProps {
   timer: number;
   createdAt: Date;
   updatedAt: Date;
+  deletedAt?: Date;
   author?: {
     id: string;
     name: string;
@@ -50,7 +51,6 @@ export class Brewing extends Dispatchable {
   static restore(props: BrewingProps) {
     const brewing = new Brewing(props);
 
-    // brewing.update();
     return brewing;
   }
 
@@ -165,6 +165,14 @@ export class Brewing extends Dispatchable {
     return this.props.author;
   }
 
+  setDeleted() {
+    this.delete();
+  }
+
+  getDeletedAt() {
+    return this.props.deletedAt;
+  }
+
   addTimelineItem(item: [number, string]) {
     this.props.timeline.push(item);
     this.reorderTimeline();
@@ -199,6 +207,11 @@ export class Brewing extends Dispatchable {
     this.markForDispatch(Brewing.UPDATE);
   }
 
+  private delete() {
+    this.props.deletedAt = new Date();
+    this.markForDispatch(Brewing.DELETE);
+  }
+
   static extractPropertiesFromMethodProcess(methodProcess: MethodProcess) {
     return [
       {
@@ -231,4 +244,5 @@ export class Brewing extends Dispatchable {
 
   static CREATE = 'Brewing.CREATE';
   static UPDATE = 'Brewing.UPDATE';
+  static DELETE = 'Brewing.DELETE';
 }

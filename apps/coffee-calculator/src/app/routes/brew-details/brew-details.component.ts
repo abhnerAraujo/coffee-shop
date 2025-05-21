@@ -8,6 +8,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatMenuModule } from '@angular/material/menu';
 import { Router } from '@angular/router';
 import { AutoFocusDirective } from '@shared/directives/auto-focus.directive';
 import { BrewStateService } from '@shared/services/brew-state.service';
@@ -21,6 +22,7 @@ const MAT_MODULES = [
   MatInputModule,
   MatFormFieldModule,
   MatDividerModule,
+  MatMenuModule
 ];
 
 @Component({
@@ -126,6 +128,14 @@ export class BrewDetailsComponent implements OnInit {
 
   protected handleBackClick() {
     this.router.navigate(['/brew']);
+  }
+
+  protected handleDeleteBrewing() {
+    const brewing = this.brewState.getBrewing();
+    if (brewing) {
+      brewing.setDeleted();
+      this.router.navigate(['/brew']);
+    }
   }
 
   handleTimerVisibility() {

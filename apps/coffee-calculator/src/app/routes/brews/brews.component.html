@@ -8,17 +8,25 @@
 </div>
 <mat-list>
   @for (item of list(); track $index) {
-  <mat-list-item (click)="openBrew(item)">
-    <span matListItemTitle
-      ><b>{{ item.getName() }}</b></span
-    >
-    <span matListItemLine
-      >{{ item.getMethodProcess().method }} -
-      {{ item.getMethodProcess().cups.amount }} cup(s)</span
-    >
-    <!-- <span matListItemLine
-      ><i>{{ item.getCreatedAt() | date }}</i></span
-    > -->
-  </mat-list-item>
+    <mat-list-item (click)="openBrew(item)">
+      <span matListItemTitle
+        ><b>{{ item.getName() }}</b></span
+      >
+      <span matListItemLine
+        >{{ item.getMethodProcess().method }} -
+        {{ item.getMethodProcess().cups.amount }} cup(s)</span
+      >
+      <!-- <span matListItemLine
+        ><i>{{ item.getCreatedAt() | date }}</i></span
+      > -->
+    </mat-list-item>
+  } @empty {
+    @if (syncing()) {
+      <mat-progress-spinner mode="indeterminate"></mat-progress-spinner>
+    } @else {
+      <mat-list-item>
+        <span matListItemTitle>No brewings yet</span>
+      </mat-list-item>
+    }
   }
 </mat-list>
