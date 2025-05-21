@@ -56,6 +56,8 @@ export class FirestoreBrewingRepository implements BrewingRepository {
       preparation: plain.steps[0],
       steps: plain.steps[1],
       tips: plain.steps[2],
+      createdAt: plain.createdAt.toISOString(),
+      updatedAt: plain.updatedAt.toISOString(),
       timeline: plain.timeline.reduce((acc, item) => {
         acc[item[0]] = item[1];
         return acc;

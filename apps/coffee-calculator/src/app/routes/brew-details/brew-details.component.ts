@@ -1,6 +1,6 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { AsyncPipe, isPlatformServer, NgClass } from '@angular/common';
-import { Component, Inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
+import { Component, DestroyRef, Inject, Input, OnInit, PLATFORM_ID, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -52,6 +52,7 @@ export class BrewDetailsComponent implements OnInit {
     private brewService: BrewService,
     private router: Router,
     private layoutChanges: BreakpointObserver,
+    private destroyRef: DestroyRef,
     @Inject(PLATFORM_ID) platformId: object
   ) {
     if (isPlatformServer(platformId)) {
@@ -90,8 +91,12 @@ export class BrewDetailsComponent implements OnInit {
     this.brewService.getBrewing(this.brewingId).then(brewing => {
       if (brewing) {
         this.brewState.setBrewing(brewing);
+      }
+    });
+    this.brewState.brewing$.pipe(takeUntilDestroyed(this.destroyRef)).subscribe(brewing => {
+      if (brewing) {
         this.brewName.set(brewing.getName());
-        this.suggestionName.set(brewing.getName());
+        this.suggestionName.set(this.brewService.suggestName(brewing.getMethodProcess()));
       }
     });
   }
@@ -101,11 +106,10 @@ export class BrewDetailsComponent implements OnInit {
     const brewing = this.brewState.getBrewing();
 
     if (brewing) {
+      console.log(input.value.trim());
       brewing.setName(
         !input.value.trim() ? this.suggestionName() : input.value.trim()
       );
-      this.brewService.updateBrewing(brewing);
-      this.brewName.set(brewing.getName());
     }
     this.titleMode.set('view');
   }
