@@ -20,7 +20,11 @@ export class LocalStorageBrewingRepository implements BrewingRepository {
     if (!brewings) return Promise.resolve([]);
     return Promise.resolve(
       JSON.parse(brewings).map((brewing: { props: BrewingProps }) =>
-        Brewing.restore(brewing.props)
+        Brewing.restore({
+          ...brewing.props,
+          createdAt: new Date(brewing.props.createdAt),
+          updatedAt: new Date(brewing.props.updatedAt),
+        })
       )
     );
   }

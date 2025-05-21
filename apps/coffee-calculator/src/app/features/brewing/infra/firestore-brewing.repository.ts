@@ -69,6 +69,8 @@ export class FirestoreBrewingRepository implements BrewingRepository {
 
     return Brewing.restore({
       ...data,
+      createdAt: new Date(data.createdAt),
+      updatedAt: new Date(data.updatedAt),
       steps: [data.preparation, data.steps, data.tips],
       timeline: data.timeline
         ? Object.entries(data.timeline).map(([key, value]) => [
