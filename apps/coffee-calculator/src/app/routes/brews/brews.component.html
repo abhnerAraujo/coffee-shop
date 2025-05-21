@@ -1,5 +1,11 @@
-<h1>My brewings</h1>
-<button mat-stroked-button (click)="newBrewing()">New Brewing</button>
+<div class="flex justify-between items-center">
+  <h1>My brewings</h1>
+  <button mat-stroked-button (click)="newBrewing()">
+    <span class="hidden md:block">New Brewing</span>
+    <span class="md:hidden">Add</span>
+  </button>
+
+</div>
 <mat-list>
   @for (item of list(); track $index) {
   <mat-list-item (click)="openBrew(item)">
