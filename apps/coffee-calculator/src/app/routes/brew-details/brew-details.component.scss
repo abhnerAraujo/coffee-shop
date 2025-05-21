@@ -1,17 +1,18 @@
-@import "mixins";
+@use "mixins" as *;
 
-:host {
+.brew-details {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
   gap: 1rem;
   margin-bottom: 5rem;
+  padding: 1rem;
 }
 
 header {
-  &.sticky {
+  &.-sticky {
     @include stickyHeader();
   }
+  padding: 1rem;
 }
 
 .quantities {

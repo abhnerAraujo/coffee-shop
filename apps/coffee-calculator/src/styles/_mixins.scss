@@ -20,14 +20,11 @@
 }
 
 @mixin mqGt($breakpoint) {
-  @if $breakpoint == 'xs' {
-    @media (min-width: 0) { @content; }
-  }
-  @else if $breakpoint == 'sm' {
-    @media (min-width: 600px) { @content; }
+  @if $breakpoint == 'sm' {
+    @media (min-width: 0px) { @content; }
   }
   @else if $breakpoint == 'md' {
-    @media (min-width: 960px) { @content; }
+    @media (min-width: 768px) { @content; }
   }
   @else if $breakpoint == 'lg' {
     @media (min-width: 1280px) { @content; }
@@ -35,11 +32,8 @@
 }
 
 @mixin mqLt($breakpoint) {
-  @if $breakpoint == 'sm' {
-    @media (max-width: 599px) { @content; }
-  }
-  @else if $breakpoint == 'md' {
-    @media (max-width: 959px) { @content; }
+  @if $breakpoint == 'md' {
+    @media (max-width: 767px) { @content; }
   }
   @else if $breakpoint == 'lg' {
     @media (max-width: 1279px) { @content; }
@@ -51,7 +45,7 @@
 
 @mixin stickyHeader() {
   z-index: 100;
-  padding-top: 1rem;
-  padding-bottom: 1rem;
   background-color: mat.get-theme-color($coffee-calculator-theme, 'neutral', 20);
+  top: 0;
+  position: sticky;
 }

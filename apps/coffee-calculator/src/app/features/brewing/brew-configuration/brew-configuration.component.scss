@@ -1,6 +1,32 @@
+@use "mixins" as *;
+
 .quantities {
   p, h4 {
     margin: 0;
+  }
+  gap: 1rem;
+
+  @include mqGt(md) {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    &.-editing {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      max-height: 96rem;
+      overflow-y: auto;
+    }
+  }
+
+  @include mqLt(md) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    &.-editing {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: nowrap;
+      gap: 1rem;
+    }
   }
 }
 

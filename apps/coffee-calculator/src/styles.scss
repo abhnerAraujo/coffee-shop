@@ -1,6 +1,7 @@
 @use '@angular/material' as mat;
 @import 'typography';
 @import 'theme';
+@import 'animations';
 
 :root {
   @include mat.all-component-themes($coffee-calculator-theme);

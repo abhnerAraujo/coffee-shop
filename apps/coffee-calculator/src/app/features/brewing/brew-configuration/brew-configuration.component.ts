@@ -48,6 +48,7 @@ export class BrewConfigurationComponent implements OnInit {
       const mediumBreakpoint = '(min-width: 768px)';
 
       this.layoutChanges.observe([mediumBreakpoint]).subscribe(result => {
+        console.log(result.matches);
         this.isMediumLayout.set(result.matches);
       });
     }
