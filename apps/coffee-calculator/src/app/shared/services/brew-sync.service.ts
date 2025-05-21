@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { forkJoin, map, mergeMap } from 'rxjs';
+import { forkJoin, from, map, mergeMap } from 'rxjs';
 import {
   BREWING_REPOSITORY,
   REMOTE_BREWING_REPOSITORY,
@@ -44,10 +44,10 @@ export class BrewSyncService {
             );
 
             if (!remoteBrewing)
-              return this.remoteBrewingRepo.save(localBrewing);
+              return from(this.remoteBrewingRepo.save(localBrewing));
             else if (localBrewing.getUpdatedAt() > remoteBrewing.getUpdatedAt())
-              return this.remoteBrewingRepo.save(localBrewing);
-            return this.brewingRepo.update(remoteBrewing);
+              return from(this.remoteBrewingRepo.save(localBrewing));
+            return from(this.brewingRepo.update(remoteBrewing));
           });
           const syncRemotes = remoteBrewings
             .filter(remoteBrewing => {
@@ -55,7 +55,7 @@ export class BrewSyncService {
                 local => local.getId() === remoteBrewing.getId()
               );
             })
-            .map(remoteBrewing => this.brewingRepo.save(remoteBrewing));
+            .map(remoteBrewing => from(this.brewingRepo.save(remoteBrewing)));
 
           return forkJoin([...syncLocals, ...syncRemotes]);
         })

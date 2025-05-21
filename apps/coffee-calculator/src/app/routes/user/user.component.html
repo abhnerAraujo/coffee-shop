@@ -9,9 +9,13 @@
   <button mat-stroked-button (click)="handleSignout()" i18n="@@account:signOut">
     Sign out
   </button>
-  <button mat-stroked-button (click)="handleSync()" i18n="@@account:sync">
-    Sync brewings
-  </button>
+  @if (!isSyncing()) {
+    <button mat-stroked-button (click)="handleSync()" i18n="@@account:sync">
+      Sync brewings
+    </button>
+  } @else {
+    <mat-spinner />
+  }
 </div>
 } @else {
 <h1 i18n="@@account:title">Account</h1>

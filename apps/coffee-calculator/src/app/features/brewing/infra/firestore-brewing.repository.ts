@@ -56,6 +56,10 @@ export class FirestoreBrewingRepository implements BrewingRepository {
       preparation: plain.steps[0],
       steps: plain.steps[1],
       tips: plain.steps[2],
+      timeline: plain.timeline.reduce((acc, item) => {
+        acc[item[0]] = item[1];
+        return acc;
+      }, {} as Record<number, string>),
     };
   }
 
@@ -66,6 +70,12 @@ export class FirestoreBrewingRepository implements BrewingRepository {
     return Brewing.restore({
       ...data,
       steps: [data.preparation, data.steps, data.tips],
+      timeline: data.timeline
+        ? Object.entries(data.timeline).map(([key, value]) => [
+            Number(key),
+            value,
+          ])
+        : [],
     });
   }
 }

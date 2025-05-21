@@ -33,53 +33,6 @@
         <mat-icon>add</mat-icon>
       </button>
     }
-    <!-- <div class="flex flex-col">
-      <p class="text-sm" i18n>Method</p>
-      <h4>{{ method() }}</h4>
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm">Water ({{ units().water }})</p>
-      <h4>{{ quantities().water }}</h4>
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm">Coffee ({{ units().coffee }})</p>
-      <h4>{{ quantities().coffee }}</h4>
-    </div>
-    <div class="flex flex-col">
-      @if (timeEdit()) {
-      <mat-form-field>
-        <mat-label i18n>Time</mat-label>
-        <input matInput type="number" [value]="time()" #timeInput />
-        <button
-          mat-icon-button
-          matSuffix
-          [disabled]="!timeInput.value.trim()"
-          (click)="updateTime(timeInput.value)"
-        >
-          <mat-icon>save</mat-icon>
-        </button>
-        <mat-hint i18n>Seconds</mat-hint>
-      </mat-form-field>
-      } @else {
-      <p class="text-sm" i18n>Time (min)</p>
-      <h4
-        [ngClass]="{
-          'underline md:no-underline hover:underline': isEditing()
-        }"
-        (click)="isEditing() && timeEdit.set(true)"
-      >
-        {{ time() | displayTime }}
-      </h4>
-      }
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm" i18n>Grind size</p>
-      <h4>{{ grindSize() }}</h4>
-    </div>
-    <div class="flex flex-col">
-      <p class="text-sm">Cups ({{ cups().volume }}{{ cups().unit }})</p>
-      <h4>{{ cups().amount }}</h4>
-    </div> -->
   </div>
   <mat-divider />
 </div>

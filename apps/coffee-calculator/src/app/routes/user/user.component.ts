@@ -11,12 +11,13 @@ import { Analytics, logEvent } from '@angular/fire/analytics';
 import { getAuth, GoogleAuthProvider } from '@angular/fire/auth';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { signInWithCredential } from '@firebase/auth';
 import { AppStateService } from '@shared/services/app-state.service';
 import { BrewService } from '@shared/services/brew.service';
 import { LanguagesComponent } from 'src/app/features/localization/languages.component';
 
-const MAT_MODULES = [MatButtonModule, MatDividerModule];
+const MAT_MODULES = [MatButtonModule, MatDividerModule, MatProgressSpinnerModule];
 
 @Component({
   selector: 'app-user',
@@ -29,6 +30,7 @@ export class UserComponent implements AfterViewInit {
   protected user = signal<{ picture: string; name: string } | null>(null);
   private analytics = inject(Analytics);
   protected promptTimeout: NodeJS.Timeout | undefined;
+  protected isSyncing = signal(false);
   constructor(
     @Inject(PLATFORM_ID) private platformId: object,
     private appState: AppStateService,
@@ -40,6 +42,9 @@ export class UserComponent implements AfterViewInit {
     this.appState.user$.subscribe(user => {
       this.handleUser(user);
     });
+    this.appState.syncing$.subscribe(syncing => {
+      this.isSyncing.set(syncing);
+    });
   }
 
   private handleUser(user: { name: string; picture: string } | null) {
@@ -50,9 +55,6 @@ export class UserComponent implements AfterViewInit {
       clearTimeout(this.promptTimeout);
       this.user.set({
         ...user,
-      });
-      this.brewService.listBrewings().subscribe(brewings => {
-        console.log(brewings);
       });
     }
   }

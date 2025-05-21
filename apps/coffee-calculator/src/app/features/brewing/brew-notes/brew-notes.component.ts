@@ -2,7 +2,6 @@ import { Component, DestroyRef, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Brewing } from '@domain/brewing';
 import { BrewStateService } from '@shared/services/brew-state.service';
-import { BrewService } from '@shared/services/brew.service';
 
 @Component({
   selector: 'app-brew-notes',
@@ -16,7 +15,6 @@ export class BrewNotesComponent implements OnInit {
   constructor(
     private brewState: BrewStateService,
     private destroyRef: DestroyRef,
-    private brewService: BrewService
   ) {
     brewState.editing$
       .pipe(takeUntilDestroyed())
@@ -40,8 +38,7 @@ export class BrewNotesComponent implements OnInit {
 
     if (brewing) {
       brewing.setDescription(description);
-      this.brewService.updateBrewing(brewing);
-      this.brewState.setBrewing(brewing);
+      this.editDescription.set(false);
     }
   }
 

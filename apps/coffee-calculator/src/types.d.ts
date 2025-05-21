@@ -22,5 +22,7 @@ declare const google: {
   };
 };
 
+declare const NODE_ENV: string;
+
 declare const PT_URL: string;
 declare const EN_URL: string;
