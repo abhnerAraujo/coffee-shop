@@ -1,10 +1,12 @@
 <div class="flex flex-col gap-8">
   <div
-    class="quantities flex gap-4 md:gap-8 justify-between md:justify-start"
+    class="quantities gap-4 md:gap-8 justify-between md:justify-start"
     [ngClass]="{ 
-      'flex-row flex-wrap gap-4': !isEditing(),
-      'flex-col': isEditing() || !isMediumLayout()
-      }"
+      'flex flex-row flex-wrap': isMediumLayout() && !isEditing(),
+      'grid grid-cols-2': isEditing() || !isMediumLayout(),
+      'grid grid-cols-1': isEditing() && !isMediumLayout(),
+      'max-h-96 overflow-y-auto': isMediumLayout() && isEditing(),
+    }"
   >
     @for (property of properties(); track property.name; let i = $index) {
       @if (!isEditing()) {
@@ -16,12 +18,27 @@
         <div class="flex flex-col">
           <mat-form-field>
             <mat-label i18n>Label</mat-label>
+            <button
+              mat-icon-button
+              [disabled]="i === 0"
+              (click)="moveProperty(i, -1)"
+              matPrefix
+            >
+              <mat-icon>expand_less</mat-icon>
+            </button>
             <input matInput [(ngModel)]="property.name" (blur)="updateProperties()" />
             <button mat-icon-button (click)="removeProperty(i)" matSuffix>
               <mat-icon>close</mat-icon>
             </button>
           </mat-form-field>
           <mat-form-field>
+            <button mat-icon-button
+              [disabled]="i === properties().length - 1"
+              (click)="moveProperty(i, 1)"
+              matPrefix
+            >
+              <mat-icon>expand_more</mat-icon>
+            </button>
             <mat-label i18n>Value</mat-label>
             <input matInput [(ngModel)]="property.value" (blur)="updateProperties()" />
           </mat-form-field>

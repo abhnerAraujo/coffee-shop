@@ -99,6 +99,14 @@ export class BrewConfigurationComponent implements OnInit {
     ]);
   }
 
+  protected moveProperty(index: number, direction: number) {
+    const brewing = this.brewState.getBrewing();
+
+    if (brewing) {
+      brewing.moveProperty(index, direction);
+    }
+  }
+
   protected updateProperties() {
     const brewing = this.brewState.getBrewing();
 

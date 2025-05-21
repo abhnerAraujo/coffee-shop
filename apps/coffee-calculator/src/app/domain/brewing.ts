@@ -177,6 +177,15 @@ export class Brewing extends Dispatchable {
     this.update();
   }
 
+  moveProperty(index: number, direction: number) {
+    const properties = this.props.properties;
+    const temp = properties[index];
+
+    properties[index] = properties[index + direction];
+    properties[index + direction] = temp;
+    this.update();
+  }
+
   private reorderTimeline() {
     this.props.timeline = this.props.timeline.sort((a, b) => a[0] - b[0]);
   }
