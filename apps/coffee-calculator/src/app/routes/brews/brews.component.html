@@ -6,11 +6,11 @@
   </button>
 
 </div>
-<mat-list>
+<mat-nav-list>
   @for (item of list(); track $index) {
     <mat-list-item (click)="openBrew(item)">
-      <span matListItemTitle
-        ><b>{{ item.getName() }}</b></span
+      <a matListItemTitle
+        ><b>{{ item.getName() }}</b></a
       >
       <span matListItemLine
         >{{ item.getMethodProcess().method }} -
@@ -29,4 +29,4 @@
       </mat-list-item>
     }
   }
-</mat-list>
+</mat-nav-list>
